@@ -2,6 +2,35 @@
 .widget{
     width: 100%;
 }
+/* CHART CURRENCY */
+.chart__currency{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.chart__currency-title{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+
+}
+
+.chart__currency-title-line{
+    width: 30%;
+    height: 1px;
+    margin: 10px 0px;
+    background-color: black;
+}
+
+.chart__currency-title-h3{
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.chart__currency-title-h3{
+
+}
 
 /* EMAIL SUBCRIBE */
 .subscribe__email{
@@ -18,16 +47,16 @@
 }
 
 .subscribe__title-line{
-    width: 20%;
-    height: 2px;
+    width: 30%;
+    height: 1px;
     margin: 10px 0px;
-    background-color: #c8c8c8;
+    background-color: black;
 }
 
 .subscribe__title-h3{
-    font-style: italic;
+    /* font-style: italic; */
 
-    font-size: 25px;
+    font-size: 20px;
     text-transform: uppercase;
 }
 
@@ -92,15 +121,15 @@
 }
 
 .advertisement__title-line{
-    width: 20%;
-    height: 2px;
+    width: 30%;
+    height: 1px;
     margin: 10px 0px;
-    background-color: #c8c8c8;
+    background-color: black;
 }
 
 .advertisement__title-h3{
-    font-style: italic;
-    font-size: 25px;
+    /* font-style: italic; */
+    font-size: 20px;
     text-transform: uppercase;
 }
 
@@ -130,15 +159,15 @@
 }
 
 .tags__title-line{
-    width: 20%;
-    height: 2px;
+    width: 30%;
+    height: 1px;
     margin: 10px 0px;
-    background-color: #c8c8c8;
+    background-color: black;
 }
 
 .tags__title-h3{
-    font-style: italic;
-    font-size: 25px;
+    /* font-style: italic; */
+    font-size: 20px;
     text-transform: uppercase;
 }
 

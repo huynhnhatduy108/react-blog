@@ -67,7 +67,7 @@ const App = () => {
   }
   
   return (
-    <>
+    <div className="app">
       {/* <GoogleLogin
         clientId="979874640409-2knnits3kfn765b5celkdb92vpb8qq9o.apps.googleusercontent.com"
         buttonText="Login"
@@ -75,13 +75,13 @@ const App = () => {
         onFailure={responseGoogle}
         // cookiePolicy={"single_host_origin"}
       /> */}
-      {/* <HomePage/> */}
+      <HomePage/>
       {/* <SearchPage/> */}
-      <PostDetailPage/>
+      {/* <PostDetailPage/> */}
       {/* <PageNotFound/> */}
       {/* <ContactPage/> */}
 
-    </>
+    </div>
     
       // <Provider>
       //   <Routes>

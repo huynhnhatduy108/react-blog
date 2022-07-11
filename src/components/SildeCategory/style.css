@@ -4,16 +4,16 @@
 
 .silde_category-line{
     width: 99%;
-    height: 2px;
-    background-color: #c5c5c5;
+    height: 1px;
+    background-color: black;
     margin: 30px auto;
     position: relative;
 }
 
 .silde_category-title-h3{
     position: absolute;
-    font-style: italic;
-    font-size: 25px;
+    /* font-style: italic; */
+    font-size: 20px;
     text-transform: uppercase;
     margin: 0;
     background-color: white;

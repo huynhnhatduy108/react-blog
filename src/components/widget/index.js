@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { useDispatch } from "react-redux";
 import "./style.css";
 import axios from "axios";
@@ -6,6 +6,17 @@ import axios from "axios";
 function Widget() {
     // const dispatch = useDispatch();
     const [email, setEmail] = useState();
+    const [chartCoin, setChartCoin] = useState([]);
+
+    useEffect(() => {
+        axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false')
+        .then(response => {
+            setChartCoin(response.data)
+        }).catch(err => {
+            console.log("err", err);
+        })
+        
+    }, []);
 
     const handleChangeEmail = (e) =>{
         e.preventDefault()
@@ -20,6 +31,8 @@ function Widget() {
         .catch((err)=>console.log('err', err))
     }
 
+    
+
     const  tags =["design (16)", "fashion (20)", "travel (16)", "music (5)", "video (96)", 'adventure (0)', 'photography (15)']
     return (
         <div className="widget">
@@ -30,9 +43,14 @@ function Widget() {
                         Trend currency
                     </h3>
                 </div>
-                <div className="chart__coin-title">
-                    dcdc
-                </div>
+                {chartCoin.length && chartCoin.map((item, index) => <div className="chart__coin-title">
+                    <div className="chart__currency-img">
+                        <img src={item.image} />
+                    </div>
+                    <div className="chart__currency-price"> ${item.current_price}</div>
+                    <div className="chart__currency-hour"> {item.market_cap_change_percentage_24h.toFixed(2)}%</div>
+
+                </div>)})
 
             </div>
             <div className="subscribe__email">

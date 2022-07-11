@@ -79,12 +79,23 @@ function DetailPost() {
                             </div>
                             <div className="detail__share">
                                 <div className="detail__share-text">Share :</div>
+                                <FacebookShareButton url={"https://viblo.asia/p/bien-google-sheet-thanh-mot-rest-api-va-ket-hop-voi-react-3P0lP1Qg5ox"}
+                                                    quote={"Blog info currency"}
+                                                    hashtag={"#duyblog"}
+                                                    description={"aiueo"}
+                                                    >
                                 <div className="detail__share-facebook detail__share-icon"><i class=" fa-brands fa-facebook-f"></i> </div>
+                                </FacebookShareButton>
                                 <div className="detail__share-twitter detail__share-icon"><i class=" fa-brands fa-twitter"></i></div>
-                                <EmailShareButton>
+                                <EmailShareButton >
                                 <div className="detail__share-email detail__share-icon"><i class=" fa-solid fa-envelope"></i></div>
                                 </EmailShareButton>
+                                <LinkedinShareButton title={'LinkedIn share test'}
+                                    url={'http://example.com'}
+                                    summary={'LinkedIn share demo test'}
+                                    description={'LinkedIn share demo test'}>
                                 <div className="detail__share-linked detail__share-icon"><i class=" fa-brands fa-linkedin-in"></i></div>
+                                </LinkedinShareButton>
                             </div>
                         </div>
                         <div className="comment__post">

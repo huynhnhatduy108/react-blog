@@ -1,0 +1,46 @@
+
+.post4__img-img {
+    width: 100%;
+     border-radius: 10px;
+    object-fit: cover;
+    height: 160px;
+
+}
+
+/* mobile and tablet */
+@media (max-width: 739px) {
+    .post4__img-img {
+        width: 100%;
+        height: 240px;
+        border-radius: 10px;
+        object-fit: cover;    
+    }
+}
+
+
+/* small mobile */
+@media (max-width: 499px) {
+    .post4__img-img {
+        width: 100%;
+        height: 185px;
+        border-radius: 10px;
+        object-fit: cover;    
+    }
+}
+   
+
+/* mobile */
+@media (min-width: 500px) and (max-width: 739px) {
+ 
+    
+}
+
+/* tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+    
+}
+
+/* PC */
+@media (min-width: 1024px) and (max-width: 1239px){
+
+}

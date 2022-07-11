@@ -1,0 +1,29 @@
+
+
+.nodata{
+    height: 100px;
+    width: 100%;
+    position: relative;
+}
+
+.nodata_container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.nodata__icon{
+    font-size: 60px;
+    color: #dcdcdc;
+}
+
+.nodata__text{
+    font-size: 20px;
+    z-index: 1;
+    color: #dcdcdc;
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    transform: translate(-50% , -50%);
+}

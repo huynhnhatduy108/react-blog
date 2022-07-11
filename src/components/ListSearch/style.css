@@ -1,0 +1,29 @@
+
+
+.list__search-loadmore{
+    display: flex;
+    justify-content: center;
+    margin: 30px auto;
+}
+
+@media (max-width: 739px) {
+
+}
+
+@media (max-width: 499px) {
+
+}
+  
+
+@media (min-width: 500px) and (max-width: 739px) {
+
+
+}
+
+@media (min-width: 740px) and (max-width: 1023px) {
+   
+}
+
+@media (min-width: 1024px) and (max-width: 1239px){
+
+}

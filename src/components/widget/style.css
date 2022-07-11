@@ -1,0 +1,249 @@
+
+.widget{
+    width: 100%;
+}
+
+/* EMAIL SUBCRIBE */
+.subscribe__email{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.subscribe__title{
+   display:flex;
+   align-items: center;
+   justify-content: space-between;
+   /* flex-direction: row-reverse; */
+
+}
+
+.subscribe__title-line{
+    width: 20%;
+    height: 2px;
+    margin: 10px 0px;
+    background-color: #c8c8c8;
+}
+
+.subscribe__title-h3{
+    font-style: italic;
+
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.subscribe__form{
+
+}
+.subscribe__form-input{
+
+}
+
+.form__input{
+    width: 97%;
+    height: 40px;
+    border-radius: 10px;
+    outline: none;
+    padding-left: 10px;
+    margin: 35px 0 20px 0;
+    border: 1px solid #c5c5c5;
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 16px;
+    /* font-weight: bold; */
+    /* font-style: italic; */
+}
+
+.subscribe__form-button{
+
+}
+
+.form__button{
+    width: 50%;
+    height: 45px;
+    background: black;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    font-family: 'Lexend Deca', sans-serif;
+    transition: 0.3s;
+    /* font-weight: bold; */
+    /* font-style: italic; */
+}
+
+.form__button:hover{
+    background: white;
+    color: black;
+    border: 1px solid #c5c5c5;
+}
+
+/* ADVERTISE */
+.advertisement{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.advertisement__title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+.advertisement__title-line{
+    width: 20%;
+    height: 2px;
+    margin: 10px 0px;
+    background-color: #c8c8c8;
+}
+
+.advertisement__title-h3{
+    font-style: italic;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.advertisement__img{
+    margin-top: 35px;
+}
+
+.advertisement__img-thumnail{
+    width: 100%;
+    /* height: 500px; */
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+
+/* TAGS */
+.tags{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.tags__title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* flex-direction: row-reverse; */
+}
+
+.tags__title-line{
+    width: 20%;
+    height: 2px;
+    margin: 10px 0px;
+    background-color: #c8c8c8;
+}
+
+.tags__title-h3{
+    font-style: italic;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.tags__list{
+    margin-top: 35px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tags__item{
+    padding: 0 35px;
+    border: 1px solid #c5c5c5;
+    font-size: 14px;
+    color: #000000;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 10px;
+    margin: 5px;
+    background-color: white;
+}
+
+.tags__item:hover{
+    transition: linear 0.3s;
+    background-color:#c5c5c5 ;
+    color: white;
+}
+
+
+/* mobile and tablet */
+@media (max-width: 739px) {
+    .subscribe__email {
+        width: 100%;
+        margin-top: 50px;
+    }
+    .advertisement {
+        width: 100%;
+    }
+    .tags{
+        width: 100%;
+    }
+}
+
+
+/* small mobile */
+@media (max-width: 499px) {
+  
+}
+   
+
+/* mobile */
+@media (min-width: 500px) and (max-width: 739px) {
+ 
+    
+}
+
+/* tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+    .subscribe__email {
+        width: 97%;
+        margin-top: 50px;
+    }
+   .subscribe__form{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+   }
+   .subscribe__form-input{
+       flex: 1;
+   }
+   .form__input {
+        margin: 20px 0;
+   }
+   .subscribe__form-button{
+        width: 30%;
+        margin-left: 10px;
+   }
+   .form__button{
+        width: 100%;
+
+   }
+
+   .advertisement{
+    width: 97%;
+    margin: 0 auto;
+    }
+
+    .tags{
+        width: 97%;
+        margin: 0 auto; 
+    }
+}
+
+/* PC */
+@media (min-width: 1024px) and (max-width: 1239px){
+    .subscribe__email {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .advertisement{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .tags{
+        width: 90%;
+        margin: 0 auto; 
+    }
+}

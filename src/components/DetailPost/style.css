@@ -1,0 +1,194 @@
+
+
+.detail__post{
+
+}
+
+.detail{
+    padding: 10px;
+
+}
+
+.detail h1{
+
+}
+
+.detail__title{
+   
+}
+.detail__title h1{
+    margin: 0;
+    /* margin-top: 0px; */
+}
+
+.detail__author{
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.detail__author-left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.author__avatar{
+    width: 50px;
+    height: 50px;
+    /* border-radius: 50%; */
+}
+
+.author__avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+
+}
+
+.author__create{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;    
+}
+
+.author__create-name{
+    margin: 0 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.author__create-name:hover{
+    color: #787878;
+}
+.author__create-day{
+    margin: 0 10px;
+    color: #787878;
+
+}
+
+.author__create-line{
+    width: 2px;
+    height: 12px;
+    background-color: #787878;
+    margin-right: 10px;
+    /* margin: 0 10px 0 0px; */
+}
+
+.author__create-time{
+    color: #787878;
+}
+
+.detail__author-right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; 
+}
+
+.author__comment-post{
+}
+
+.author__comments-post-span{
+    color: #787878;
+
+
+}
+.author__comments-post-span i{
+    
+}
+
+.author__views-post{
+    color: #787878;
+    margin-left:10px ;
+}
+
+.author__views-post-span{
+
+}
+
+.detail__thumnail{
+
+
+}
+
+.detail__thumnail img{
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+
+}
+
+.detail__content{
+    margin-top: 20px;
+}
+
+.comment__post{
+    padding: 10px;
+    margin-top: 30px;
+}
+.detail__list-tags{
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.detail__widget{
+    /* padding: 10px; */
+}
+
+/* mobile and tablet */
+@media (max-width: 739px) {
+    .comment__post{
+        padding: 0;
+    }
+    .detail{
+        padding: 0px;
+    
+    }
+}
+
+
+/* small mobile */
+@media (max-width: 499px) {
+
+    .author__avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    .author__create-day{
+        margin:0;
+    }
+
+    .author__create-name{
+        margin: 0px 5px;
+    }
+    
+    .author__create-line{
+        display: none;
+
+    }
+    .author__create-time{
+        display: none;
+
+    }
+    
+}
+   
+
+/* mobile */
+@media (min-width: 500px) and (max-width: 739px) {
+ 
+    
+}
+
+/* tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+
+}
+
+/* PC */
+@media (min-width: 1024px) and (max-width: 1239px){
+
+}

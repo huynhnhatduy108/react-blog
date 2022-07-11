@@ -1,0 +1,169 @@
+
+
+.contact__page{
+ margin: 30px ;
+}
+
+.contact__page-container{
+
+}
+
+.contact__page-row{
+
+}
+
+.contact__page-left{
+
+}
+
+.contact__left-title{
+
+}
+
+
+.contact__left-title h1{
+    font-size: 50px;
+    margin: 0;
+
+}
+
+.contact__left-question{
+
+}
+
+.contact__left-question p{
+
+}
+
+.contact__left-img{
+    width: 100%;
+}
+
+.contact__left-img img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.contact__page-right{
+    margin-top: 50px;
+}
+
+.contact__input{
+    margin-bottom: 15px;
+}
+
+.contact__input input{
+    width: 90%;
+    height: 40px;
+    border: 1px solid #c5c5c5;
+    border-radius: 10px;
+    padding: 0px 15px;
+    font-family: 'Lexend Deca', sans-serif;
+    outline: none;
+    font-size: 16px;
+    /* font-weight: bold; */
+    /* font-style: italic; */
+}
+
+.contact__input-name{
+
+}
+
+.contact__input-name input{
+    
+}
+
+.contact__input-email{
+
+}
+
+.contact__input-email input{
+    
+}
+
+.contact__input-subject{
+
+}
+
+.contact__input-subject input{
+    
+}
+
+.contact__input-mess{
+    margin-bottom: 15px;
+
+}
+
+.contact__input-mess textarea{
+    width: 90%;
+    height: 100px;
+    border: 1px solid #c5c5c5;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-family: 'Lexend Deca', sans-serif;
+    outline: none;
+    font-size: 16px;
+}
+
+.contact__button{
+
+}
+
+.contact__button button{
+    width: 35%;
+    height: 45px;
+    background: black;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.contact__button button:hover{
+    transition: 0.3s;
+    background: white;
+    color: black;
+    border: 1px solid #c5c5c5;
+}
+
+
+
+/* mobile and tablet */
+@media (max-width: 739px) {
+    .contact__button button{
+        width: 50%;
+       
+    }
+    
+}
+
+
+/* small mobile */
+@media (max-width: 499px) {
+ 
+}
+
+/* mobile */
+@media (min-width: 500px) and (max-width: 739px) {
+   
+}
+
+/* tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+    .contact__button button{
+        width: 50%;
+       
+    }
+    
+}
+
+/* PC */
+@media (min-width: 1024px) and (max-width: 1239px){
+    .contact__button button{
+        width: 50%;
+       
+    }
+}

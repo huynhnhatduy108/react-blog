@@ -1,0 +1,52 @@
+
+
+.loading{
+    height: 85px;
+    width: 100%;
+    position: relative;
+}
+.loading__container{
+    top:50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50% , -50%);
+
+}
+
+.loading__icon{
+    width : 50px;
+    height: 50px;
+    border: 3px solid #dcdcdc;
+    border-radius: 50%;
+    display: inline-block;
+    /* margin: auto; */
+    /* position: absolute; */
+    animation: rotation 1s linear infinite;
+}
+
+.loading__icon::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+    width:  58px;
+    height:  58px;
+    border-radius: 50%;
+    border: 3px solid ;
+    border-color: #dcdcdc transparent;
+}
+
+.loading__text{
+    font-size: 20px;
+    color: #dcdcdc;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+  }

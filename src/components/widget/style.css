@@ -195,6 +195,86 @@
     color: white;
 }
 
+.chart__currency-table{
+    margin-top: 20px;
+}
+
+.chart__currency-table-th{
+ font-weight: bold;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+}
+.currency__table-name{
+    width: 55%;
+}
+
+.currency__table-price{
+    width: 30%;
+
+}
+
+.currency__table-percent24h{
+    flex: 1;
+    text-align: end;
+
+}
+
+.chart__coin-title{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin:15px 0px;
+}
+
+
+.chart__currency-name{
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chart__currency-img{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chart__currency-symbol{
+    font-weight:  bold;
+    margin-left: 10px;
+}
+
+.chart__currency-sym{
+    text-transform: uppercase;
+    color:#787878 ;
+    display: none;
+}
+
+.chart__currency-price{
+    width: 30%;
+    font-weight:  bold;
+}
+
+.chart__currency-hour{
+    flex: 1;
+    text-align: end;
+    font-weight:  bold;
+
+}
+.chart__currency-hour-icon{
+    display: none;
+}
+.currency__down{
+    color: #F00B00;
+}
+
+.currency__up{
+    color: #00B349;
+
+}
 
 /* mobile and tablet */
 @media (max-width: 739px) {
@@ -219,7 +299,15 @@
 
 /* mobile */
 @media (min-width: 500px) and (max-width: 739px) {
- 
+    .chart__currency-hour-icon{
+        display: inline;
+    }
+    
+    .chart__currency-sym{
+        display: inline;
+        margin-left: 5px;
+
+    }
     
 }
 
@@ -258,6 +346,14 @@
     .tags{
         width: 97%;
         margin: 0 auto; 
+    }
+    .chart__currency-hour-icon{
+        display: inline;
+    }
+
+    .chart__currency-sym{
+        display: inline;
+        margin-left: 5px;
     }
 }
 

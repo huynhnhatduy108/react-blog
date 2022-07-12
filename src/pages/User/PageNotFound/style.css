@@ -48,18 +48,21 @@
 }
 
 .notfound__backhome-button{
-    padding:15px 25px;
-    border-radius: 10px;
-    border: 1px solid #dcdcdc;
     outline: none;
-    /* color: #dcdcdc; */
-    background-color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid;
+    border-color: #dcdcdc;
+    font-size: 14px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    color: #000000;
+    letter-spacing: 2px;
 }
 
 .notfound__backhome-button:hover{
     /* color: black; */
-    border: 1px solid black;
-    background-color: dcdcdc;
+    background-color: white;
     transition: linear 0.2s;
 
 }

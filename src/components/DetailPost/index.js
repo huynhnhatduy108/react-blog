@@ -104,7 +104,7 @@ function DetailPost() {
                     </div>
                     <div className="col l-4 m-12 c-12">
                         <div className="detail__widget">
-                            <Widget/>
+                            <Widget chart={true}/>
                         </div>
                     </div>
                 </div>

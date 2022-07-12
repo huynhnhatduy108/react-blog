@@ -2,11 +2,13 @@ import React from "react";
 import "./style.css";
 import { useState } from "react";
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [keyword, setKeyword] = useState("");
     const [isSearch, setIsSearch] = useState(false);
+    const navigate = useNavigate();
 
     const handleOnClickIcon = () => {
         setIsOpen(!isOpen);
@@ -76,7 +78,7 @@ function Header() {
             <OutsideClickHandler onOutsideClick={handleClickout}>
             <div className="grid wide">
                 <div className="header__container">
-                    <div className="header__logo">
+                    <div onClick={()=>navigate("/")} className="header__logo">
                         <p className="header__logo-name ">NhatDuy</p>
                         <p className="header__logo-sub-name">Lifestyle Blog</p>
                     </div>
@@ -88,7 +90,8 @@ function Header() {
                                 placeholder="keyword search"
                                 value={keyword}
                             />
-                            <i className="header__search-icon fa-solid fa-magnifying-glass"></i>
+                            <i  onClick={()=>navigate(`/search?keyword=${keyword}`)} 
+                                className="header__search-icon fa-solid fa-magnifying-glass"></i>
                             <i
                                 onClick={handleOnClickIcon}
                                 className={`search__mobile-toggle-icon ${
@@ -111,7 +114,9 @@ function Header() {
                                             value={keyword}
                                             placeholder="keyword search"
                                         />
-                                        <i className="search__mobile-icon fa-solid fa-magnifying-glass"></i>
+                                        <i
+                                         onClick={()=>navigate(`/search?keyword=${keyword}`)} 
+                                         className="search__mobile-icon fa-solid fa-magnifying-glass"></i>
                                     </div>
                                     {/* <div className="header__mobile-search-line"></div> */}
                                     {isSearch ? (

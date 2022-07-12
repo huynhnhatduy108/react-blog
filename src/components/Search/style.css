@@ -302,7 +302,7 @@
     }
 
     .search__categories-select{
-        width: 98%;
+        width: 100%;
         margin: 0;
         /* padding: 0 20px; */
     }
@@ -330,7 +330,7 @@
 
     .search__mobile-icon{
         display: block;
-        width: 20px;
+        width: 35px;
     }
 
     .search__mobile-icon:hover{
@@ -385,11 +385,11 @@
       }
 
     .search__categories{
-        padding-top: 10px;
+        padding-top: 8px;
     }
 
     .categories__select-icon{
-        padding-right: 22px;
+        padding-right: 12px;
     }
 
     .search__categories-expand{

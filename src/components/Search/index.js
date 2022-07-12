@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
     { id: 1, name: "design", quantity: 122 },
@@ -70,6 +71,7 @@ const listSearch = [
 ];
 
 function Search() {
+    const navigate = useNavigate();
     const [currenCategory, setCurrenCategory] = useState("All");
     const [isSearch, setIsSearch] = useState(false);
     const [keywork, setKeywork] = useState("");
@@ -239,7 +241,7 @@ function Search() {
                 </div>
             </div>
             <div className="search__back-home">
-                <button className="back__home-button">
+                <button onClick={()=>navigate(`/`)} className="back__home-button">
                     <i class="back__home-icon fa-solid fa-angles-left"></i>BACK
                     HOME
                 </button>

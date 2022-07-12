@@ -6,6 +6,7 @@ import Loading from '../../../components/Loading';
 import NoData from '../../../components/NoData';
 
 function SearchPage() {
+
   return (
     <div>
         <Search/>

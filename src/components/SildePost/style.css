@@ -7,6 +7,28 @@
 
 }
 
+.silde__post-line{
+    width: 99%;
+    height: 1px;
+    background-color: black;
+    margin: 30px auto;
+    position: relative;
+}
+
+.silde__post-title-h3{
+    position: absolute;
+    /* font-style: italic; */
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 0;
+    background-color: white;
+    top: 0;
+    left: 50%;
+    margin: 0;
+    padding: 0 40px;
+    transform: translate(-50%,-50%);
+}
+
 /* mobile and tablet */
 @media (max-width: 739px) {
     .post4__img-img {

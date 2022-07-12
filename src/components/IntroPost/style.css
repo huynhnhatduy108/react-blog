@@ -96,13 +96,14 @@
 
 .post2__content-title{
     font-size: 20px;
-    height: 70px;
+    height: 75px;
     margin: 0;
     overflow:hidden;
    
 }
 
 .post2__content-title-h3{
+    font-size: 25px;
     margin: 0;
     white-space: normal;
     overflow: hidden;

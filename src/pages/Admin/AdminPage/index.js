@@ -12,8 +12,24 @@ import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
 
+
+
 function AdminPage() {
-   
+   const [img, setImg] = useState();
+
+    const uploadfile = async ()=>{
+        console.log("img", img);
+        const data = new FormData();
+        data.append("file", img);
+        data.append("upload_preset", "my-uploads");
+
+        const dataRes = await fetch("https://api.cloudinary.com/v1_1/nhat-duy/upload", 
+                {method: "POST",body: data}
+                ).then(res=>res.json()).catch(err=>err.json())
+        console.log("dataRes", dataRes);
+        // message.info('This is a normal message');
+
+    }
     return (
         <div>
             <div className="grid wide">
@@ -36,6 +52,13 @@ function AdminPage() {
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
                     </div>
+                </div>
+                {/* <div>
+                    <div><input type="file" onChange={(e)=>setImg(e.target.files[0])}/></div>
+                    <button onClick={()=>uploadfile()}>upload</button>
+                </div> */}
+                <div>
+               
                 </div>
                 {/* <Row>
                         <Col xs={24} sm={24} md={12} lg={8} xl={6}>col</Col>

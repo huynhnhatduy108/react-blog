@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -27,6 +27,7 @@ import TagPage from "../TagPage";
 import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
+import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -57,7 +58,13 @@ function PostPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const dispatch = useDispatch();
+    const postStore = useSelector(getPostSlice);
+    const { isFetching, listPost, detailPost,errors } = postStore;
+    console.log('listPost', listPost);
 
+    useEffect(()=>{
+        dispatch(getListPost(""));
+    }, [])
 
     const handleChange = (info) => {
         if (info.file.status === "uploading") {

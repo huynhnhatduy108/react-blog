@@ -1,10 +1,11 @@
 // import {formatPath, getQueryString} from "utils";
 // import {apiGet, apiPost} from "utils/api";
+import { api, METHOD } from "../../../utils/api";
 import PostPaths from "./path";
 
 
 export const apiListPost = (param) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.GET,PostPaths.List,{});
 }
 
 export const apiDetailPost = (id) => {

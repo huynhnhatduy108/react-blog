@@ -1,5 +1,5 @@
 const postPaths ={
-    List:'/post/',
+    List:'/post/list',
     Detail: "/post/detail",
     Create: "/post/create",
     Update: "/post/update",

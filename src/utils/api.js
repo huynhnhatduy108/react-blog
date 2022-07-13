@@ -11,7 +11,7 @@ function reloadToLogin() {
     window.location.reload()
 }
 
-export const Method = {
+export const METHOD = {
     GET : "get",
     POST : "post",
     PUT : "put",
@@ -36,14 +36,14 @@ const API = axios.create({
 
 function execApi(method, url, data, params, headers) {
    
-    return API.request(method, url, data, params, headers)
+    return API.request({method:method, url:url, data:data, params: params, headers:headers})
         .then((response) => {    
             if ("access_token" in response.headers) {
-                if (getLocalItem('access_token')) {
-                    // let access_token  = getLocalItem('access_token')
-                    let access_token = response.headers.get("user-token")
-                    setLocalItem('access_token' , access_token)
-                }
+                // if (getLocalItem('access_token')) {
+                //     let access_token  = getLocalItem('access_token')
+                //     let access_token = response.headers.get("user-token")
+                //     setLocalItem('access_token' , access_token)
+                // }
             }
             const result= {data: null, success: false, headers:null, errors: []};
 
@@ -80,7 +80,7 @@ function execApi(method, url, data, params, headers) {
                     console.log("BACKEND ERROR", error_code);
                 }
                 else{
-                    console.log("AUTHENTICATION", esponse?.error_code);
+                    console.log("AUTHENTICATION", response?.error_code);
 
                 }
 

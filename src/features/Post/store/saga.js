@@ -1,20 +1,17 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import {call, put, select, takeEvery} from "redux-saga/effects";
+import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreatePost, apiDeletePost, apiDetailPost, apiListPost, apiUpdatePost } from "../apiService/index";
-import {} from "./slice";
+import { getListPost, getListPostFailure, getListPostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
-        const response= yield call(
-            apiListPost,
-            action.payload,
-        );
+        const response= yield call(apiListPost,action.payload);
         if (response.success) {
-            yield put((response.data));
+            yield put(getListPostSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getListPostFailure(error));
     }
 }
 
@@ -76,9 +73,9 @@ function* handleDeletePost(action) {
 
 
 export default function* PostSaga() {
-    // yield takeEvery(getListPost.type, handleGetListPost);
-    // yield takeEvery(getListPost.type, handleGetDatailPost);
-    // yield takeEvery(getListPost.type, handleCreatePost);
-    // yield takeEvery(getListPost.type, handleUpdatePost);
-    // yield takeEvery(getListPost.type, handleDeletePost);
+    yield takeLatest(getListPost.type, handleGetListPost);
+    // yield takeLatest(getListPost.type, handleGetDatailPost);
+    // yield takeLatest(getListPost.type, handleCreatePost);
+    // yield takeLatest(getListPost.type, handleUpdatePost);
+    // yield takeLatest(getListPost.type, handleDeletePost);
 }

@@ -129,7 +129,7 @@ export const deletePostSuccess = PostSlice.actions.deletePostSuccess;
 export const deletePostFailure = PostSlice.actions.deletePostError;
 
 // ************************** Store *******************************
-export const getPostSlice = (state) => state.Post;
+export const getPostSlice = (state) => state.post;
 
 const PostReducer = PostSlice.reducer;
 export default PostReducer;

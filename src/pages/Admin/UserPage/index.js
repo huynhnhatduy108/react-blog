@@ -77,134 +77,118 @@ function UserPage() {
     );
 
     const columns = [
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            render: (text) => <a>{text}</a>,
-        },
-        {
-            title: "Age",
-            dataIndex: "age",
-            key: "age",
-        },
-        {
-            title: "Address",
-            dataIndex: "address",
-            key: "address",
-        },
-        {
-            title: "Tags",
-            key: "tags",
-            dataIndex: "tags",
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? "geekblue" : "green";
+      {
+          title: "Username",
+          dataIndex: "username",
+          key: "username",
+          render: (text) => <a>{text}</a>,
+      },
+      {
+          title: "Full Name",
+          dataIndex: "full_name",
+          key: "full_name",
+      },
+      {
+          title: "Phone",
+          dataIndex: "phone",
+          key: "phone",
+      },
+      {
+        title: "Role",
+        dataIndex: "role",
+        key: "role",
+        render: (role)=>(<Tag color={role=="ADMIN"? "geekblue" : "green"} key={role}>
+                        {role.toUpperCase()}
+                    </Tag>)
+      },
+      {
+        title: "Avatar",
+        dataIndex: "avatar_url",
+        key: "avatar_url",
+        render: (avatar_url) => <img style={{width:60, height:80, objectFit:"cover"}} src={avatar_url}/>,
+     },
+      {
+          title: "Action",
+          key: "action",
+          render: (_, record) => (
+              <Space size="middle">
+                   <Button type="primary">
+                      Update
+                  </Button>
+                  <Button  type="danger">
+                    Delete
+                  </Button>
+              </Space>
+          ),
+      },
+  ];
+  const data = [
+      {
+          key: "1",
+          username:"johnbrown",
+          full_name: "John Brown",
+          phone:"0461944241",
+          role:"ADMIN",
+          avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
+      },
+      {
+          key: "2",
+          username:"jimgreen",
+          full_name: "Jim Green",
+          phone:"0461944241",
+          role:"USER",
+          avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+      },
+      {
+          key: "3",
+          username:"joeblack",
+          full_name: "Joe Black",
+          phone: "0461944241",
+          role:"USER",
+          avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+      },
+  ];
 
-                        if (tag === "loser") {
-                            color = "volcano";
-                        }
-
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: "Action",
-            key: "action",
-            render: (_, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
-        },
-    ];
-    const data = [
-        {
-            key: "1",
-            name: "John Brown",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            tags: ["nice", "developer"],
-        },
-        {
-            key: "2",
-            name: "Jim Green",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            tags: ["loser"],
-        },
-        {
-            key: "3",
-            name: "Joe Black",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            tags: ["cool", "teacher"],
-        },
-    ];
 
     return (
         <div>
             <div className="grid wide">
-                <div className="admin__header">
-                    {adminRoutes.map((item, index) => (
-                        <div key={index} className="admin__header-name">
-                            <Link to={item.path}>{item.label}</Link>
-                        </div>
-                    ))}
-                </div>
+              <div className="admin__header">
+                      <div className="admin__menu">
+                          {adminRoutes.map((item, index) => (
+                              <div key={index} className="admin__header-name">
+                                  <Link to={item.path}>{item.label}</Link>
+                              </div>
+                          ))}
+                      </div>
+                      <div className="admin__user">
+                          <div className="admin__user-thumbnail">
+                              <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
+                          </div>
+                          <div className="admin__user-name">
+                              nhatduy
+                          </div>
+                          <div className="admin__user-logout">
+                              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                          </div>
+                      </div>
+                  </div>
 
                 <div>
                     {/* List Post */}
                     <div className="admin__list-post">LIST USER</div>
                     <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
-                            <Input placeholder="Find by title, content" />
+                        <Col xs={18} sm={18} md={18} lg={18} xl={18}>
+                            <Input placeholder="Find by username, email, fullname" />
                         </Col>
-                        <Col xs={24} sm={24} md={12} lg={16} xl={16}>
-                            <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose category"
-                                    >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        mode="multiple"
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose tags"
-                                    >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-                                    <Button
-                                        style={{ textAlign: "left" }}
-                                        type="primary"
-                                        onClick={() => {}}
-                                    >
-                                        Seach
-                                    </Button>
-                                </Col>
-                            </Row>
+                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Button
+                                style={{ textAlign: "center" , width:'100%'}}
+                                type="primary"
+                                onClick={() => {}}
+                            >
+                                Seach
+                            </Button>
                         </Col>
                     </Row>
                     <Table
@@ -221,32 +205,30 @@ function UserPage() {
                             <Row gutter={[16, 16]}>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
-                                        // label="Title"
-                                        name="title"
+                                        name="username"
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please input Title!",
+                                                message: "Please input username!",
                                             },
                                         ]}
                                     >
-                                        <label>{"1. Title"}</label>
-                                        <Input placeholder="Title of post" />
+                                        <label>{"1. Username"}</label>
+                                        <Input placeholder="Username of user" />
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
-                                        // label="Parent"
-                                        name="parent"
+                                        name="full_name"
                                         rules={[
                                             {
                                                 required: false,
-                                                message: "Please input Title!",
+                                                message: "Please input Name!",
                                             },
                                         ]}
                                     >
-                                        <label>{"2. Parent"}</label>
-                                        <Input placeholder="Parent of post" />
+                                        <label>{"2. Full name"}</label>
+                                        <Input placeholder="Name of user" />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -254,138 +236,131 @@ function UserPage() {
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
                                         // label="Meta-Title"
-                                        name="meta_title"
+                                        name="email"
                                         rules={[
                                             {
                                                 required: false,
                                                 message:
-                                                    "Please input meta_title!",
+                                                    "Please input email!",
                                             },
                                         ]}
                                     >
-                                        <label>{"3. Meta-Title"}</label>
-                                        <Input placeholder="Meta-Title of post" />
+                                        <label>{"3. Email"}</label>
+                                        <Input placeholder="Email of user" />
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
                                         // label="Published"
-                                        name="published"
+                                        name="phone"
                                         rules={[
                                             {
                                                 required: false,
                                                 message:
-                                                    "Please input published!",
+                                                    "Please input phone!",
                                             },
                                         ]}
                                     >
-                                        <label>{"4. Published at"}</label>
-                                        <Space
-                                            direction="vertical"
-                                            style={{ width: "100%" }}
-                                        >
-                                            <DatePicker
-                                                showTime
-                                                defaultValue={moment(
-                                                    "2015/01/01",
-                                                    dateFormat
-                                                )}
-                                                style={{ width: "100%" }}
-                                                placeholder="Date published at of post"
-                                            />
-                                        </Space>
+                                        <label>{"4. Phone"}</label>
+                                        <Input placeholder="Phone of user" />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row gutter={[16, 16]}>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
-                                        name="content"
+                                        name="intro"
                                         rules={[
                                             {
                                                 required: true,
                                                 message:
-                                                    "Please input content!",
+                                                    "Please input intro!",
                                             },
                                         ]}
                                     >
-                                        <label>{"5. Content"}</label>
+                                        <label>{"5. Intro"}</label>
                                         <TextArea
-                                            rows={24}
-                                            placeholder="Content of post"
+                                            rows={4}
+                                            placeholder="Intro of user"
                                         />
                                     </Form.Item>
+                                    <Form.Item
+                                        // label="Meta-Title"
+                                        name="password"
+                                        rules={[
+                                            {
+                                                required: false,
+                                                message:
+                                                    "Please input password!",
+                                            },
+                                        ]}
+                                    >
+                                        <label>{"7. Password"}</label>
+                                        <Input placeholder="password of user" />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        // label="Meta-Title"
+                                        name="comfirm_password"
+                                        rules={[
+                                            {
+                                                required: false,
+                                                message:
+                                                    "Please input password again!",
+                                            },
+                                        ]}
+                                    >
+                                        <label>{"Comfirm Password"}</label>
+                                        <Input placeholder="comfirm password of user" />
+                                    </Form.Item>
+
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item
-                                        name="sumary"
+                                        name="profile"
                                         rules={[
                                             {
                                                 required: false,
-                                                message: "Please input sumary!",
+                                                message: "Please input profile!",
                                             },
                                         ]}
                                     >
-                                        <label>{"6. Sumary"}</label>
+                                        <label>{"8. Profile"}</label>
                                         <TextArea
                                             rows={4}
-                                            placeholder="Sumary of post"
+                                            placeholder="profile of user"
                                         />
                                     </Form.Item>
 
                                     <Form.Item
-                                        name="category"
+                                        name="role"
                                         rules={[
                                             {
                                                 required: false,
                                                 message:
-                                                    "Please input category!",
+                                                    "Please choose role!",
                                             },
                                         ]}
                                     >
-                                        <label>{"7. Category"}</label>
-                                        <Select placeholder="Category of post">
-                                            <Option value="jack">Jack</Option>
-                                            <Option value="lucy">Lucy</Option>
-                                            <Option value="Yiminghe">
-                                                yiminghe
-                                            </Option>
+                                        <label>{"9. Role"}</label>
+                                        <Select defaultValue={"USER"} placeholder="Role of user">
+                                            <Option value="ADMIN">Admin</Option>
+                                            <Option value="USER">User</Option>
+                                            <Option value="OTHER">Orther</Option>
                                         </Select>
                                     </Form.Item>
 
                                     <Form.Item
-                                        name="tag"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input tag!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"8. Tag"}</label>
-                                        <Select
-                                            mode="multiple"
-                                            placeholder="Tag of post"
-                                        >
-                                            <Option value="jack">Jack</Option>
-                                            <Option value="lucy">Lucy</Option>
-                                            <Option value="Yiminghe">
-                                                yiminghe
-                                            </Option>
-                                        </Select>
-                                    </Form.Item>
-
-                                    <Form.Item
-                                        name="thumnail"
+                                        name="avatar"
                                         rules={[
                                             {
                                                 required: false,
                                                 message:
-                                                    "Please input thumnail!",
+                                                    "Please input avatar!",
                                             },
                                         ]}
                                     >
-                                        <label>{"9. Thumnail"}</label>
+                                        <label>{"10. Avatar"}</label>
                                         <Upload
                                             name="avatar"
                                             listType="picture-card"

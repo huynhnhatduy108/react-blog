@@ -24,6 +24,7 @@ import PostPage from "./pages/Admin/PostPage";
 import CategoryPage from "./pages/Admin/CategoryPage";
 import TagPage from "./pages/Admin/TagPage";
 import UserPage from "./pages/Admin/UserPage";
+import LoginPage from "./pages/Admin/LoginPage";
 // import "./App.css";
 // import "antd/dist/antd.min.css";
 // const { Option } = Select;
@@ -89,6 +90,8 @@ const App = () => {
                     <Route path="admin/category" element={<CategoryPage/>} />
                     <Route path="admin/tag" element={<TagPage/>} />
                     <Route path="admin/user" element={<UserPage/>} />
+                    <Route path="admin/login" element={<LoginPage/>} />
+
                 </Routes>
             </BrowserRouter>
            

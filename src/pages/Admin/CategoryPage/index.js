@@ -77,134 +77,106 @@ function CategoryPage() {
     );
 
     const columns = [
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            render: (text) => <a>{text}</a>,
-        },
-        {
-            title: "Age",
-            dataIndex: "age",
-            key: "age",
-        },
-        {
-            title: "Address",
-            dataIndex: "address",
-            key: "address",
-        },
-        {
-            title: "Tags",
-            key: "tags",
-            dataIndex: "tags",
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? "geekblue" : "green";
-
-                        if (tag === "loser") {
-                            color = "volcano";
-                        }
-
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: "Action",
-            key: "action",
-            render: (_, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
-        },
-    ];
-    const data = [
-        {
-            key: "1",
-            name: "John Brown",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            tags: ["nice", "developer"],
-        },
-        {
-            key: "2",
-            name: "Jim Green",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            tags: ["loser"],
-        },
-        {
-            key: "3",
-            name: "Joe Black",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            tags: ["cool", "teacher"],
-        },
-    ];
+      {
+          title: "Title",
+          dataIndex: "title",
+          key: "title",
+          render: (text) => <a>{text}</a>,
+      },
+      {
+          title: "Slug",
+          dataIndex: "slug",
+          key: "slug",
+      },
+      {
+          title: "Description",
+          dataIndex: "description",
+          key: "description",
+      },
+      {
+        title: "thumbnail",
+        dataIndex: "thumbnail",
+        key: "thumbnail",
+        render: (thumbnail) => <img style={{width:80, height:50, objectFit:"cover"}} src={thumbnail}/>,
+     },
+      {
+          title: "Action",
+          key: "action",
+          render: (_, record) => (
+              <Space size="middle">
+                   <Button type="primary">
+                      Update
+                  </Button>
+                  <Button  type="danger">
+                    Delete
+                  </Button>
+              </Space>
+          ),
+      },
+  ];
+  const data = [
+      {
+          key: "1",
+          title: "John Brown",
+          slug: "aa-dcdc",
+          description:"scsc scv hdvv dvdvd vdvd",
+          thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
+      },
+      {
+          key: "2",
+          title: "Jim Green",
+          slug: "saa-dcdc",
+          description:"scscs cvhdvc vcs scdv dvdv dvd",
+          thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+      },
+      {
+          key: "3",
+          title: "Joe Black",
+          slug: "saa-dcdc",
+          description: "Sidney No. 1 Lake Park",
+          thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+      },
+  ];
 
     return (
         <div>
             <div className="grid wide">
-                <div className="admin__header">
-                    {adminRoutes.map((item, index) => (
-                        <div key={index} className="admin__header-name">
-                            <Link to={item.path}>{item.label}</Link>
-                        </div>
-                    ))}
-                </div>
+              <div className="admin__header">
+                      <div className="admin__menu">
+                          {adminRoutes.map((item, index) => (
+                              <div key={index} className="admin__header-name">
+                                  <Link to={item.path}>{item.label}</Link>
+                              </div>
+                          ))}
+                      </div>
+                      <div className="admin__user">
+                          <div className="admin__user-thumbnail">
+                              <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
+                          </div>
+                          <div className="admin__user-name">
+                              nhatduy
+                          </div>
+                          <div className="admin__user-logout">
+                              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                          </div>
+                      </div>
+                  </div>
 
                 <div>
                     {/* List category */}
                     <div className="admin__list-post">LIST CATEGORY</div>
                     <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
-                            <Input placeholder="Find by title, content" />
+                        <Col xs={20} sm={20} md={20} lg={20} xl={20}>
+                            <Input placeholder="Find by title, description" />
                         </Col>
-                        <Col xs={24} sm={24} md={12} lg={16} xl={16}>
-                            <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose category"
-                                    >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        mode="multiple"
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose tags"
-                                    >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-                                    <Button
-                                        style={{ textAlign: "left" }}
-                                        type="primary"
-                                        onClick={() => {}}
-                                    >
-                                        Seach
-                                    </Button>
-                                </Col>
-                            </Row>
+                        <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+                            <Button
+                                style={{ textAlign: "center", width: "100%" }}
+                                type="primary"
+                                onClick={() => {}}
+                            >
+                                Seach
+                            </Button>
                         </Col>
                     </Row>
                     <Table
@@ -272,6 +244,30 @@ function CategoryPage() {
                                         xl={12}
                                     >
                                         <Form.Item
+                                            name="desciption"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        "Please input desciption!",
+                                                },
+                                            ]}
+                                        >
+                                            <label>{"3. Desciption"}</label>
+                                            <TextArea
+                                                rows={4}
+                                                placeholder="Desciption of category"
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={12}
+                                        xl={12}
+                                    >
+                                        <Form.Item
                                             // label="Meta-Title"
                                             name="meta_title"
                                             rules={[
@@ -282,157 +278,20 @@ function CategoryPage() {
                                                 },
                                             ]}
                                         >
-                                            <label>{"3. Meta-Title"}</label>
+                                            <label>{"4. Meta-Title"}</label>
                                             <Input placeholder="Meta-Title of post" />
                                         </Form.Item>
-                                    </Col>
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
                                         <Form.Item
-                                            // label="Published"
-                                            name="published"
+                                            name="thumbnail"
                                             rules={[
                                                 {
                                                     required: false,
                                                     message:
-                                                        "Please input published!",
+                                                        "Please input thumbnail!",
                                                 },
                                             ]}
                                         >
-                                            <label>{"4. Published at"}</label>
-                                            <Space
-                                                direction="vertical"
-                                                style={{ width: "100%" }}
-                                            >
-                                                <DatePicker
-                                                    showTime
-                                                    defaultValue={moment(
-                                                        "2015/01/01",
-                                                        dateFormat
-                                                    )}
-                                                    style={{ width: "100%" }}
-                                                    placeholder="Date published at of post"
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row gutter={[16, 16]}>
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
-                                        <Form.Item
-                                            name="content"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        "Please input content!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"5. Content"}</label>
-                                            <TextArea
-                                                rows={24}
-                                                placeholder="Content of post"
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
-                                        <Form.Item
-                                            name="sumary"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input sumary!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"6. Sumary"}</label>
-                                            <TextArea
-                                                rows={4}
-                                                placeholder="Sumary of post"
-                                            />
-                                        </Form.Item>
-
-                                        <Form.Item
-                                            name="category"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input category!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"7. Category"}</label>
-                                            <Select placeholder="Category of post">
-                                                <Option value="jack">
-                                                    Jack
-                                                </Option>
-                                                <Option value="lucy">
-                                                    Lucy
-                                                </Option>
-                                                <Option value="Yiminghe">
-                                                    yiminghe
-                                                </Option>
-                                            </Select>
-                                        </Form.Item>
-
-                                        <Form.Item
-                                            name="tag"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input tag!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"8. Tag"}</label>
-                                            <Select
-                                                mode="multiple"
-                                                placeholder="Tag of post"
-                                            >
-                                                <Option value="jack">
-                                                    Jack
-                                                </Option>
-                                                <Option value="lucy">
-                                                    Lucy
-                                                </Option>
-                                                <Option value="Yiminghe">
-                                                    yiminghe
-                                                </Option>
-                                            </Select>
-                                        </Form.Item>
-
-                                        <Form.Item
-                                            name="thumnail"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input thumnail!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"9. Thumnail"}</label>
+                                            <label>{"5. thumbnail"}</label>
                                             <Upload
                                                 name="avatar"
                                                 listType="picture-card"
@@ -457,6 +316,7 @@ function CategoryPage() {
                                         </Form.Item>
                                     </Col>
                                 </Row>
+                               
                             </Col>
                         </Row>
                         <Button type="primary" onClick={() => {}}>

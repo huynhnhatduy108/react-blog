@@ -86,20 +86,35 @@ function PostPage() {
 
     const columns = [
         {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
+            title: "Title",
+            dataIndex: "title",
+            key: "title",
             render: (text) => <a>{text}</a>,
         },
         {
-            title: "Age",
-            dataIndex: "age",
-            key: "age",
+            title: "Author",
+            dataIndex: "author",
+            key: "author",
         },
         {
-            title: "Address",
-            dataIndex: "address",
-            key: "address",
+            title: "Categories",
+            dataIndex: "categories",
+            key: "categories",
+            render: (categories) => (
+              <>
+                  {categories.map((category, index) => {
+                      let color = category.length > 5 ? "geekblue" : "green";
+                      if (category === "loser") {
+                          color = "volcano";
+                      }
+                      return (
+                          <Tag color={color} key={category}>
+                              {category.toUpperCase()}
+                          </Tag>
+                      );
+                  })}
+              </>
+          ),
         },
         {
             title: "Tags",
@@ -124,49 +139,78 @@ function PostPage() {
             ),
         },
         {
+          title: "Thumbnail",
+          dataIndex: "thumbnail",
+          key: "thumbnail",
+          render: (thumbnail) => <img style={{width:80, height:50, objectFit:"cover"}} src={thumbnail}/>,
+       },
+        {
             title: "Action",
             key: "action",
             render: (_, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
+              <Space size="middle">
+                   <Button type="primary">
+                      Update
+                  </Button>
+                  <Button  type="danger">
+                    Delete
+                  </Button>
+              </Space>
+          ),
         },
     ];
     const data = [
         {
             key: "1",
-            name: "John Brown",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            tags: ["nice", "developer"],
+            author: "John Brown",
+            title: "10 Blog Examples for Your",
+            categories: ["code", "developer"],
+            tags: ["react", "node"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png"
         },
         {
             key: "2",
-            name: "Jim Green",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            tags: ["loser"],
+            title:"",
+            author: "Jim Green",
+            title: "London No. 1 Lake Park",
+            categories: ["lifestyle", "developer" ],
+            tags: ["loser", 'python'],
+            thumbnail:"https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg"
+
         },
         {
             key: "3",
-            name: "Joe Black",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            tags: ["cool", "teacher"],
+            author: "Joe Black",
+            title: "10 Blog Examples for Your",
+            categories: ["lifestyle", "developer" ,"hacking"],
+            tags: ["cool", "teacher" ,"hacking"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png"
+
         },
     ];
 
     return (
         <div>
             <div className="grid wide">
-                <div className="admin__header">
-                    {adminRoutes.map((item, index) => (
-                        <div key={index} className="admin__header-name">
-                            <Link to={item.path}>{item.label}</Link>
+            <div className="admin__header">
+                    <div className="admin__menu">
+                        {adminRoutes.map((item, index) => (
+                            <div key={index} className="admin__header-name">
+                                <Link to={item.path}>{item.label}</Link>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="admin__user">
+                        <div className="admin__user-thumbnail">
+                            <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
                         </div>
-                    ))}
+                        <div className="admin__user-name">
+                            nhatduy
+                        </div>
+                        <div className="admin__user-logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -205,7 +249,7 @@ function PostPage() {
                                 </Col>
                                 <Col xs={24} sm={24} md={4} lg={4} xl={4}>
                                     <Button
-                                        style={{ textAlign: "left" }}
+                                        style={{ textAlign: "center", width:"100%" }}
                                         type="primary"
                                         onClick={() => {}}
                                     >
@@ -431,16 +475,16 @@ function PostPage() {
                                         </Form.Item>
 
                                         <Form.Item
-                                            name="thumnail"
+                                            name="thumbnail"
                                             rules={[
                                                 {
                                                     required: false,
                                                     message:
-                                                        "Please input thumnail!",
+                                                        "Please input thumbnail!",
                                                 },
                                             ]}
                                         >
-                                            <label>{"9. Thumnail"}</label>
+                                            <label>{"9. thumbnail"}</label>
                                             <Upload
                                                 name="avatar"
                                                 listType="picture-card"

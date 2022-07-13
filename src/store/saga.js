@@ -1,0 +1,14 @@
+import {all} from "redux-saga/effects";
+import CategorySaga from "../features/Category/store/saga";
+import PostSaga from "../features/Post/store/saga";
+import TagSaga from "../features/Tag/store/saga";
+import UserSaga from "../features/User/store/saga";
+
+export default function* rootSaga() {
+    yield all([
+        CategorySaga(),
+        TagSaga(),
+        PostSaga(),
+        UserSaga(),
+    ]);
+}

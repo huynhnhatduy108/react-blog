@@ -19,6 +19,7 @@ import {
     Tag,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useSelector , useDispatch} from 'react-redux'
 
 import DashboardPage from "../PostPage";
 import CategoryPage from "../CategoryPage";
@@ -55,6 +56,8 @@ const beforeUpload = (file) => {
 function PostPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
+    const dispatch = useDispatch();
+
 
     const handleChange = (info) => {
         if (info.file.status === "uploading") {

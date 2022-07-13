@@ -34,9 +34,9 @@ const API = axios.create({
 });
 
 
-function execApi(method, url, data, params, headers, configs) {
+function execApi(method, url, data, params, headers) {
    
-    return API.request(method, url, data, params, headers, configs)
+    return API.request(method, url, data, params, headers)
         .then((response) => {    
             if ("access_token" in response.headers) {
                 if (getLocalItem('access_token')) {
@@ -96,7 +96,7 @@ function execApi(method, url, data, params, headers, configs) {
         });
 }
 
-export function api(method , url, data, params, headers, configs){
-    return execApi(method, url, data, params, headers, configs);
+export function api(method , url, data, params, headers){
+    return execApi(method, url, data, params, headers);
 }
 

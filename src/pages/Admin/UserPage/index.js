@@ -27,6 +27,12 @@ const dateFormat = "YYYY/MM/DD";
 function UserPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total:20,
+    });
+
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -36,6 +42,16 @@ function UserPage() {
             setImageUrl(res.url)
         }
     };
+
+    const handleTableChange = (newPagination, filters, sorter) => {
+        // fetchData({
+        //   sortField: sorter.field,
+        //   sortOrder: sorter.order,
+        //   pagination: newPagination,
+        //   ...filters,
+        // });
+        setPagination(newPagination)
+      };
 
     const uploadButton = (
         <div>
@@ -121,6 +137,39 @@ function UserPage() {
           role:"USER",
           avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
       },
+
+      {
+        key: "2",
+        username:"jimgreen",
+        full_name: "Jim Green",
+        phone:"0461944241",
+        role:"USER",
+        avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+    },
+    {
+        key: "3",
+        username:"joeblack",
+        full_name: "Joe Black",
+        phone: "0461944241",
+        role:"USER",
+        avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+    },
+    {
+        key: "2",
+        username:"jimgreen",
+        full_name: "Jim Green",
+        phone:"0461944241",
+        role:"USER",
+        avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+    },
+    {
+        key: "3",
+        username:"joeblack",
+        full_name: "Joe Black",
+        phone: "0461944241",
+        role:"USER",
+        avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+    },
   ];
 
 
@@ -166,9 +215,11 @@ function UserPage() {
                         </Col>
                     </Row>
                     <Table
-                        pagination={false}
-                        columns={columns}
-                        dataSource={data}
+                         pagination={pagination}
+                         columns={columns}
+                         dataSource={data}
+                         loading={loading}
+                         onChange={handleTableChange}
                     />
                 </div>
                 {/* Create user */}

@@ -13,6 +13,7 @@
     "antd": "^4.21.3",
     "axios": "^0.27.2",
     "ckeditor5": "^34.2.0",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",

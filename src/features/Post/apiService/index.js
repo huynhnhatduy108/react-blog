@@ -1,28 +1,30 @@
 // import {formatPath, getQueryString} from "utils";
 // import {apiGet, apiPost} from "utils/api";
 import { api, METHOD } from "../../../utils/api";
+import { formatPath, getQueryString } from "../../../utils/helper";
 import PostPaths from "./path";
 
-export const apiListPost = (param) => {
-  return api(METHOD.GET,PostPaths.List,{});
+export const apiListPost = (params) => {
+  const queryParams = getQueryString(params);
+  return api(METHOD.GET,formatPath(PostPaths.List, queryParams),{});
 }
 
 export const apiDetailPostById = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.GET,formatPath(PostPaths.DetailById, id),{});
 }
 
-export const apiDetailPostBySlug = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+export const apiDetailPostBySlug = (slug) => {
+  return api(METHOD.GET,formatPath(PostPaths.DetailBySlug,slug),{});
 }
 
 export const apiCreatePost = (data) => {
-  // return apiGet(formatPath(PaperPaths., id));
+  return api(METHOD.POST,formatPath(PostPaths.Create),{});
 }
 
-export const apiUpdatePost = (id) => {
-  // return apiGet(formatPath(PaperPaths., id));
+export const apiUpdatePost = (data) => {
+  return api(METHOD.PUT,formatPath(PostPaths.Update),{});
 }
 
 export const apiDeletePost = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.DELETE,formatPath(PostPaths.Detele, id),{});
 }

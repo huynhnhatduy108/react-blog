@@ -1,6 +1,6 @@
 const PostPaths ={
 
-    List:'/post/list/:params',
+    List:'/post/list?:queryParams',
     DetailById: "/post/info_by_id/:id",
     DetailBySlug:"/post/info_by_slug/:slug",
     Create: "/post/create",

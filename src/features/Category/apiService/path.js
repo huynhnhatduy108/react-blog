@@ -1,5 +1,5 @@
 const CategoryPaths ={
-    List:'/category/list',
+    List:'/category/list?:queryParams',
     Detail: "/category/info/:id",
     Create: "/category/create",
     Update: "/category/update/:id",

@@ -27,6 +27,11 @@ const dateFormat = "YYYY/MM/DD";
 function CategoryPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total:20,
+    });
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -36,6 +41,17 @@ function CategoryPage() {
             setImageUrl(res.url)
         }
     };
+
+    const handleTableChange = (newPagination, filters, sorter) => {
+        // fetchData({
+        //   sortField: sorter.field,
+        //   sortOrder: sorter.order,
+        //   pagination: newPagination,
+        //   ...filters,
+        // });
+        setPagination(newPagination)
+      };
+
 
     const uploadButton = (
         <div>
@@ -154,9 +170,11 @@ function CategoryPage() {
                         </Col>
                     </Row>
                     <Table
-                        pagination={false}
+                        pagination={pagination}
                         columns={columns}
                         dataSource={data}
+                        loading={loading}
+                        onChange={handleTableChange}
                     />
                     {/* Create category */}
                     <div className="admin__create-post">CREATE CATEGORY</div>

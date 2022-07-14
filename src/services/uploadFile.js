@@ -33,3 +33,7 @@ export const uploadFileCloudinary = async (file, preset) =>{
     }
 
 }
+
+export const uploadFileFireBase = async (file, preset) =>{
+
+}

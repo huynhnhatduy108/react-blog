@@ -27,7 +27,7 @@ import TagPage from "../TagPage";
 import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
-import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
+import { getDetailPostById, getListPost, getPostSlice } from "../../../features/Post/store/slice";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
 
 const { TextArea } = Input;
@@ -40,11 +40,18 @@ function PostPage() {
     const dispatch = useDispatch();
     const postStore = useSelector(getPostSlice);
     const { isFetching, listPost, detailPost,errors } = postStore;
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total:20,
+    });
     console.log('listPost', listPost);
 
-    // useEffect(()=>{
-    //     dispatch(getListPost(""));
-    // }, [])
+    useEffect(()=>{
+        // dispatch(getListPost({detail:1}));
+        // dispatch(getDetailPostById(1));
+
+    }, [])
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -54,6 +61,16 @@ function PostPage() {
             setImageUrl(res.url)
         }
     };
+
+    const handleTableChange = (newPagination, filters, sorter) => {
+        // fetchData({
+        //   sortField: sorter.field,
+        //   sortOrder: sorter.order,
+        //   pagination: newPagination,
+        //   ...filters,
+        // });
+        setPagination(newPagination)
+      };
 
     const uploadButton = (
         <div>
@@ -143,6 +160,7 @@ function PostPage() {
           ),
         },
     ];
+
     const data = [
         {
             key: "1",
@@ -171,6 +189,61 @@ function PostPage() {
             thumbnail:"https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png"
 
         },
+        {
+            key: "11",
+            author: "John Brown",
+            title: "10 Blog Examples for Your",
+            categories: ["code", "developer"],
+            tags: ["react", "node"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png"
+        },
+        {
+            key: "12",
+            title:"",
+            author: "Jim Green",
+            title: "London No. 1 Lake Park",
+            categories: ["lifestyle", "developer" ],
+            tags: ["loser", 'python'],
+            thumbnail:"https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg"
+
+        },
+        {
+            key: "13",
+            author: "Joe Black",
+            title: "10 Blog Examples for Your",
+            categories: ["lifestyle", "developer" ,"hacking"],
+            tags: ["cool", "teacher" ,"hacking"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png"
+
+        },
+        {
+            key: "21",
+            author: "John Brown",
+            title: "10 Blog Examples for Your",
+            categories: ["code", "developer"],
+            tags: ["react", "node"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png"
+        },
+        {
+            key: "22",
+            title:"",
+            author: "Jim Green",
+            title: "London No. 1 Lake Park",
+            categories: ["lifestyle", "developer" ],
+            tags: ["loser", 'python'],
+            thumbnail:"https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg"
+
+        },
+        {
+            key: "23",
+            author: "Joe Black",
+            title: "10 Blog Examples for Your",
+            categories: ["lifestyle", "developer" ,"hacking"],
+            tags: ["cool", "teacher" ,"hacking"],
+            thumbnail:"https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png"
+
+        },
+
     ];
 
     return (
@@ -244,10 +317,13 @@ function PostPage() {
                         </Col>
                     </Row>
                     <Table
-                        pagination={false}
+                        pagination={pagination}
                         columns={columns}
                         dataSource={data}
+                        loading={loading}
+                        onChange={handleTableChange}
                     />
+                    
                     {/* Create post */}
                     <div className="admin__create-post">CREATE POST</div>
                     <Form>

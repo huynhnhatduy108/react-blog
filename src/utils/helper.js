@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 export const convertObjKey = (dataForm)=>{
     return {}
@@ -24,4 +25,24 @@ export const formatPath = (path, ...params) => {
       ));
   
     return path;
+  }
+
+  export const getQueryString = (init) => {
+    const qs = {};
+    Object.keys(init).map((k) => {
+      const t = typeof init[k];
+      switch (t) {
+        case 'object':
+          qs[k] = '';
+          break;
+        case 'string':
+        case 'number':
+          qs[k] = init[k].toString();
+          break;
+        default:
+          break;
+      }
+      return k;
+    })
+    return new URLSearchParams(qs).toString();
   }

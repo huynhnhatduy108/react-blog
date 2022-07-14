@@ -1,5 +1,5 @@
 const tagPaths ={
-    List:'/tag/list',
+    List:'/tag/list?:queryParams',
     Detail: "/tag/info/:id",
     Create: "/tag/create",
     Update: "/tag/update/:id",

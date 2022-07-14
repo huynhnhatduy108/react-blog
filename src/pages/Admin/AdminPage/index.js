@@ -28,7 +28,9 @@ import LoginPage from "../LoginPage";
 import "./style.css";
 
 function AdminPage() {
+    const [isLogin, setIsLogin] = useState(false);
     const editorRef = useRef(null);
+
     const log = () => {
         if (editorRef.current) {
             console.log(editorRef.current.getContent());
@@ -45,7 +47,7 @@ function AdminPage() {
                             </div>
                         ))}
                     </div>
-                    <div className="admin__user">
+                   {isLogin? <div className="admin__user">
                         <div className="admin__user-thumbnail">
                             <img
                                 className="admin__user-img"
@@ -56,14 +58,18 @@ function AdminPage() {
                         </div>
                         <div className="admin__user-name">nhatduy</div>
                         <div className="admin__user-logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <i onClick={()=>setIsLogin(!isLogin)} class="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
-                    </div>
+                    </div>:
+                    <div onClick={()=>setIsLogin(!isLogin)} className="admin__user">
+                        <div className="" style={{cursor:"pointer"}}>
+                            Login <i style={{color:"#1890ff"}} class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>
+                        </div>
+                    </div>}
                 </div>
 
                 <div>
                     <Editor
-                    
                         onInit={(evt, editor) => (editorRef.current = editor)}
                         apiKey ='n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx'
                         initialValue=""

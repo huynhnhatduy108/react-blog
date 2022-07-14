@@ -1,5 +1,5 @@
 const userPaths ={
-    List:'/user/list',
+    List:'/user/list?:queryParams',
     Detail: "/user/info/:id",
     Create: "/user/create",
     Update: "/user/update/:id",

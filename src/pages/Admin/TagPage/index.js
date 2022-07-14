@@ -23,58 +23,26 @@ const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
-const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-
-    if (!isJpgOrPng) {
-        message.error("You can only upload JPG/PNG file!");
-    }
-
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error("Image must smaller than 2MB!");
-    }
-
-    return isJpgOrPng && isLt2M;
-};
 
 function TagPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total:20,
+    });
 
-    const handleChange = (info) => {
-        if (info.file.status === "uploading") {
-            setLoading(true);
-            return;
-        }
+    const handleTableChange = (newPagination, filters, sorter) => {
+        // fetchData({
+        //   sortField: sorter.field,
+        //   sortOrder: sorter.order,
+        //   pagination: newPagination,
+        //   ...filters,
+        // });
+        setPagination(newPagination)
+      };
 
-        if (info.file.status === "done") {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, (url) => {
-                setLoading(false);
-                setImageUrl(url);
-            });
-        }
-    };
-
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-                Upload
-            </div>
-        </div>
-    );
 
     const columns = [
         {
@@ -115,6 +83,48 @@ function TagPage() {
         },
     ];
     const data = [
+        {
+            key: "1",
+            title: "John Brown",
+            slug: "aa-dcdc",
+            description:"scsc scv hdvv dvdvd vdvd",
+            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
+        },
+        {
+            key: "2",
+            title: "Jim Green",
+            slug: "saa-dcdc",
+            description:"scscs cvhdvc vcs scdv dvdv dvd",
+            thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+        },
+        {
+            key: "3",
+            title: "Joe Black",
+            slug: "saa-dcdc",
+            description: "Sidney No. 1 Lake Park",
+            thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+        },
+        {
+            key: "1",
+            title: "John Brown",
+            slug: "aa-dcdc",
+            description:"scsc scv hdvv dvdvd vdvd",
+            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
+        },
+        {
+            key: "2",
+            title: "Jim Green",
+            slug: "saa-dcdc",
+            description:"scscs cvhdvc vcs scdv dvdv dvd",
+            thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
+        },
+        {
+            key: "3",
+            title: "Joe Black",
+            slug: "saa-dcdc",
+            description: "Sidney No. 1 Lake Park",
+            thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
+        },
         {
             key: "1",
             title: "John Brown",
@@ -180,9 +190,11 @@ function TagPage() {
                         </Col>
                     </Row>
                     <Table
-                        pagination={false}
+                        pagination={pagination}
                         columns={columns}
                         dataSource={data}
+                        loading={loading}
+                        onChange={handleTableChange}
                     />
                     <div className="admin__create-post">CREATE TAG</div>
                     <Form>

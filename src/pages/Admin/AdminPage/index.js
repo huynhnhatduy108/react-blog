@@ -18,7 +18,6 @@ import {
     Tag,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Editor } from "@tinymce/tinymce-react";
 
 import DashboardPage from "../PostPage";
 import CategoryPage from "../CategoryPage";
@@ -29,13 +28,7 @@ import "./style.css";
 
 function AdminPage() {
     const [isLogin, setIsLogin] = useState(false);
-    const editorRef = useRef(null);
-
-    const log = () => {
-        if (editorRef.current) {
-            console.log(editorRef.current.getContent());
-        }
-    };
+    
     return (
         <div>
             <div className="grid wide">
@@ -69,28 +62,7 @@ function AdminPage() {
                 </div>
 
                 <div>
-                    <Editor
-                        onInit={(evt, editor) => (editorRef.current = editor)}
-                        apiKey ='n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx'
-                        initialValue=""
-                        init={{
-                            height: 500,
-                            menubar: false,
-                            plugins: [
-                                "advlist autolink lists link image charmap print preview anchor",
-                                "searchreplace visualblocks code fullscreen",
-                                "insertdatetime media table paste code help wordcount",
-                            ],
-                            toolbar:
-                                "undo redo | formatselect | " +
-                                "bold italic backcolor | alignleft aligncenter " +
-                                "alignright alignjustify | bullist numlist outdent indent | " +
-                                "removeformat | help",
-                            content_style:
-                                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                        }}
-                    />
-                    <button onClick={log}>Log editor content</button>
+                   
                 </div>
                 {/* <Row>
                         <Col xs={24} sm={24} md={12} lg={8} xl={6}>col</Col>

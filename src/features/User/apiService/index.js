@@ -2,12 +2,11 @@
 // import {apiGet, apiPost} from "utils/api";
 import UserPaths from "./path";
 
-
 export const apiListUser = (param) => {
   // return apiGet(formatPath(PaperPaths.Detail, id));
 }
 
-export const apiDetailUser = (id) => {
+export const apiInfoUser = (id) => {
   // return apiGet(formatPath(PaperPaths.Detail, id));
 }
 
@@ -20,5 +19,9 @@ export const apiUpdateUser = (id) => {
 }
 
 export const apiDeleteUser = (id) => {
+  // return apiGet(formatPath(PaperPaths.Detail, id));
+}
+
+export const apiUpdateAvatarUser = (id) => {
   // return apiGet(formatPath(PaperPaths.Detail, id));
 }

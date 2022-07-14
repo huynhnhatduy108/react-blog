@@ -110,23 +110,23 @@ export const clearStoreCategory = CategorySlice.actions.clearStoreCategory;
 
 export const getListCategory = CategorySlice.actions.getListCategory;
 export const getListCategorySuccess = CategorySlice.actions.getListCategorySuccess;
-export const getListCategoryFailure = CategorySlice.actions.getListCategoryError;
+export const getListCategoryError = CategorySlice.actions.getListCategoryError;
 
 export const getDetailCategory = CategorySlice.actions.getDetailCategory;
 export const getDetailCategorySuccess = CategorySlice.actions.getDetailCategorySuccess;
-export const getDetailCategoryFailure = CategorySlice.actions.getDetailCategoryError;
+export const getDetailCategoryError = CategorySlice.actions.getDetailCategoryError;
 
 export const createCategory = CategorySlice.actions.createCategory;
 export const createCategorySuccess = CategorySlice.actions.createCategorySuccess;
-export const createCategoryFailure = CategorySlice.actions.createCategoryError;
+export const createCategoryError = CategorySlice.actions.createCategoryError;
 
 export const updateCategory = CategorySlice.actions.updateCategory;
 export const updateCategorySuccess = CategorySlice.actions.updateCategorySuccess;
-export const updateCategoryFailure = CategorySlice.actions.updateCategoryError;
+export const updateCategoryError = CategorySlice.actions.updateCategoryError;
 
 export const deleteCategory = CategorySlice.actions.deleteCategory;
 export const deleteCategorySuccess = CategorySlice.actions.deleteCategorySuccess;
-export const deleteCategoryFailure = CategorySlice.actions.deleteCategoryError;
+export const deleteCategoryError = CategorySlice.actions.deleteCategoryError;
 
 // ************************** Store *******************************
 export const getCategorySlice = (state) => state.Category;

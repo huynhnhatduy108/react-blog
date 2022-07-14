@@ -1,8 +1,8 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import {call, put, select, takeEvery} from "redux-saga/effects";
+import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
-import { apiCreateUser, apiDeleteUser, apiDetailUser, apiListUser, apiUpdateUser } from "../apiService/index";
-import {} from "./slice";
+import { apiCreateUser, apiDeleteUser, apiInfoUser, apiListUser, apiUpdateAvatarUser, apiUpdateUser } from "../apiService/index";
+import { createUser, createUserFailure, createUserSuccess, deleteUser, deleteUserFailure, deleteUserSuccess, getDetailUser, getDetailUserFailure, getDetailUserSuccess, getListUser, getListUserFailure, getListUserSuccess, updateAvatarUser, updateAvatarUserFailure, updateAvatarUserSuccess, updateUser, updateUserFailure, updateUserSuccess } from "./slice";
 
 function* handleGetListUser(action) {
     try {
@@ -11,24 +11,24 @@ function* handleGetListUser(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getListUserSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getListUserFailure(error));
     }
 }
 
 function* handleGetDatailUser(action) {
     try {
         const response= yield call(
-            apiDetailUser,
+            apiInfoUser,
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getDetailUserSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getDetailUserFailure(error));
     }
 }
 
@@ -39,10 +39,10 @@ function* handleCreateUser(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(createUserSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(createUserFailure(error));
     }
 }
 
@@ -53,10 +53,10 @@ function* handleUpdateUser(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(updateUserSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(updateUserFailure(error));
     }
 }
 
@@ -67,18 +67,33 @@ function* handleDeleteUser(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(deleteUserSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(deleteUserFailure(error));
+    }
+}
+
+function* handleUpdateAvatarUser(action) {
+    try {
+        const response= yield call(
+            apiUpdateAvatarUser,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(updateAvatarUserSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(updateAvatarUserFailure(error));
     }
 }
 
 
 export default function* UserSaga() {
-    // yield takeEvery(getListUser.type, handleGetListUser);
-    // yield takeEvery(getListUser.type, handleGetDatailUser);
-    // yield takeEvery(getListUser.type, handleCreateUser);
-    // yield takeEvery(getListUser.type, handleUpdateUser);
-    // yield takeEvery(getListUser.type, handleDeleteUser);
+    yield takeLatest(getListUser.type, handleGetListUser);
+    yield takeLatest(getDetailUser.type, handleGetDatailUser);
+    yield takeLatest(createUser.type, handleCreateUser);
+    yield takeLatest(updateUser.type, handleUpdateUser);
+    yield takeLatest(deleteUser.type, handleDeleteUser);
+    yield takeLatest(updateAvatarUser.type, handleUpdateAvatarUser);
 }

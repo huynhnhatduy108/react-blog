@@ -103,6 +103,22 @@ const UserSlice = createSlice({
             state.errors = action.payload
         },
 
+        // update avatar
+        updateAvatarUser(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        updateAvatarUserSuccess(state, action) {
+            state.isFetching = false
+            state.data = action.payload
+            state.errors = []
+        },
+        updateAvatarUserError(state, action) {
+            state.isFetching = false
+            state.data =null
+            state.errors = action.payload
+        },
+
 }});
 
 // ************************** Action *******************************
@@ -128,8 +144,12 @@ export const deleteUser = UserSlice.actions.deleteUser;
 export const deleteUserSuccess = UserSlice.actions.deleteUserSuccess;
 export const deleteUserFailure = UserSlice.actions.deleteUserError;
 
+export const updateAvatarUser = UserSlice.actions.updateAvatarUser;
+export const updateAvatarUserSuccess = UserSlice.actions.updateAvatarUserSuccess;
+export const updateAvatarUserFailure = UserSlice.actions.updateAvatarUserError;
+
 // ************************** Store *******************************
-export const getUserSlice = (state) => state.User;
+export const getUserSlice = (state) => state.user;
 
 const UserReducer = UserSlice.reducer;
 export default UserReducer;

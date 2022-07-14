@@ -1,9 +1,24 @@
-import React, {useState} from "react";
-import moment from 'moment';
+import React, { useState, useRef } from "react";
+import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Col, Row , Button, Checkbox, Form, Input, DatePicker, Space, Select, message, Upload, Table, Tag} from "antd";
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+    Col,
+    Row,
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    DatePicker,
+    Space,
+    Select,
+    message,
+    Upload,
+    Table,
+    Tag,
+} from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { Editor } from "@tinymce/tinymce-react";
 
 import DashboardPage from "../PostPage";
 import CategoryPage from "../CategoryPage";
@@ -12,24 +27,13 @@ import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
 
-
-
 function AdminPage() {
-   const [img, setImg] = useState();
-
-    const uploadfile = async ()=>{
-        console.log("img", img);
-        const data = new FormData();
-        data.append("file", img);
-        data.append("upload_preset", "my-uploads");
-
-        const dataRes = await fetch("https://api.cloudinary.com/v1_1/nhat-duy/upload", 
-                {method: "POST",body: data}
-                ).then(res=>res.json()).catch(err=>err.json())
-        console.log("dataRes", dataRes);
-        // message.info('This is a normal message');
-
-    }
+    const editorRef = useRef(null);
+    const log = () => {
+        if (editorRef.current) {
+            console.log(editorRef.current.getContent());
+        }
+    };
     return (
         <div>
             <div className="grid wide">
@@ -43,22 +47,44 @@ function AdminPage() {
                     </div>
                     <div className="admin__user">
                         <div className="admin__user-thumbnail">
-                            <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
+                            <img
+                                className="admin__user-img"
+                                src={
+                                    "https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"
+                                }
+                            />
                         </div>
-                        <div className="admin__user-name">
-                            nhatduy
-                        </div>
+                        <div className="admin__user-name">nhatduy</div>
                         <div className="admin__user-logout">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
                     </div>
                 </div>
-                {/* <div>
-                    <div><input type="file" onChange={(e)=>setImg(e.target.files[0])}/></div>
-                    <button onClick={()=>uploadfile()}>upload</button>
-                </div> */}
+
                 <div>
-               
+                    <Editor
+                    
+                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        apiKey ='n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx'
+                        initialValue=""
+                        init={{
+                            height: 500,
+                            menubar: false,
+                            plugins: [
+                                "advlist autolink lists link image charmap print preview anchor",
+                                "searchreplace visualblocks code fullscreen",
+                                "insertdatetime media table paste code help wordcount",
+                            ],
+                            toolbar:
+                                "undo redo | formatselect | " +
+                                "bold italic backcolor | alignleft aligncenter " +
+                                "alignright alignjustify | bullist numlist outdent indent | " +
+                                "removeformat | help",
+                            content_style:
+                                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                        }}
+                    />
+                    <button onClick={log}>Log editor content</button>
                 </div>
                 {/* <Row>
                         <Col xs={24} sm={24} md={12} lg={8} xl={6}>col</Col>

@@ -110,23 +110,23 @@ export const clearStoreTag = TagSlice.actions.clearStoreTag;
 
 export const getListTag = TagSlice.actions.getListTag;
 export const getListTagSuccess = TagSlice.actions.getListTagSuccess;
-export const getListTagFailure = TagSlice.actions.getListTagError;
+export const getListTagError = TagSlice.actions.getListTagError;
 
 export const getDetailTag = TagSlice.actions.getDetailTag;
 export const getDetailTagSuccess = TagSlice.actions.getDetailTagSuccess;
-export const getDetailTagFailure = TagSlice.actions.getDetailTagError;
+export const getDetailTagError = TagSlice.actions.getDetailTagError;
 
 export const createTag = TagSlice.actions.createTag;
 export const createTagSuccess = TagSlice.actions.createTagSuccess;
-export const createTagFailure = TagSlice.actions.createTagError;
+export const createTagError = TagSlice.actions.createTagError;
 
 export const updateTag = TagSlice.actions.updateTag;
 export const updateTagSuccess = TagSlice.actions.updateTagSuccess;
-export const updateTagFailure = TagSlice.actions.updateTagError;
+export const updateTagError = TagSlice.actions.updateTagError;
 
 export const deleteTag = TagSlice.actions.deleteTag;
 export const deleteTagSuccess = TagSlice.actions.deleteTagSuccess;
-export const deleteTagFailure = TagSlice.actions.deleteTagError;
+export const deleteTagError = TagSlice.actions.deleteTagError;
 
 // ************************** Store *******************************
 export const getTagSlice = (state) => state.Tag;

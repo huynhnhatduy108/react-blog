@@ -38,18 +38,35 @@ const PostSlice = createSlice({
             state.errors = action.payload
         },
 
-        // detail
-        getDetailPost(state, action) {
+        // detail post by id
+        getDetailPostById(state, action) {
             state.isFetching = true
             state.errors = []
         },
-        getDetailPostSuccess(state, action) {
+        getDetailPostByIdSuccess(state, action) {
             state.isFetching = false
             state.data = action.payload
             state.detailPost = action.payload
             state.errors = []
         },
-        getDetailPostError(state, action) {
+        getDetailPostByIdError(state, action) {
+            state.isFetching = false
+            state.data =null
+            state.errors = action.payload
+        },
+
+        // detail by slug
+        getDetailPostBySlug(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        getDetailPostBySlugSuccess(state, action) {
+            state.isFetching = false
+            state.data = action.payload
+            state.detailPost = action.payload
+            state.errors = []
+        },
+        getDetailPostBySlugError(state, action) {
             state.isFetching = false
             state.data =null
             state.errors = action.payload
@@ -110,23 +127,27 @@ export const clearStorePost = PostSlice.actions.clearStorePost;
 
 export const getListPost = PostSlice.actions.getListPost;
 export const getListPostSuccess = PostSlice.actions.getListPostSuccess;
-export const getListPostFailure = PostSlice.actions.getListPostError;
+export const getListPostError = PostSlice.actions.getListPostError;
 
-export const getDetailPost = PostSlice.actions.getDetailPost;
-export const getDetailPostSuccess = PostSlice.actions.getDetailPostSuccess;
-export const getDetailPostFailure = PostSlice.actions.getDetailPostError;
+export const getDetailPostById = PostSlice.actions.getDetailPostById;
+export const getDetailPostByIdSuccess = PostSlice.actions.getDetailPostByIdSuccess;
+export const getDetailPostByIdError = PostSlice.actions.getDetailPostByIdError;
+
+export const getDetailPostBySlug = PostSlice.actions.getDetailPostBySlug;
+export const getDetailPostBySlugSuccess = PostSlice.actions.getDetailPostBySlugSuccess;
+export const getDetailPostBySlugError = PostSlice.actions.getDetailPostBySlugError;
 
 export const createPost = PostSlice.actions.createPost;
 export const createPostSuccess = PostSlice.actions.createPostSuccess;
-export const createPostFailure = PostSlice.actions.createPostError;
+export const createPostError = PostSlice.actions.createPostError;
 
 export const updatePost = PostSlice.actions.updatePost;
 export const updatePostSuccess = PostSlice.actions.updatePostSuccess;
-export const updatePostFailure = PostSlice.actions.updatePostError;
+export const updatePostError = PostSlice.actions.updatePostError;
 
 export const deletePost = PostSlice.actions.deletePost;
 export const deletePostSuccess = PostSlice.actions.deletePostSuccess;
-export const deletePostFailure = PostSlice.actions.deletePostError;
+export const deletePostError = PostSlice.actions.deletePostError;
 
 // ************************** Store *******************************
 export const getPostSlice = (state) => state.post;

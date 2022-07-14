@@ -3,12 +3,15 @@
 import { api, METHOD } from "../../../utils/api";
 import PostPaths from "./path";
 
-
 export const apiListPost = (param) => {
   return api(METHOD.GET,PostPaths.List,{});
 }
 
-export const apiDetailPost = (id) => {
+export const apiDetailPostById = (id) => {
+  // return apiGet(formatPath(PaperPaths.Detail, id));
+}
+
+export const apiDetailPostBySlug = (id) => {
   // return apiGet(formatPath(PaperPaths.Detail, id));
 }
 

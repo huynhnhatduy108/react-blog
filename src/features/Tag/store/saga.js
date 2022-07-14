@@ -1,8 +1,8 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import {call, put, select, takeEvery} from "redux-saga/effects";
+import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreateTag, apiDeleteTag, apiDetailTag, apiListTag, apiUpdateTag } from "../apiService/index";
-import {} from "./slice";
+import { createTag, createTagError, createTagSuccess, deleteTag, deleteTagError, deleteTagSuccess, getDetailTag, getDetailTagError, getDetailTagSuccess, getListTag, getListTagError, getListTagSuccess, updateTag, updateTagError, updateTagSuccess } from "./slice";
 
 function* handleGetListTag(action) {
     try {
@@ -11,10 +11,10 @@ function* handleGetListTag(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getListTagSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getListTagError(error));
     }
 }
 
@@ -25,10 +25,10 @@ function* handleGetDatailTag(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getDetailTagSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getDetailTagError(error));
     }
 }
 
@@ -39,10 +39,10 @@ function* handleCreateTag(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(createTagSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(createTagError(error));
     }
 }
 
@@ -53,10 +53,10 @@ function* handleUpdateTag(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(updateTagSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(updateTagError(error));
     }
 }
 
@@ -67,18 +67,18 @@ function* handleDeleteTag(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(deleteTagSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(deleteTagError(error));
     }
 }
 
 
 export default function* TagSaga() {
-    // yield takeEvery(getListTag.type, handleGetListTag);
-    // yield takeEvery(getListTag.type, handleGetDatailTag);
-    // yield takeEvery(getListTag.type, handleCreateTag);
-    // yield takeEvery(getListTag.type, handleUpdateTag);
-    // yield takeEvery(getListTag.type, handleDeleteTag);
+    yield takeLatest(getListTag.type, handleGetListTag);
+    yield takeLatest(getDetailTag.type, handleGetDatailTag);
+    yield takeLatest(createTag.type, handleCreateTag);
+    yield takeLatest(updateTag.type, handleUpdateTag);
+    yield takeLatest(deleteTag.type, handleDeleteTag);
 }

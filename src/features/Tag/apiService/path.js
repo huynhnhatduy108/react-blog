@@ -1,9 +1,9 @@
 const tagPaths ={
-    List:'/tag/',
-    Detail: "/tag/detail",
+    List:'/tag/list',
+    Detail: "/tag/info/:id",
     Create: "/tag/create",
-    Update: "/tag/update",
-    Detele:"/tag/update"
+    Update: "/tag/update/:id",
+    Detele:"/tag/delete/:id",
 
 };
 

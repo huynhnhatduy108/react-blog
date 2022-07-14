@@ -1,9 +1,9 @@
 const CategoryPaths ={
-    List:'/category/',
-    Detail: "/category/detail",
+    List:'/category/list',
+    Detail: "/category/info/:id",
     Create: "/category/create",
-    Update: "/category/update",
-    Detele:"/category/update"
+    Update: "/category/update/:id",
+    Detele:"/category/delete/:id",
 
 };
 

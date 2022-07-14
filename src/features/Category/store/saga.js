@@ -1,8 +1,7 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import {call, put, select, takeEvery} from "redux-saga/effects";
-
+import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import { apiCreateCategory, apiDeleteCategory, apiDetailCategory, apiListCategory, apiUpdateCategory } from "../apiService/index";
-import { getListCategory } from "./slice";
+import { createCategory, createCategoryError, createCategorySuccess, deleteCategory, deleteCategoryError, deleteCategorySuccess, getDetailCategory, getDetailCategoryError, getDetailCategorySuccess, getListCategory, getListCategoryError, getListCategorySuccess, updateCategory, updateCategoryError, updateCategorySuccess } from "./slice";
 
 function* handleGetListCategory(action) {
     try {
@@ -11,10 +10,10 @@ function* handleGetListCategory(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getListCategorySuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getListCategoryError(error));
     }
 }
 
@@ -25,10 +24,10 @@ function* handleGetDatailCategory(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getDetailCategorySuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getDetailCategoryError(error));
     }
 }
 
@@ -39,10 +38,10 @@ function* handleCreateCategory(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(createCategorySuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(createCategoryError(error));
     }
 }
 
@@ -53,10 +52,10 @@ function* handleUpdateCategory(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(updateCategorySuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(updateCategoryError(error));
     }
 }
 
@@ -67,18 +66,18 @@ function* handleDeleteCategory(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(deleteCategorySuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(deleteCategoryError(error));
     }
 }
 
 
 export default function* CategorySaga() {
-    yield takeEvery(getListCategory.type, handleGetListCategory);
-    // yield takeEvery(getListCategory.type, handleGetDatailCategory);
-    // yield takeEvery(getListCategory.type, handleCreateCategory);
-    // yield takeEvery(getListCategory.type, handleUpdateCategory);
-    // yield takeEvery(getListCategory.type, handleDeleteCategory);
+    yield takeLatest(getListCategory.type, handleGetListCategory);
+    yield takeLatest(getDetailCategory.type, handleGetDatailCategory);
+    yield takeLatest(createCategory.type, handleCreateCategory);
+    yield takeLatest(updateCategory.type, handleUpdateCategory);
+    yield takeLatest(deleteCategory.type, handleDeleteCategory);
 }

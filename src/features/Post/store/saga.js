@@ -1,8 +1,8 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
-import { apiCreatePost, apiDeletePost, apiDetailPost, apiListPost, apiUpdatePost } from "../apiService/index";
-import { getListPost, getListPostFailure, getListPostSuccess } from "./slice";
+import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug} from "../apiService/index";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -11,21 +11,35 @@ function* handleGetListPost(action) {
             yield put(getListPostSuccess(response.data));
         } 
     } catch (error) {
-        yield put(getListPostFailure(error));
+        yield put(getListPostError(error));
     }
 }
 
-function* handleGetDatailPost(action) {
+function* handleGetDatailPostById(action) {
     try {
         const response= yield call(
-            apiDetailPost,
+            apiDetailPostById,
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(getDetailPostByIdSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(getDetailPostByIdError(error));
+    }
+}
+
+function* handleGetDatailPostBySlug(action) {
+    try {
+        const response= yield call(
+            apiDetailPostBySlug,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(getDetailPostBySlugSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(getDetailPostBySlugError(error));
     }
 }
 
@@ -36,10 +50,10 @@ function* handleCreatePost(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(createPostSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(createPostError(error));
     }
 }
 
@@ -50,10 +64,10 @@ function* handleUpdatePost(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(updatePostSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(updatePostError(error));
     }
 }
 
@@ -64,18 +78,18 @@ function* handleDeletePost(action) {
             action.payload,
         );
         if (response.success) {
-            yield put((response.data));
+            yield put(deletePostSuccess(response.data));
         } 
     } catch (error) {
-        yield put((error));
+        yield put(deletePostError(error));
     }
 }
 
-
 export default function* PostSaga() {
     yield takeLatest(getListPost.type, handleGetListPost);
-    // yield takeLatest(getListPost.type, handleGetDatailPost);
-    // yield takeLatest(getListPost.type, handleCreatePost);
-    // yield takeLatest(getListPost.type, handleUpdatePost);
-    // yield takeLatest(getListPost.type, handleDeletePost);
+    yield takeLatest(getDetailPostById.type, handleGetDatailPostById);
+    yield takeLatest(getDetailPostBySlug.type, handleGetDatailPostBySlug);
+    yield takeLatest(createPost.type, handleCreatePost);
+    yield takeLatest(updatePost.type, handleUpdatePost);
+    yield takeLatest(deletePost.type, handleDeletePost);
 }

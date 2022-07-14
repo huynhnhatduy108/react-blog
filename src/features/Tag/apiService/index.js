@@ -2,7 +2,6 @@
 // import {apiGet, apiPost} from "utils/api";
 import TagPaths from "./path";
 
-
 export const apiListTag = (param) => {
   // return apiGet(formatPath(PaperPaths.Detail, id));
 }

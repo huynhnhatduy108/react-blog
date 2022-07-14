@@ -2,3 +2,31 @@
     width: 300px;
     height: 160px;
 }
+
+.tox .tox-statusbar {
+    display: none !important;
+}
+
+.tox-tinymce {
+    border: 1px solid #d9d9d9 !important;
+    border-radius: 0px !important;
+    transition: all 0.3s;
+}
+
+.tox-editor-header{
+    border-bottom: 1px solid #d9d9d9 !important;
+    box-shadow: none !important;
+}
+
+.tox-tinymce:hover {
+    border-color: #40a9ff !important;
+    font-family: 'Pacifico', cursive !important;
+
+}
+
+.tox-tinymce:focus {
+    border-color: #40a9ff !important;
+    box-shadow: 0 0 0 2px rgb(24 144 255 / 20%) !important;
+    border-right-width: 1px !important;
+    outline: 0 !important;
+}

@@ -3,21 +3,7 @@ import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-import {
-    Col,
-    Row,
-    Button,
-    Checkbox,
-    Form,
-    Input,
-    DatePicker,
-    Space,
-    Select,
-    message,
-    Upload,
-    Table,
-    Tag,
-} from "antd";
+import {Col, Row,Button, Checkbox,Form,Input,DatePicker,Space,Select,message,Upload,Table,Tag,} from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
@@ -40,6 +26,7 @@ const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
 function PostPage() {
+    const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const dispatch = useDispatch();
@@ -78,10 +65,12 @@ function PostPage() {
         setPagination(newPagination);
     };
 
-    const handleSubmit =()=>{
+    const handleSubmit =(values)=>{
+        console.log(values);
+        console.log("form", form.getFieldsValue());
         if (editorRef.current) {
-            console.log(editorRef.current.getContent());
         }
+
     }
 
     const uploadButton = (
@@ -283,7 +272,7 @@ function PostPage() {
                         </div>
                         <div className="admin__user-name">nhatduy</div>
                         <div className="admin__user-logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
                     </div>
                 </div>
@@ -347,7 +336,7 @@ function PostPage() {
 
                     {/* Create post */}
                     <div className="admin__create-post">CREATE POST</div>
-                    <Form>
+                    <Form form={form}  onFinish={handleSubmit}>
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <Row gutter={[16, 16]}>
@@ -358,11 +347,13 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
+                                    <Form.Item>
                                         <Form.Item
+                                        noStyle
                                             name="title"
                                             rules={[
                                                 {
-                                                    required: true,
+                                                    required: false,
                                                     message:
                                                         "Please input Title!",
                                                 },
@@ -370,6 +361,7 @@ function PostPage() {
                                         >
                                             <label>{"1. Title"}</label>
                                             <Input placeholder="Title of post" />
+                                        </Form.Item>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -392,6 +384,7 @@ function PostPage() {
                                             <label>{"2. Parent"}</label>
                                             <Input placeholder="Parent of post" />
                                         </Form.Item>
+                                        
                                     </Col>
                                 </Row>
                                 <Row gutter={[16, 16]}>
@@ -484,30 +477,20 @@ function PostPage() {
                                         </Form.Item>
 
                                         <Form.Item
-                                            name="tag"
+                                            name="sumary"
                                             rules={[
                                                 {
                                                     required: false,
                                                     message:
-                                                        "Please input tag!",
+                                                        "Please input sumary!",
                                                 },
                                             ]}
                                         >
-                                            <label>{"7. Tag"}</label>
-                                            <Select
-                                                mode="multiple"
-                                                placeholder="Tag of post"
-                                            >
-                                                <Option value="jack">
-                                                    Jack
-                                                </Option>
-                                                <Option value="lucy">
-                                                    Lucy
-                                                </Option>
-                                                <Option value="Yiminghe">
-                                                    yiminghe
-                                                </Option>
-                                            </Select>
+                                            <label>{"7. Sumary"}</label>
+                                            <TextArea
+                                                rows={7}
+                                                placeholder="Sumary of post"
+                                            />
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -518,67 +501,32 @@ function PostPage() {
                                         xl={12}
                                     >
                                         <Form.Item
-                                            name="sumary"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input sumary!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"6. Sumary"}</label>
-                                            <TextArea
-                                                rows={4}
-                                                placeholder="Sumary of post"
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row gutter={[16, 16]}>
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={24}
-                                        xl={24}
+                                    name="tag"
+                                    rules={[
+                                        {
+                                            required: false,
+                                            message:
+                                                "Please input tag!",
+                                        },
+                                    ]}
+                                >
+                                    <label>{"6. Tag"}</label>
+                                    <Select
+                                        mode="multiple"
+                                        placeholder="Tag of post"
                                     >
-                                        <Form.Item
-                                            name="content"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        "Please input content!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"8. Content"}</label>
-                                            <Editor
-                                                onInit={(evt, editor) =>
-                                                    (editorRef.current = editor)
-                                                }
-                                                apiKey="n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx"
-                                                initialValue=""
-                                                init={{
-                                                    height: 500,
-                                                    menubar: false,
-                                                    plugins: [
-                                                        "advlist autolink lists link image charmap print preview anchor",
-                                                        "searchreplace visualblocks code fullscreen",
-                                                        "insertdatetime media table paste code help wordcount",
-                                                    ],
-                                                    toolbar:
-                                                        "undo redo | formatselect | " +
-                                                        "bold italic backcolor | alignleft aligncenter " +
-                                                        "alignright alignjustify | bullist numlist outdent indent | " +
-                                                        "removeformat | help",
-                                                    content_style:
-                                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                                                }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
+                                        <Option value="jack">
+                                            Jack
+                                        </Option>
+                                        <Option value="lucy">
+                                            Lucy
+                                        </Option>
+                                        <Option value="Yiminghe">
+                                            yiminghe
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item
                                             name="thumbnail"
                                             rules={[
                                                 {
@@ -588,7 +536,7 @@ function PostPage() {
                                                 },
                                             ]}
                                         >
-                                            <label>{"9. thumbnail"}</label>
+                                            <label>{"8. thumbnail"}</label>
                                             <Upload
                                                 name="avatar"
                                                 listType="picture-card"
@@ -614,9 +562,56 @@ function PostPage() {
                                         </Form.Item>
                                     </Col>
                                 </Row>
+                                <Row gutter={[16, 16]}>
+                                    <Col
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={24}
+                                        xl={24}
+                                    >
+                                        <Form.Item
+                                            name="content"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input content!",
+                                                },
+                                            ]}
+                                        >
+                                            <label>{"9. Content"}</label>
+                                            <Editor
+                                                onInit={(evt, editor) =>
+                                                    (editorRef.current = editor)
+                                                }
+
+                                                apiKey="n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx"
+                                                initialValue=""
+                                                init={{
+                                                    height: 500,
+                                                    menubar: false,
+                                                    plugins: [
+                                                        "advlist autolink lists link image charmap print preview anchor",
+                                                        "searchreplace visualblocks code fullscreen",
+                                                        "insertdatetime media table paste code help wordcount",
+                                                    ],
+                                                    toolbar:
+                                                        "undo redo | formatselect | " +
+                                                        "bold italic backcolor | alignleft aligncenter " +
+                                                        "alignright alignjustify | bullist numlist outdent indent | " +
+                                                        "removeformat | help",
+                                                    content_style:
+                                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                       
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Button type="primary" onClick={handleSubmit}>
+                        <Button type="primary" htmlType="submit">
                             Summit
                         </Button>
                     </Form>

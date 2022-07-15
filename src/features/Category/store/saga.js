@@ -1,7 +1,8 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
-import { apiCreateCategory, apiDeleteCategory, apiDetailCategory, apiListCategory, apiUpdateCategory } from "../apiService/index";
-import { createCategory, createCategoryError, createCategorySuccess, deleteCategory, deleteCategoryError, deleteCategorySuccess, getDetailCategory, getDetailCategoryError, getDetailCategorySuccess, getListCategory, getListCategoryError, getListCategorySuccess, updateCategory, updateCategoryError, updateCategorySuccess } from "./slice";
+import { apiCreateCategory, apiDeleteCategory, apiDetailCategory, apiListCategory, apiSearchCategory, apiUpdateCategory } from "../apiService/index";
+import { createCategory, createCategoryError, createCategorySuccess, deleteCategory, deleteCategoryError, deleteCategorySuccess, getDetailCategory, getDetailCategoryError, getDetailCategorySuccess, getListCategory, getListCategoryError, getListCategorySuccess, searchCategory, searchCategoryError, searchCategorySuccess, updateCategory, updateCategoryError, updateCategorySuccess } from "./slice";
 
 function* handleGetListCategory(action) {
     try {
@@ -14,6 +15,20 @@ function* handleGetListCategory(action) {
         } 
     } catch (error) {
         yield put(getListCategoryError(error));
+    }
+}
+
+function* handleSearchCategory(action) {
+    try {
+        const response= yield call(
+            apiSearchCategory,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(searchCategorySuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(searchCategoryError(error));
     }
 }
 
@@ -39,9 +54,12 @@ function* handleCreateCategory(action) {
         );
         if (response.success) {
             yield put(createCategorySuccess(response.data));
+            message.success("Create catgory success!")
         } 
     } catch (error) {
         yield put(createCategoryError(error));
+        message.error("Create catgory error!")
+
     }
 }
 
@@ -53,9 +71,13 @@ function* handleUpdateCategory(action) {
         );
         if (response.success) {
             yield put(updateCategorySuccess(response.data));
+            message.success("Update catgory success!")
+
         } 
     } catch (error) {
         yield put(updateCategoryError(error));
+        message.error("Update catgory error!")
+
     }
 }
 
@@ -67,15 +89,20 @@ function* handleDeleteCategory(action) {
         );
         if (response.success) {
             yield put(deleteCategorySuccess(response.data));
+            message.success("Delete category success!");
+
         } 
     } catch (error) {
         yield put(deleteCategoryError(error));
+        message.error("Delete category error!");
+
     }
 }
 
 
 export default function* CategorySaga() {
     yield takeLatest(getListCategory.type, handleGetListCategory);
+    yield takeLatest(searchCategory.type, handleSearchCategory);
     yield takeLatest(getDetailCategory.type, handleGetDatailCategory);
     yield takeLatest(createCategory.type, handleCreateCategory);
     yield takeLatest(updateCategory.type, handleUpdateCategory);

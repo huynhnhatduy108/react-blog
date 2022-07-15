@@ -4,6 +4,13 @@ const initialState = {
     isFetching: false,
     data: null,
     listTag: null,
+    listTagSearch:{
+        data:[],
+        limit:5,
+        page:1, 
+        total_page:0,
+        total_record:0,
+    },
     detailTag: null,
     errors: null,
 }
@@ -17,8 +24,29 @@ const TagSlice = createSlice({
             state.isFetching = false
             state.data = null
             state.listTag = null
+            state.listTagSearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
             state.detailTag = null
             state.errors = null
+        },
+
+        clearTagSearch(state){
+            state.listTagSearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
+        },
+
+        clearDetailTag(state){
+            state.detailTag = null
         },
 
         // list
@@ -38,6 +66,23 @@ const TagSlice = createSlice({
             state.errors = action.payload
         },
 
+        // search
+        searchTag(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        searchTagSuccess(state, action) {
+            state.isFetching = false
+            state.data = action.payload.data
+            state.listTagSearch = action.payload.data
+            state.errors = []
+        },
+        searchTagError(state, action) {
+            state.isFetching = false
+            state.data =null
+            state.errors = action.payload
+        },
+
         // detail
         getDetailTag(state, action) {
             state.isFetching = true
@@ -45,8 +90,8 @@ const TagSlice = createSlice({
         },
         getDetailTagSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.detailTag = action.payload
+            state.data = action.payload.data
+            state.detailTag = action.payload.data
             state.errors = []
         },
         getDetailTagError(state, action) {
@@ -107,10 +152,16 @@ const TagSlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStoreTag = TagSlice.actions.clearStoreTag;
+export const clearTagSearch = TagSlice.actions.clearTagSearch;
+export const clearDetailTag = TagSlice.actions.clearDetailTag;
 
 export const getListTag = TagSlice.actions.getListTag;
 export const getListTagSuccess = TagSlice.actions.getListTagSuccess;
 export const getListTagError = TagSlice.actions.getListTagError;
+
+export const searchTag = TagSlice.actions.searchTag;
+export const searchTagSuccess = TagSlice.actions.searchTagSuccess;
+export const searchTagError = TagSlice.actions.searchTagError;
 
 export const getDetailTag = TagSlice.actions.getDetailTag;
 export const getDetailTagSuccess = TagSlice.actions.getDetailTagSuccess;
@@ -129,7 +180,7 @@ export const deleteTagSuccess = TagSlice.actions.deleteTagSuccess;
 export const deleteTagError = TagSlice.actions.deleteTagError;
 
 // ************************** Store *******************************
-export const getTagSlice = (state) => state.Tag;
+export const getTagSlice = (state) => state.tag;
 
 const TagReducer = TagSlice.reducer;
 export default TagReducer;

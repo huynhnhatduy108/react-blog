@@ -33,10 +33,11 @@ const API = axios.create({
     withCredentials: true
 });
 
+const access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3OTMzNzQxLCJpYXQiOjE2NTc4NDczNDEsImp0aSI6ImY1OTVlOTFlN2I3ODRhYzNhZGYyNzFlMGZjZWYxZTYzIiwidXNlcl9pZCI6Mn0.PhtsJuIhEYV6ruN-TZP149CJqkgOOFrKmB8dO2QFg94"
 
 function execApi(method, url, data, params, headers) {
    
-    return API.request({method:method, url:url, data:data, params: params, headers:headers})
+    return API.request({method:method, url:url, data:data, params: params, headers:{Authorization:` Bear ${access_token}`,...headers}})
         .then((response) => {    
             if ("access_token" in response.headers) {
                 // if (getLocalItem('access_token')) {

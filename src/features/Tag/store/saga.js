@@ -1,8 +1,9 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
-import { apiCreateTag, apiDeleteTag, apiDetailTag, apiListTag, apiUpdateTag } from "../apiService/index";
-import { createTag, createTagError, createTagSuccess, deleteTag, deleteTagError, deleteTagSuccess, getDetailTag, getDetailTagError, getDetailTagSuccess, getListTag, getListTagError, getListTagSuccess, updateTag, updateTagError, updateTagSuccess } from "./slice";
+import { apiCreateTag, apiDeleteTag, apiDetailTag, apiListTag, apiSearchTag, apiUpdateTag } from "../apiService/index";
+import { createTag, createTagError, createTagSuccess, deleteTag, deleteTagError, deleteTagSuccess, getDetailTag, getDetailTagError, getDetailTagSuccess, getListTag, getListTagError, getListTagSuccess, getTagSlice, searchTag, searchTagError, searchTagSuccess, updateTag, updateTagError, updateTagSuccess } from "./slice";
 
 function* handleGetListTag(action) {
     try {
@@ -15,6 +16,20 @@ function* handleGetListTag(action) {
         } 
     } catch (error) {
         yield put(getListTagError(error));
+    }
+}
+
+function* handleSearchTag(action) {
+    try {
+        const response= yield call(
+            apiSearchTag,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(searchTagSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(searchTagError(error));
     }
 }
 
@@ -40,9 +55,15 @@ function* handleCreateTag(action) {
         );
         if (response.success) {
             yield put(createTagSuccess(response.data));
+            const tagStore = yield select(getTagSlice);
+            const {listTagSearch} = tagStore;
+            const {limit, page} = listTagSearch
+            yield put(searchTag({limit, page}));
+            message.success("Create tag success!");
         } 
     } catch (error) {
         yield put(createTagError(error));
+        message.error("Create tag success!");
     }
 }
 
@@ -54,9 +75,15 @@ function* handleUpdateTag(action) {
         );
         if (response.success) {
             yield put(updateTagSuccess(response.data));
+            const tagStore = yield select(getTagSlice);
+            const {listTagSearch} = tagStore;
+            const {limit, page} = listTagSearch
+            yield put(searchTag({limit, page}));
+            message.success("Update tag success!")
         } 
     } catch (error) {
         yield put(updateTagError(error));
+        message.error("Update tag error!");
     }
 }
 
@@ -68,15 +95,24 @@ function* handleDeleteTag(action) {
         );
         if (response.success) {
             yield put(deleteTagSuccess(response.data));
+            const tagStore = yield select(getTagSlice);
+            const {listTagSearch} = tagStore;
+            const {limit, page} = listTagSearch
+            yield put(searchTag({limit, page}));
+            message.success("Delete tag success!")
+
         } 
     } catch (error) {
         yield put(deleteTagError(error));
+        message.error("Delete tag error!");
+
     }
 }
 
 
 export default function* TagSaga() {
     yield takeLatest(getListTag.type, handleGetListTag);
+    yield takeLatest(searchTag.type, handleSearchTag);
     yield takeLatest(getDetailTag.type, handleGetDatailTag);
     yield takeLatest(createTag.type, handleCreateTag);
     yield takeLatest(updateTag.type, handleUpdateTag);

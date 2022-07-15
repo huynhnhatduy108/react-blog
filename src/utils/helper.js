@@ -4,6 +4,12 @@ export const convertObjKey = (dataForm)=>{
     return {}
 }
 
+export const FomatDate = (date) =>{
+  if (date) return date.format("DD/MM/YYYY");
+  return "";
+}
+
+
 export function convertToDate(dateTime) {
     const current_time = new Date(dateTime)
     current_time.setHours(0,0,0,0)

@@ -51,12 +51,12 @@ function AdminPage() {
                         </div>
                         <div className="admin__user-name">nhatduy</div>
                         <div className="admin__user-logout">
-                            <i onClick={()=>setIsLogin(!isLogin)} class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <i onClick={()=>setIsLogin(!isLogin)} className="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
                     </div>:
                     <div onClick={()=>setIsLogin(!isLogin)} className="admin__user">
                         <div className="" style={{cursor:"pointer"}}>
-                            Login <i style={{color:"#1890ff"}} class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>
+                            Login <i style={{color:"#1890ff"}} className="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>
                         </div>
                     </div>}
                 </div>

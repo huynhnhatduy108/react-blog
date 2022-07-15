@@ -585,7 +585,9 @@ function PostPage() {
                                                 onInit={(evt, editor) =>
                                                     (editorRef.current = editor)
                                                 }
+                                                cloudChannel='5-stable'
 
+                                                // tinymceScriptSrc="/path/to/tinymce.min.js"
                                                 apiKey="n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx"
                                                 initialValue=""
                                                 init={{
@@ -594,15 +596,14 @@ function PostPage() {
                                                     plugins: [
                                                         "advlist autolink lists link image charmap print preview anchor",
                                                         "searchreplace visualblocks code fullscreen",
-                                                        "insertdatetime media table paste code help wordcount",
-                                                    ],
+                                                        "insertdatetime media table paste code help wordcount",                                                    ],
                                                     toolbar:
                                                         "undo redo | formatselect | " +
                                                         "bold italic backcolor | alignleft aligncenter " +
                                                         "alignright alignjustify | bullist numlist outdent indent | " +
-                                                        "removeformat | help",
+                                                        "removeformat | help ",
                                                     content_style:
-                                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                                                        "body { font-family:'Lexend Deca', sans-serif; font-size:14px ; color: rgba(0, 0, 0, 0.85); line-height: 1}",
                                                 }}
                                             />
                                         </Form.Item>

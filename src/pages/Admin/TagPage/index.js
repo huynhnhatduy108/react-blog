@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -16,33 +16,62 @@ import {
     Upload,
     Table,
     Tag,
+    Popconfirm 
 } from "antd";
 
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { clearDetailTag, createTag, deleteTag, getDetailTag, getTagSlice, searchTag, updateTag } from "../../../features/Tag/store/slice";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
-
 function TagPage() {
+    const [formTag, formSeachTag] = Form.useForm();
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-        total:20,
-    });
+    const tagStore = useSelector(getTagSlice);
+    const { isFetching, listTag, listTagSearch, detailTag, errors } = tagStore;
+    const {items, limit, page, total_page, total_record} = listTagSearch;
+    console.log("detailTag", detailTag);
+
+    useEffect(()=>{
+        dispatch(searchTag({limit:5, page:1}));
+    },[])
+
+    useEffect(()=>{
+        if(detailTag){
+            formTag.setFieldsValue(detailTag)
+        }
+    }, [detailTag])
 
     const handleTableChange = (newPagination, filters, sorter) => {
-        // fetchData({
-        //   sortField: sorter.field,
-        //   sortOrder: sorter.order,
-        //   pagination: newPagination,
-        //   ...filters,
-        // });
-        setPagination(newPagination)
-      };
+        const {current, pageSize} = newPagination;
+        dispatch(searchTag({limit:pageSize, page:current}));
+    };
 
+    const handleSearchTag = (values) => {
+        const {title_description} = values;
+        dispatch(searchTag({limit:limit, page:page, keyword:title_description}));
+    };
+
+    const handleGetInfoUser =(tag)=>{
+        dispatch(getDetailTag(tag.id))
+    }
+
+    const handleDeleteTag =(tag)=>{
+        dispatch(deleteTag(tag.id))
+    }
+
+    const handleSubmit = (values) => {
+        if(detailTag) {
+           dispatch(updateTag({...values, id: detailTag.id}))
+        }
+        else{
+            dispatch(createTag(values))
+        }
+    };
 
     const columns = [
         {
@@ -61,97 +90,31 @@ function TagPage() {
             dataIndex: "description",
             key: "description",
         },
-      //   {
-      //     title: "thumbnail",
-      //     dataIndex: "thumbnail",
-      //     key: "thumbnail",
-      //     render: (thumbnail) => <img src={thumbnail}/>,
-      //  },
         {
             title: "Action",
             key: "action",
             render: (_, record) => (
-                <Space size="middle">
-                     <Button type="primary">
-                        Update
-                    </Button>
-                    <Button  type="danger">
-                      Delete
-                    </Button>
+                <Space size="small">
+                    <Button onClick={()=>handleGetInfoUser(record)} size="small" type="primary">Update</Button>
+                    <Popconfirm
+                        title="Are you sure to delete this tag?"
+                        onConfirm={()=>handleDeleteTag(record)}
+                        onCancel={()=>{}}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button size="small" type="danger">Delete</Button>
+                    </Popconfirm>
+
                 </Space>
             ),
         },
     ];
-    const data = [
-        {
-            key: "1",
-            title: "John Brown",
-            slug: "aa-dcdc",
-            description:"scsc scv hdvv dvdvd vdvd",
-            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
-        },
-        {
-            key: "2",
-            title: "Jim Green",
-            slug: "saa-dcdc",
-            description:"scscs cvhdvc vcs scdv dvdv dvd",
-            thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-        },
-        {
-            key: "3",
-            title: "Joe Black",
-            slug: "saa-dcdc",
-            description: "Sidney No. 1 Lake Park",
-            thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-        },
-        {
-            key: "1",
-            title: "John Brown",
-            slug: "aa-dcdc",
-            description:"scsc scv hdvv dvdvd vdvd",
-            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
-        },
-        {
-            key: "2",
-            title: "Jim Green",
-            slug: "saa-dcdc",
-            description:"scscs cvhdvc vcs scdv dvdv dvd",
-            thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-        },
-        {
-            key: "3",
-            title: "Joe Black",
-            slug: "saa-dcdc",
-            description: "Sidney No. 1 Lake Park",
-            thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-        },
-        {
-            key: "1",
-            title: "John Brown",
-            slug: "aa-dcdc",
-            description:"scsc scv hdvv dvdvd vdvd",
-            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
-        },
-        {
-            key: "2",
-            title: "Jim Green",
-            slug: "saa-dcdc",
-            description:"scscs cvhdvc vcs scdv dvdv dvd",
-            thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-        },
-        {
-            key: "3",
-            title: "Joe Black",
-            slug: "saa-dcdc",
-            description: "Sidney No. 1 Lake Park",
-            thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-        },
-    ];
-
+  
     return (
         <div>
             <div className="grid wide">
-            <div className="admin__header">
+                <div className="admin__header">
                     <div className="admin__menu">
                         {adminRoutes.map((item, index) => (
                             <div key={index} className="admin__header-name">
@@ -161,43 +124,63 @@ function TagPage() {
                     </div>
                     <div className="admin__user">
                         <div className="admin__user-thumbnail">
-                            <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
+                            <img
+                                className="admin__user-img"
+                                src={
+                                    "https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"
+                                }
+                            />
                         </div>
-                        <div className="admin__user-name">
-                            nhatduy
-                        </div>
+                        <div className="admin__user-name">nhatduy</div>
                         <div className="admin__user-logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                  {/* List tag */}
-                  <div className="admin__list-post">LIST TAG</div>
-                    <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={20} sm={20} md={20} lg={20} xl={20}>
-                            <Input placeholder="Find by title, desciption" />
-                        </Col>
-                        <Col xs={4} sm={4} md={4} lg={4} xl={4}>
-                            <Button
-                                style={{ textAlign: "center" , width:"100%" }}
-                                type="primary"
-                                onClick={() => {}}
-                            >
-                                Seach
-                            </Button>                           
-                        </Col>
-                    </Row>
+                    {/* List tag */}
+                    <div className="admin__list-post">LIST TAG</div>
+                    <Form
+                        form={formSeachTag}
+                        name="formSeachTag"
+                        onFinish={handleSearchTag}
+                    >
+                        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                            <Col xs={20} sm={20} md={20} lg={20} xl={20}>
+                                <Form.Item noStyle>
+                                    <Form.Item name="title_description" noStyle>
+                                        <Input placeholder="Find by title, desciption" />
+                                    </Form.Item>
+                                </Form.Item>
+                            </Col>
+                            <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+                                <Button
+                                    style={{
+                                        textAlign: "center",
+                                        width: "100%",
+                                    }}
+                                    type="primary"
+                                    htmlType="submit"
+                                    onClick={() => {}}
+                                >
+                                    Seach
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
                     <Table
-                        pagination={pagination}
+                        pagination={{current: page,
+                                    pageSize: limit,
+                                    total: total_record}}
                         columns={columns}
-                        dataSource={data}
+                        dataSource={items}
                         loading={loading}
                         onChange={handleTableChange}
+                        rowKey="id"
                     />
                     <div className="admin__create-post">CREATE TAG</div>
-                    <Form>
+                    <Form form={formTag} onFinish={handleSubmit} name="formTag">
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <Row gutter={[16, 16]}>
@@ -208,19 +191,21 @@ function TagPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            // label="Title"
-                                            name="title"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        "Please input Title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"1. Title"}</label>
-                                            <Input placeholder="Title of tag" />
+                                            <Form.Item
+                                                name="title"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Please input Title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Title of tag" />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -230,19 +215,21 @@ function TagPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            // label="Parent"
-                                            name="meta_title"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input Meta Title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"2. Meta Title"}</label>
-                                            <Input placeholder="Meta Title of tag" />
+                                            <Form.Item
+                                                noStyle
+                                                name="meta_title"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input Meta Title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Meta Title of tag" />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -254,34 +241,46 @@ function TagPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="description"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        "Please input description!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"3. Description"}</label>
-                                            <TextArea
-                                                rows={4}
-                                                placeholder="description of tag"
-                                            />
+                                            <Form.Item
+                                                noStyle
+                                                name="description"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input description!",
+                                                    },
+                                                ]}
+                                            >
+                                                <TextArea
+                                                    rows={4}
+                                                    placeholder="description of tag"
+                                                />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
-                        <Button type="primary" onClick={() => {}}>
-                            Summit
+                        <Button
+                            style={{marginRight:"10px"}}
+                            type="primary"
+                            htmlType="submit"
+                            onClick={() => {}}
+                        >
+                            {detailTag?"Update":"Create"}
+                        </Button>
+                        <Button
+                            danger 
+                            onClick={() =>{formTag.resetFields(); dispatch(clearDetailTag())}}
+                        >
+                            {"Reset"}
                         </Button>
                     </Form>
-                    
                 </div>
                 <div style={{ padding: 40 }}></div>
-
             </div>
         </div>
     );

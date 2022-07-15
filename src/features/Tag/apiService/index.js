@@ -1,23 +1,29 @@
-// import {formatPath, getQueryString} from "utils";
-// import {apiGet, apiPost} from "utils/api";
+import { api, METHOD } from "../../../utils/api";
+import { formatPath, getQueryString } from "../../../utils/helper";
 import TagPaths from "./path";
 
 export const apiListTag = (param) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  // return api(METHOD.POST,formatPath(TagPaths.Detail, id));
+}
+
+export const apiSearchTag = (params) => {
+  const queryParams = getQueryString(params);
+  return api(METHOD.GET,formatPath(TagPaths.Search, queryParams));
 }
 
 export const apiDetailTag = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.GET,formatPath(TagPaths.Detail, id));
 }
 
 export const apiCreateTag = (data) => {
-  // return apiGet(formatPath(PaperPaths., id));
+  return api(METHOD.POST,formatPath(TagPaths.Create),data);
 }
 
-export const apiUpdateTag = (id) => {
-  // return apiGet(formatPath(PaperPaths., id));
+export const apiUpdateTag = (data) => {
+  console.log('dataUpdate', data);
+  return api(METHOD.PUT,formatPath(TagPaths.Update, data.id),data);
 }
 
 export const apiDeleteTag = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.DELETE,formatPath(TagPaths.Detele, id));
 }

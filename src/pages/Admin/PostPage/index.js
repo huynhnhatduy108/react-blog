@@ -3,10 +3,27 @@ import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-import {Col, Row,Button, Checkbox,Form,Input,DatePicker,Space,Select,message,Upload,Table,Tag,} from "antd";
+import {
+    Col,
+    Row,
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    DatePicker,
+    Space,
+    Select,
+    message,
+    Upload,
+    Table,
+    Tag,
+    Popconfirm,
+} from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
+import ReactQuill from "react-quill"; // ES6
+import 'react-quill/dist/quill.snow.css';
 
 import DashboardPage from "../PostPage";
 import CategoryPage from "../CategoryPage";
@@ -15,29 +32,32 @@ import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
 import {
+    createPost,
     getDetailPostById,
     getListPost,
     getPostSlice,
 } from "../../../features/Post/store/slice";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
+import { FomatDate } from "../../../utils/helper";
 
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
 function PostPage() {
-    const [form] = Form.useForm();
+    const [formPost, formSeachPost] = Form.useForm();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total: 9,
+    });
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const dispatch = useDispatch();
     const editorRef = useRef(null);
     const postStore = useSelector(getPostSlice);
     const { isFetching, listPost, detailPost, errors } = postStore;
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-        total: 9,
-    });
+    const [content, setContent] = useState("");
     console.log("listPost", listPost);
 
     useEffect(() => {
@@ -45,11 +65,10 @@ function PostPage() {
         // dispatch(getDetailPostById(1));
     }, []);
 
-
     const handleUploadFile = async (info) => {
         await setLoading(true);
         const res = await uploadFileCloudinary(info.file, "my-uploads");
-        await setLoading(true);
+        await setLoading(false);
         if (res.url) {
             setImageUrl(res.url);
         }
@@ -65,13 +84,28 @@ function PostPage() {
         setPagination(newPagination);
     };
 
-    const handleSubmit =(values)=>{
-        console.log(values);
-        console.log("form", form.getFieldsValue());
-        if (editorRef.current) {
-        }
+    const handleSearchPost = (values) => {
+        const {} = values;
 
-    }
+    };
+
+    const handleSubmit = (values) => {
+        const { title,category, content, meta_title, parent, published, sumary, tag } = values;
+        const data ={
+                        title,
+                        category:category??[], 
+                        content, 
+                        meta_title, 
+                        parent, 
+                        published:published?published.format("DD/MM/YYYY"):moment(new Date()).format("DD/MM/YYYY"), 
+                        sumary, 
+                        tag:tag??[], 
+                        thumbnail:imageUrl}
+        console.log("data", data);
+
+        dispatch(createPost(data))
+
+    };
 
     const uploadButton = (
         <div>
@@ -280,52 +314,89 @@ function PostPage() {
                 <div>
                     {/* List Post */}
                     <div className="admin__list-post">LIST POST</div>
-                    <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
-                            <Input placeholder="Find by title, content" />
-                        </Col>
-                        <Col xs={24} sm={24} md={12} lg={16} xl={16}>
-                            <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose category"
+                    <Form form={formSeachPost} onFinish={handleSearchPost}>
+                        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                            <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                                <Form.Item noStyle>
+                                    <Form.Item name="title_or_content" noStyle>
+                                        <Input placeholder="Find by title, content" />
+                                    </Form.Item>
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={16} xl={16}>
+                                <Row gutter={[16, 16]}>
+                                    <Col
+                                        xs={24}
+                                        sm={24}
+                                        md={10}
+                                        lg={10}
+                                        xl={10}
                                     >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-                                    <Select
-                                        mode="multiple"
-                                        style={{ width: "100%" }}
-                                        placeholder="Choose tags"
+                                        <Form.Item noStyle>
+                                            <Form.Item name="category" noStyle>
+                                                <Select
+                                                    mode="multiple"
+                                                    style={{ width: "100%" }}
+                                                    placeholder="Choose category"
+                                                >
+                                                    <Option value="jack">
+                                                        Jack
+                                                    </Option>
+                                                    <Option value="lucy">
+                                                        Lucy
+                                                    </Option>
+                                                    <Option value="Yiminghe">
+                                                        yiminghe
+                                                    </Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        xs={24}
+                                        sm={24}
+                                        md={10}
+                                        lg={10}
+                                        xl={10}
                                     >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Col>
-                                <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-                                    <Button
-                                        style={{
-                                            textAlign: "center",
-                                            width: "100%",
-                                        }}
-                                        type="primary"
-                                        onClick={() => {}}
-                                    >
-                                        Seach
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                                        <Form.Item noStyle>
+                                            <Form.Item name="tag" noStyle>
+                                                <Select
+                                                    mode="multiple"
+                                                    style={{ width: "100%" }}
+                                                    placeholder="Choose tags"
+                                                >
+                                                    <Option value="jack">
+                                                        Jack
+                                                    </Option>
+                                                    <Option value="lucy">
+                                                        Lucy
+                                                    </Option>
+                                                    <Option value="Yiminghe">
+                                                        yiminghe
+                                                    </Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+                                        <Button
+                                            style={{
+                                                textAlign: "center",
+                                                width: "100%",
+                                            }}
+                                            type="primary"
+                                            htmlType="submit"
+                                            // onClick={() => {}}
+                                        >
+                                            Seach
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Form>
+
                     <Table
                         pagination={pagination}
                         columns={columns}
@@ -336,7 +407,7 @@ function PostPage() {
 
                     {/* Create post */}
                     <div className="admin__create-post">CREATE POST</div>
-                    <Form form={form}  onFinish={handleSubmit}>
+                    <Form form={formPost} onFinish={handleSubmit}>
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <Row gutter={[16, 16]}>
@@ -347,21 +418,21 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                    <Form.Item>
-                                        <Form.Item
-                                        noStyle
-                                            name="title"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input Title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"1. Title"}</label>
-                                            <Input placeholder="Title of post" />
-                                        </Form.Item>
+                                            <Form.Item
+                                                noStyle
+                                                name="title"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Please input Title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Title of post" />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -371,20 +442,22 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="parent"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input Title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"2. Parent"}</label>
-                                            <Input placeholder="Parent of post" />
+                                            <Form.Item
+                                                name="parent"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input Title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Parent of post" />
+                                            </Form.Item>
                                         </Form.Item>
-                                        
                                     </Col>
                                 </Row>
                                 <Row gutter={[16, 16]}>
@@ -395,18 +468,21 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="meta_title"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input meta_title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"3. Meta-Title"}</label>
-                                            <Input placeholder="Meta-Title of post" />
+                                            <Form.Item
+                                                name="meta_title"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input meta_title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Meta-Title of post" />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -416,30 +492,35 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="published"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input published!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"4. Published at"}</label>
                                             <Space
-                                                direction="vertical"
-                                                style={{ width: "100%" }}
-                                            >
+                                                    direction="vertical"
+                                                    style={{ width: "100%" }}
+                                                >
+                                            <Form.Item
+                                                name="published"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input published!",
+                                                    },
+                                                ]}
+                                            >                               
                                                 <DatePicker
                                                     showTime
                                                     defaultValue={moment(
-                                                        "2015/01/01",
+                                                        new Date(),
                                                         dateFormat
                                                     )}
-                                                    style={{ width: "100%" }}
+                                                    style={{
+                                                        width: "100%",
+                                                    }}
                                                     placeholder="Date published at of post"
                                                 />
+                                            </Form.Item>
                                             </Space>
                                         </Form.Item>
                                     </Col>
@@ -452,45 +533,51 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="category"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input category!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"5. Category"}</label>
-                                            <Select placeholder="Category of post">
-                                                <Option value="jack">
-                                                    Jack
-                                                </Option>
-                                                <Option value="lucy">
-                                                    Lucy
-                                                </Option>
-                                                <Option value="Yiminghe">
-                                                    yiminghe
-                                                </Option>
-                                            </Select>
+                                            <Form.Item
+                                                name="category"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input category!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select mode="multiple" placeholder="Choose category of post">
+                                                    <Option value="jack">
+                                                        Jack
+                                                    </Option>
+                                                    <Option value="lucy">
+                                                        Lucy
+                                                    </Option>
+                                                    <Option value="Yiminghe">
+                                                        yiminghe
+                                                    </Option>
+                                                </Select>
+                                            </Form.Item>
                                         </Form.Item>
 
-                                        <Form.Item
-                                            name="sumary"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input sumary!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"7. Sumary"}</label>
-                                            <TextArea
-                                                rows={7}
-                                                placeholder="Sumary of post"
-                                            />
+                                            <Form.Item
+                                                name="sumary"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input sumary!",
+                                                    },
+                                                ]}
+                                            >
+                                                <TextArea
+                                                    rows={7}
+                                                    placeholder="Sumary of post"
+                                                />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -500,65 +587,72 @@ function PostPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                    name="tag"
-                                    rules={[
-                                        {
-                                            required: false,
-                                            message:
-                                                "Please input tag!",
-                                        },
-                                    ]}
-                                >
-                                    <label>{"6. Tag"}</label>
-                                    <Select
-                                        mode="multiple"
-                                        placeholder="Tag of post"
-                                    >
-                                        <Option value="jack">
-                                            Jack
-                                        </Option>
-                                        <Option value="lucy">
-                                            Lucy
-                                        </Option>
-                                        <Option value="Yiminghe">
-                                            yiminghe
-                                        </Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                            name="thumbnail"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input thumbnail!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"8. thumbnail"}</label>
-                                            <Upload
-                                                name="avatar"
-                                                listType="picture-card"
-                                                className="thumbnail-post-upload"
-                                                showUploadList={false}
-                                                beforeUpload={() => false}
-                                                onChange={handleUploadFile}
+                                        <Form.Item>
+                                            <label>{"6. Tag"}</label>
+                                            <Form.Item
+                                                noStyle
+                                                name="tag"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input tag!",
+                                                    },
+                                                ]}
                                             >
-                                                {imageUrl ? (
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt="avatar"
-                                                        style={{
-                                                            width: "100%",
-                                                            height: "100%",
-                                                            objectFit: "cover",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    uploadButton
-                                                )}
-                                            </Upload>
+                                                <Select
+                                                    mode="multiple"
+                                                    placeholder="Choose tag of post"
+                                                >
+                                                    <Option value="jack">
+                                                        Jack
+                                                    </Option>
+                                                    <Option value="lucy">
+                                                        Lucy
+                                                    </Option>
+                                                    <Option value="Yiminghe">
+                                                        yiminghe
+                                                    </Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </Form.Item>
+                                        <Form.Item>
+                                            <label>{"8. thumbnail"}</label>
+                                            <Form.Item
+                                                name="thumbnail"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input thumbnail!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Upload
+                                                    name="avatar"
+                                                    listType="picture-card"
+                                                    className="thumbnail-post-upload"
+                                                    showUploadList={false}
+                                                    beforeUpload={() => false}
+                                                    onChange={handleUploadFile}
+                                                >
+                                                    {imageUrl ? (
+                                                        <img
+                                                            src={imageUrl}
+                                                            alt="avatar"
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "100%",
+                                                                objectFit:
+                                                                    "cover",
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        uploadButton
+                                                    )}
+                                                </Upload>
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -570,18 +664,20 @@ function PostPage() {
                                         lg={24}
                                         xl={24}
                                     >
-                                        <Form.Item
-                                            name="content"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input content!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item>
                                             <label>{"9. Content"}</label>
-                                            <Editor
+                                            <Form.Item
+                                                noStyle
+                                                name="content"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Please input content!",
+                                                    },
+                                                ]}
+                                            >
+                                                {/* <Editor
                                                 onInit={(evt, editor) =>
                                                     (editorRef.current = editor)
                                                 }
@@ -602,11 +698,74 @@ function PostPage() {
                                                         "alignright alignjustify | bullist numlist outdent indent | " +
                                                         "removeformat | help",
                                                     content_style:
-                                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                                                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; color: rgba(0, 0, 0, 0.85);}",
                                                 }}
-                                            />
+                                            /> */}
+                                                <ReactQuill
+                                                    theme={"snow"}
+                                                    placeholder={
+                                                        "Write something..."
+                                                    }
+                                                    modules={{
+                                                        toolbar: [
+                                                            [
+                                                                {
+                                                                    header: [
+                                                                        1,
+                                                                        2,
+                                                                        false,
+                                                                    ],
+                                                                },
+                                                                { font: [] },
+                                                            ],
+                                                            [
+                                                                "bold",
+                                                                "italic",
+                                                                "underline",
+                                                                "strike",
+                                                                "blockquote",
+                                                            ],
+                                                            [
+                                                                {
+                                                                    list: "ordered",
+                                                                },
+                                                                {
+                                                                    list: "bullet",
+                                                                },
+                                                                {
+                                                                    indent: "-1",
+                                                                },
+                                                                {
+                                                                    indent: "+1",
+                                                                },
+                                                            ],
+                                                            [
+                                                                "link",
+                                                                "image",
+                                                                "video",
+                                                            ],
+                                                            ["clean"],
+                                                        ],
+                                                    }}
+                                                    formats={[
+                                                        "header",
+                                                        "font",
+                                                        "size",
+                                                        "bold",
+                                                        "italic",
+                                                        "underline",
+                                                        "strike",
+                                                        "blockquote",
+                                                        "list",
+                                                        "bullet",
+                                                        "indent",
+                                                        "link",
+                                                        "image",
+                                                        "video",
+                                                    ]}
+                                                />
+                                            </Form.Item>
                                         </Form.Item>
-                                       
                                     </Col>
                                 </Row>
                             </Col>

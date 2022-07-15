@@ -4,6 +4,13 @@ const initialState = {
     isFetching: false,
     data: null,
     listCategory: null,
+    listCategorySearch:{
+        data:[],
+        limit:5,
+        page:1, 
+        total_page:0,
+        total_record:0,
+    },
     detailCategory: null,
     errors: null,
 }
@@ -17,8 +24,29 @@ const CategorySlice = createSlice({
             state.isFetching = false
             state.data = null
             state.listCategory = null
+            state.listCategorySearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
             state.detailCategory = null
             state.errors = null
+        },
+
+        clearCategorySearch(state){
+            state.listCategorySearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
+        },
+
+        clearDetailCategory(state){
+            state.detailCategory = null
         },
 
         // list
@@ -33,6 +61,22 @@ const CategorySlice = createSlice({
             state.errors = []
         },
         getListCategoryError(state, action) {
+            state.isFetching = false
+            state.data =null
+            state.errors = action.payload
+        },
+
+        // search
+        searchCategory(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        searchCategorySuccess(state, action) {
+            state.isFetching = false
+            state.data = action.payload
+            state.errors = []
+        },
+        searchCategoryError(state, action) {
             state.isFetching = false
             state.data =null
             state.errors = action.payload
@@ -111,6 +155,10 @@ export const clearStoreCategory = CategorySlice.actions.clearStoreCategory;
 export const getListCategory = CategorySlice.actions.getListCategory;
 export const getListCategorySuccess = CategorySlice.actions.getListCategorySuccess;
 export const getListCategoryError = CategorySlice.actions.getListCategoryError;
+
+export const searchCategory = CategorySlice.actions.searchCategory;
+export const searchCategorySuccess = CategorySlice.actions.searchCategorySuccess;
+export const searchCategoryError = CategorySlice.actions.searchCategoryError;
 
 export const getDetailCategory = CategorySlice.actions.getDetailCategory;
 export const getDetailCategorySuccess = CategorySlice.actions.getDetailCategorySuccess;

@@ -75,12 +75,7 @@ function PostPage() {
     };
 
     const handleTableChange = (newPagination, filters, sorter) => {
-        // fetchData({
-        //   sortField: sorter.field,
-        //   sortOrder: sorter.order,
-        //   pagination: newPagination,
-        //   ...filters,
-        // });
+
         setPagination(newPagination);
     };
 

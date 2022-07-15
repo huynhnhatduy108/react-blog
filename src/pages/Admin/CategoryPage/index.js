@@ -16,22 +16,25 @@ import {
     Upload,
     Table,
     Tag,
+    Popconfirm,
 } from "antd";
 import "./style.css";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
+import { useDispatch, useSelector } from "react-redux";
+import { clearDetailCategory, createCategory, deleteCategory, getCategorySlice, getDetailCategory, searchCategory, updateCategory } from "../../../features/Category/store/slice";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
 function CategoryPage() {
+    const [formCategory, formSeachCategory] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-        total:20,
-    });
+    const dispatch = useDispatch();
+    const categoryStore = useSelector(getCategorySlice);
+    const { isFetching, listTag, listCategorySearch, detailCategory, errors } = categoryStore;
+    const {items, limit, page, total_page, total_record} = listCategorySearch;
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -43,15 +46,33 @@ function CategoryPage() {
     };
 
     const handleTableChange = (newPagination, filters, sorter) => {
-        // fetchData({
-        //   sortField: sorter.field,
-        //   sortOrder: sorter.order,
-        //   pagination: newPagination,
-        //   ...filters,
-        // });
-        setPagination(newPagination)
+        const {current, pageSize} = newPagination;
+        dispatch(searchCategory({limit:pageSize, page:current}));
       };
 
+    const handleSearchCategory = (values) => {
+        console.log('values', values);
+        const {title_description} = values;
+        dispatch(searchCategory({limit:limit, page:page, keyword:title_description}));
+    };
+
+    const handleGetDetailCategory =(category)=>{
+        dispatch(getDetailCategory(category.id))
+    }
+
+    const handleDeleteCategory =(category)=>{
+        dispatch(deleteCategory(category.id))
+    }
+
+    const handleSubmit = (values) => {
+        console.log('values', values);
+        if(detailCategory) {
+           dispatch(updateCategory({...values, id: detailCategory.id}))
+        }
+        else{
+            dispatch(createCategory(values))
+        }
+    };
 
     const uploadButton = (
         <div>
@@ -93,40 +114,25 @@ function CategoryPage() {
           title: "Action",
           key: "action",
           render: (_, record) => (
-              <Space size="middle">
-                   <Button type="primary">
+              <Space size="small">
+                   <Button type="primary" onClick={()=>handleGetDetailCategory(record)} >
                       Update
                   </Button>
-                  <Button  type="danger">
-                    Delete
-                  </Button>
+                  <Popconfirm
+                        title="Are you sure to delete this category?"
+                        onConfirm={()=>handleDeleteCategory(record)}
+                        onCancel={()=>{}}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                  <Button  type="danger">Delete</Button>
+                  </Popconfirm>
+
               </Space>
           ),
       },
   ];
-  const data = [
-      {
-          key: "1",
-          title: "John Brown",
-          slug: "aa-dcdc",
-          description:"scsc scv hdvv dvdvd vdvd",
-          thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
-      },
-      {
-          key: "2",
-          title: "Jim Green",
-          slug: "saa-dcdc",
-          description:"scscs cvhdvc vcs scdv dvdv dvd",
-          thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-      },
-      {
-          key: "3",
-          title: "Joe Black",
-          slug: "saa-dcdc",
-          description: "Sidney No. 1 Lake Park",
-          thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-      },
-  ];
+
 
     return (
         <div>
@@ -147,7 +153,7 @@ function CategoryPage() {
                               nhatduy
                           </div>
                           <div className="admin__user-logout">
-                              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                              <i className="fa-solid fa-arrow-right-from-bracket"></i>
                           </div>
                       </div>
                   </div>
@@ -155,30 +161,44 @@ function CategoryPage() {
                 <div>
                     {/* List category */}
                     <div className="admin__list-post">LIST CATEGORY</div>
+                    <Form
+                        form={formSeachCategory}
+                        name="formSeachCategory"
+                        onFinish={handleSearchCategory}
+                    >
                     <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
                         <Col xs={20} sm={20} md={20} lg={20} xl={20}>
-                            <Input placeholder="Find by title, description" />
+                            <Form.Item noStyle>
+                                <Form.Item name="title_description" noStyle>
+                                    <Input placeholder="Find by title, desciption" />
+                                </Form.Item>
+                            </Form.Item>
                         </Col>
                         <Col xs={4} sm={4} md={4} lg={4} xl={4}>
                             <Button
                                 style={{ textAlign: "center", width: "100%" }}
                                 type="primary"
+                                htmlType="submit"
                                 onClick={() => {}}
                             >
                                 Seach
                             </Button>
                         </Col>
                     </Row>
+                    </Form>
+
                     <Table
-                        pagination={pagination}
+                        pagination={{current: page,
+                            pageSize: limit,
+                            total: total_record}}
                         columns={columns}
-                        dataSource={data}
+                        dataSource={items}
                         loading={loading}
                         onChange={handleTableChange}
                     />
                     {/* Create category */}
                     <div className="admin__create-post">CREATE CATEGORY</div>
-                    <Form>
+                    <Form form={formCategory} onFinish={handleSubmit} name="formCategory">
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <Row gutter={[16, 16]}>
@@ -189,8 +209,10 @@ function CategoryPage() {
                                         lg={12}
                                         xl={12}
                                     >
+                                    <Form.Item >
+                                        <label>{"1. Title"}</label>
                                         <Form.Item
-                                            // label="Title"
+                                            noStyle
                                             name="title"
                                             rules={[
                                                 {
@@ -200,9 +222,10 @@ function CategoryPage() {
                                                 },
                                             ]}
                                         >
-                                            <label>{"1. Title"}</label>
                                             <Input placeholder="Title of post" />
                                         </Form.Item>
+                                    </Form.Item>
+
                                     </Col>
                                     <Col
                                         xs={24}
@@ -211,19 +234,21 @@ function CategoryPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            // label="Parent"
-                                            name="parent"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input Title!",
-                                                },
-                                            ]}
-                                        >
+                                        <Form.Item >
                                             <label>{"2. Parent"}</label>
-                                            <Input placeholder="Parent of post" />
+                                            <Form.Item
+                                                noStyle
+                                                name="parent"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input Title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Parent of post" />
+                                            </Form.Item>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -235,22 +260,43 @@ function CategoryPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            name="desciption"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        "Please input desciption!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"3. Desciption"}</label>
-                                            <TextArea
-                                                rows={4}
-                                                placeholder="Desciption of category"
-                                            />
+                                        <Form.Item >
+                                            <label>{"3. Meta-Title"}</label>
+                                            <Form.Item
+                                                noStyle
+                                                name="meta_title"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input meta_title!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Meta-Title of post" />
+                                            </Form.Item>
                                         </Form.Item>
+
+                                        <Form.Item >
+                                            <label>{"4. Desciption"}</label>
+                                            <Form.Item
+                                                noStyle
+                                                name="desciption"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input desciption!",
+                                                    },
+                                                ]}
+                                            >
+                                                <TextArea
+                                                    rows={4}
+                                                    placeholder="Desciption of category"
+                                                />
+                                            </Form.Item>
+                                        </Form.Item>
+
                                     </Col>
                                     <Col
                                         xs={24}
@@ -259,59 +305,57 @@ function CategoryPage() {
                                         lg={12}
                                         xl={12}
                                     >
-                                        <Form.Item
-                                            // label="Meta-Title"
-                                            name="meta_title"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input meta_title!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"4. Meta-Title"}</label>
-                                            <Input placeholder="Meta-Title of post" />
-                                        </Form.Item>
-                                        <Form.Item
-                                            name="thumbnail"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please input thumbnail!",
-                                                },
-                                            ]}
-                                        >
-                                            <label>{"5. thumbnail"}</label>
-                                            <Upload
-                                                name="avatar"
-                                                listType="picture-card"
-                                                className="thumbnail-category-upload"
-                                                showUploadList={false}
-                                                beforeUpload={()=>false}
-                                                onChange={handleUploadFile}
+                                       <Form.Item >
+                                         <label>{"5. thumbnail"}</label>
+                                            <Form.Item
+                                                noStyle
+                                                name="thumbnail"
+                                                rules={[
+                                                    {
+                                                        required: false,
+                                                        message:
+                                                            "Please input thumbnail!",
+                                                    },
+                                                ]}
                                             >
-                                                {imageUrl ? (
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt="avatar"
-                                                        style={{
-                                                            width: "100%",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    uploadButton
-                                                )}
-                                            </Upload>
+                                                <Upload
+                                                    name="avatar"
+                                                    listType="picture-card"
+                                                    className="thumbnail-category-upload"
+                                                    showUploadList={false}
+                                                    beforeUpload={()=>false}
+                                                    onChange={handleUploadFile}
+                                                >
+                                                    {imageUrl ? (
+                                                        <img
+                                                            src={imageUrl}
+                                                            alt="avatar"
+                                                            style={{
+                                                                width: "100%",
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        uploadButton
+                                                    )}
+                                                </Upload>
+                                            </Form.Item>
                                         </Form.Item>
+
                                     </Col>
                                 </Row>
                                
                             </Col>
                         </Row>
-                        <Button type="primary" onClick={() => {}}>
+                        <Button  style={{marginRight:"10px"}}
+                             type="primary" htmlType="submit" onClick={() => {}}>
                             Summit
+                        </Button>
+                        <Button
+                            danger 
+                            htmlType="reset"
+                            onClick={() =>dispatch(clearDetailCategory())}
+                        >
+                            {"Reset"}
                         </Button>
                     </Form>
                 </div>

@@ -1,27 +1,29 @@
 // import {formatPath, getQueryString} from "utils";
-// import {apiGet, apiPost} from "utils/api";
+// import {api, apiPost} from "utils/api";
+import { api, METHOD } from "../../../utils/api";
+import { formatPath } from "../../../utils/helper";
 import UserPaths from "./path";
 
 export const apiListUser = (param) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.GET,formatPath(UserPaths.List));
 }
 
 export const apiInfoUser = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.GET,formatPath(UserPaths.Detail, id));
 }
 
 export const apiCreateUser = (data) => {
-  // return apiGet(formatPath(PaperPaths., id));
+  return api(METHOD.GET,formatPath(UserPaths.Create),data);
 }
 
-export const apiUpdateUser = (id) => {
-  // return apiGet(formatPath(PaperPaths., id));
+export const apiUpdateUser = (data) => {
+  return api(METHOD.PUT,formatPath(UserPaths.Update, data.id), data);
 }
 
 export const apiDeleteUser = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+  return api(METHOD.DELETE,formatPath(UserPaths.Detele, id));
 }
 
-export const apiUpdateAvatarUser = (id) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+export const apiUpdateAvatarUser = (data) => {
+  return api(METHOD.PUT,formatPath(UserPaths.UpdateAvatar, data.id),data);
 }

@@ -4,6 +4,13 @@ const initialState = {
     isFetching: false,
     data: null,
     listUser: null,
+    listUserSearch:{
+        data:[],
+        limit:5,
+        page:1, 
+        total_page:0,
+        total_record:0,
+    },
     detailUser: null,
     errors: null,
 }
@@ -18,7 +25,28 @@ const UserSlice = createSlice({
             state.data = null
             state.listUser = null
             state.detailUser = null
+            state.listUserSearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
             state.errors = null
+        },
+
+        clearUserSearch(state){
+            state.listUserSearch = {
+                data:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
+        },
+
+        clearDetailUser(state){
+            state.detailUser = null
         },
 
         // list
@@ -123,6 +151,8 @@ const UserSlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStoreUser = UserSlice.actions.clearStoreUser;
+export const clearUserSearch = UserSlice.actions.clearUserSearch;
+export const clearDetailUser = UserSlice.actions.clearDetailUser;
 
 export const getListUser = UserSlice.actions.getListUser;
 export const getListUserSuccess = UserSlice.actions.getListUserSuccess;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -16,22 +16,35 @@ import {
     Upload,
     Table,
     Tag,
+    Popconfirm,
 } from "antd";
 import "./style.css";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
+import { clearDetailUser, createUser, deleteUser, getDetailUser, getUserSlice, updateUser } from "../../../features/User/store/slice";
+import { useDispatch, useSelector } from "react-redux";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
 function UserPage() {
+    const [formUser, formSeachUser] = Form.useForm(); 
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-        total:20,
-    });
+    const userStore = useSelector(getUserSlice);
+    const { isFetching, listUser, listUserSearch, detailUser, errors } = userStore;
+    const {items, limit, page, total_page, total_record} = listUserSearch;
+
+    useEffect(()=>{
+        // dispatch(searchUser({limit:5, page:1}));
+    },[])
+
+    useEffect(()=>{
+        // if(detailUser){
+        //     formUser.setFieldsValue(detailUser)
+        // }
+    },[detailUser])
 
 
     const handleUploadFile = async (info) => {
@@ -44,14 +57,39 @@ function UserPage() {
     };
 
     const handleTableChange = (newPagination, filters, sorter) => {
-        // fetchData({
-        //   sortField: sorter.field,
-        //   sortOrder: sorter.order,
-        //   pagination: newPagination,
-        //   ...filters,
-        // });
-        setPagination(newPagination)
-      };
+        const {current, pageSize} = newPagination;
+        // dispatch(searchUser({limit:pageSize, page:current}));
+    };
+
+    const handleGetDetailUser =(user)=>{
+        console.log("user", user);
+        // dispatch(getDetailUser(user.id))
+
+    }
+
+    const handleDeleteUser =(user)=>{
+        console.log("user", user);
+        // dispatch(deleteUser(user.id));
+
+    }
+
+    const handleSearchUser =(values)=>{
+        console.log("values", values);
+
+    }
+
+    const handleSubmit = (values) => {
+        console.log("values", values);
+
+        // if(detailUser) {
+        //    dispatch(updateUser({...values, id: detailUser.id}))
+        // }
+        // else{
+        //     dispatch(createUser(values))
+        // }
+    };
+
+
 
     const uploadButton = (
         <div>
@@ -101,14 +139,18 @@ function UserPage() {
           title: "Action",
           key: "action",
           render: (_, record) => (
-              <Space size="middle">
-                   <Button type="primary">
-                      Update
-                  </Button>
-                  <Button  type="danger">
-                    Delete
-                  </Button>
-              </Space>
+            <Space size="small">
+                <Button onClick={()=>handleGetDetailUser(record)} size="small" type="primary">Update</Button>
+                <Popconfirm
+                    title="Are you sure to delete this user?"
+                    onConfirm={()=>handleDeleteUser(record)}
+                    onCancel={()=>{}}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button size="small" type="danger">Delete</Button>
+                </Popconfirm>
+            </Space>
           ),
       },
   ];
@@ -192,7 +234,7 @@ function UserPage() {
                               nhatduy
                           </div>
                           <div className="admin__user-logout">
-                              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                              <i className="fa-solid fa-arrow-right-from-bracket"></i>
                           </div>
                       </div>
                   </div>
@@ -200,219 +242,272 @@ function UserPage() {
                 <div>
                     {/* List Post */}
                     <div className="admin__list-post">LIST USER</div>
-                    <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-                        <Col xs={18} sm={18} md={18} lg={18} xl={18}>
-                            <Input placeholder="Find by username, email, fullname" />
-                        </Col>
-                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-                            <Button
-                                style={{ textAlign: "center" , width:'100%'}}
-                                type="primary"
-                                onClick={() => {}}
-                            >
-                                Seach
-                            </Button>
-                        </Col>
-                    </Row>
+                    <Form
+                        form={formSeachUser}
+                        name="formSeachUser"
+                        onFinish={handleSearchUser}
+                    >
+                        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                            <Col xs={18} sm={18} md={18} lg={18} xl={18}>
+                                <Form.Item noStyle>
+                                    <Form.Item name="username_email" noStyle>
+                                        <Input placeholder="Find by username, email, fullname" />
+                                    </Form.Item>
+                                </Form.Item>
+                            </Col>
+                            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Button
+                                    style={{ textAlign: "center" , width:'100%'}}
+                                    type="primary"
+                                    htmlType="submit"
+                                    onClick={() => {}}
+                                >
+                                    Seach
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
+
                     <Table
-                         pagination={pagination}
+                         pagination={{current: page,
+                            pageSize: limit,
+                            total: total_record}}
                          columns={columns}
-                         dataSource={data}
+                         dataSource={items}
                          loading={loading}
                          onChange={handleTableChange}
                     />
                 </div>
                 {/* Create user */}
                 <div className="admin__create-post">CREATE USER</div>
-                <Form>
+                <Form form={formUser} onFinish={handleSubmit} name="formUser">
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                             <Row gutter={[16, 16]}>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        name="username"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please input username!",
-                                            },
-                                        ]}
-                                    >
+                                    <Form.Item>
                                         <label>{"1. Username"}</label>
-                                        <Input placeholder="Username of user" />
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        name="full_name"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input Name!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"2. Full name"}</label>
-                                        <Input placeholder="Name of user" />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        // label="Meta-Title"
-                                        name="email"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please input email!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"3. Email"}</label>
-                                        <Input placeholder="Email of user" />
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        // label="Published"
-                                        name="phone"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please input phone!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"4. Phone"}</label>
-                                        <Input placeholder="Phone of user" />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        name="intro"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please input intro!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"5. Intro"}</label>
-                                        <TextArea
-                                            rows={4}
-                                            placeholder="Intro of user"
-                                        />
-                                    </Form.Item>
-                                    <Form.Item
-                                        // label="Meta-Title"
-                                        name="password"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please input password!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"7. Password"}</label>
-                                        <Input placeholder="password of user" />
-                                    </Form.Item>
-
-                                    <Form.Item
-                                        // label="Meta-Title"
-                                        name="comfirm_password"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please input password again!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"Comfirm Password"}</label>
-                                        <Input placeholder="comfirm password of user" />
-                                    </Form.Item>
-
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                                    <Form.Item
-                                        name="profile"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: "Please input profile!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"8. Profile"}</label>
-                                        <TextArea
-                                            rows={4}
-                                            placeholder="profile of user"
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item
-                                        name="role"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please choose role!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"9. Role"}</label>
-                                        <Select defaultValue={"USER"} placeholder="Role of user">
-                                            <Option value="ADMIN">Admin</Option>
-                                            <Option value="USER">User</Option>
-                                            <Option value="OTHER">Orther</Option>
-                                        </Select>
-                                    </Form.Item>
-
-                                    <Form.Item
-                                        name="avatar"
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message:
-                                                    "Please input avatar!",
-                                            },
-                                        ]}
-                                    >
-                                        <label>{"10. Avatar"}</label>
-                                        <Upload
-                                            name="avatar"
-                                            listType="picture-card"
-                                            className="avatar-user-upload"
-                                            showUploadList={false}
-                                            beforeUpload={()=>false}
-                                            onChange={handleUploadFile}
+                                        <Form.Item
+                                            noStyle
+                                            name="username"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "Please input username!",
+                                                },
+                                            ]}
                                         >
-                                            {imageUrl ? (
-                                                <img
-                                                    src={imageUrl}
-                                                    alt="avatar"
-                                                    style={{
-                                                        width: "100%",
-                                                    }}
-                                                />
-                                            ) : (
-                                                uploadButton
-                                            )}
-                                        </Upload>
+                                            <Input placeholder="Username of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+
+                                </Col>
+                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                    <Form.Item>
+                                        <label>{"2. Full name"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="full_name"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message: "Please input Name!",
+                                                },
+                                            ]}
+                                        >
+                                            <Input placeholder="Name of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+
+                                </Col>
+                            </Row>
+                            <Row gutter={[16, 16]}>
+                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                    <Form.Item>
+                                        <label>{"3. Email"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="email"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input email!",
+                                                },
+                                            ]}
+                                        >
+                                            <Input placeholder="Email of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+
+                                </Col>
+                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                    <Form.Item>
+                                        <label>{"4. Phone"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="phone"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input phone!",
+                                                },
+                                            ]}
+                                        >
+                                            <Input placeholder="Phone of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={[16, 16]}>
+                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                    <Form.Item>
+                                        <label>{"5. Intro"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="intro"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        "Please input intro!",
+                                                },
+                                            ]}
+                                        >
+                                            <TextArea
+                                                rows={4}
+                                                placeholder="Intro of user"
+                                            />
+                                        </Form.Item>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <label>{"7. Password"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="password"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input password!",
+                                                },
+                                            ]}
+                                        >
+                                            <Input placeholder="password of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <label>{"Comfirm Password"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="comfirm_password"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input password again!",
+                                                },
+                                            ]}
+                                        >
+                                            <Input placeholder="comfirm password of user" />
+                                        </Form.Item>
+                                    </Form.Item>
+
+                                </Col>
+                                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                    <Form.Item>
+                                        <label>{"8. Profile"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="profile"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message: "Please input profile!",
+                                                },
+                                            ]}
+                                        >
+                                            <TextArea
+                                                rows={4}
+                                                placeholder="profile of user"
+                                            />
+                                        </Form.Item>
+                                    </Form.Item>
+                                    <Form.Item>
+                                    <label>{"9. Role"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="role"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please choose role!",
+                                                },
+                                            ]}
+                                        >
+                                            <Select defaultValue={"USER"} placeholder="Role of user">
+                                                <Option value="ADMIN">Admin</Option>
+                                                <Option value="USER">User</Option>
+                                                <Option value="OTHER">Orther</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                        <label>{"10. Avatar"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="avatar"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please input avatar!",
+                                                },
+                                            ]}
+                                        >
+                                            <Upload
+                                                name="avatar"
+                                                listType="picture-card"
+                                                className="avatar-user-upload"
+                                                showUploadList={false}
+                                                beforeUpload={()=>false}
+                                                onChange={handleUploadFile}
+                                            >
+                                                {imageUrl ? (
+                                                    <img
+                                                        src={imageUrl}
+                                                        alt="avatar"
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    uploadButton
+                                                )}
+                                            </Upload>
+                                        </Form.Item>
                                     </Form.Item>
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
-                    <Button type="primary" onClick={() => {}}>
-                        Summit
+                    <Button
+                        style={{marginRight:"10px"}}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {}}
+                    >
+                        {detailUser?"Update":"Create"}
+                    </Button>
+                    <Button
+                        danger 
+                        htmlType="reset"
+                        onClick={() =>dispatch(clearDetailUser())}
+                    >
+                        {"Reset"}
                     </Button>
                 </Form>
                 <div style={{ padding: 40 }}></div>

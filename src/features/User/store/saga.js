@@ -40,6 +40,7 @@ function* handleCreateUser(action) {
         );
         if (response.success) {
             yield put(createUserSuccess(response.data));
+            
         } 
     } catch (error) {
         yield put(createUserFailure(error));

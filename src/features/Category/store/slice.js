@@ -151,6 +151,8 @@ const CategorySlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStoreCategory = CategorySlice.actions.clearStoreCategory;
+export const clearCategorySearch = CategorySlice.actions.clearStoreCategory;
+export const clearDetailCategory = CategorySlice.actions.clearStoreCategory;
 
 export const getListCategory = CategorySlice.actions.getListCategory;
 export const getListCategorySuccess = CategorySlice.actions.getListCategorySuccess;
@@ -177,7 +179,7 @@ export const deleteCategorySuccess = CategorySlice.actions.deleteCategorySuccess
 export const deleteCategoryError = CategorySlice.actions.deleteCategoryError;
 
 // ************************** Store *******************************
-export const getCategorySlice = (state) => state.Category;
+export const getCategorySlice = (state) => state.category;
 
 const CategoryReducer = CategorySlice.reducer;
 export default CategoryReducer;

@@ -2,7 +2,7 @@ import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import { apiCreateCategory, apiDeleteCategory, apiDetailCategory, apiListCategory, apiSearchCategory, apiUpdateCategory } from "../apiService/index";
-import { createCategory, createCategoryError, createCategorySuccess, deleteCategory, deleteCategoryError, deleteCategorySuccess, getDetailCategory, getDetailCategoryError, getDetailCategorySuccess, getListCategory, getListCategoryError, getListCategorySuccess, searchCategory, searchCategoryError, searchCategorySuccess, updateCategory, updateCategoryError, updateCategorySuccess } from "./slice";
+import { createCategory, createCategoryError, createCategorySuccess, deleteCategory, deleteCategoryError, deleteCategorySuccess, getCategorySlice, getDetailCategory, getDetailCategoryError, getDetailCategorySuccess, getListCategory, getListCategoryError, getListCategorySuccess, searchCategory, searchCategoryError, searchCategorySuccess, updateCategory, updateCategoryError, updateCategorySuccess } from "./slice";
 
 function* handleGetListCategory(action) {
     try {
@@ -54,6 +54,10 @@ function* handleCreateCategory(action) {
         );
         if (response.success) {
             yield put(createCategorySuccess(response.data));
+            const categoryStore = yield select(getCategorySlice);
+            const {listCategorySearch} = categoryStore;
+            const {limit, page} = listCategorySearch
+            yield put(searchCategory({limit, page}));
             message.success("Create catgory success!")
         } 
     } catch (error) {
@@ -71,6 +75,10 @@ function* handleUpdateCategory(action) {
         );
         if (response.success) {
             yield put(updateCategorySuccess(response.data));
+            const categoryStore = yield select(getCategorySlice);
+            const {listCategorySearch} = categoryStore;
+            const {limit, page} = listCategorySearch
+            yield put(searchCategory({limit, page}));
             message.success("Update catgory success!")
 
         } 
@@ -89,6 +97,10 @@ function* handleDeleteCategory(action) {
         );
         if (response.success) {
             yield put(deleteCategorySuccess(response.data));
+            const categoryStore = yield select(getCategorySlice);
+            const {listCategorySearch} = categoryStore;
+            const {limit, page} = listCategorySearch
+            yield put(searchCategory({limit, page}));
             message.success("Delete category success!");
 
         } 

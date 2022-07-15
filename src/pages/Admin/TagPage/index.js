@@ -34,7 +34,6 @@ function TagPage() {
     const tagStore = useSelector(getTagSlice);
     const { isFetching, listTag, listTagSearch, detailTag, errors } = tagStore;
     const {items, limit, page, total_page, total_record} = listTagSearch;
-    console.log("detailTag", detailTag);
 
     useEffect(()=>{
         dispatch(searchTag({limit:5, page:1}));
@@ -56,7 +55,7 @@ function TagPage() {
         dispatch(searchTag({limit:limit, page:page, keyword:title_description}));
     };
 
-    const handleGetInfoUser =(tag)=>{
+    const handleGetDetailTag =(tag)=>{
         dispatch(getDetailTag(tag.id))
     }
 
@@ -95,7 +94,7 @@ function TagPage() {
             key: "action",
             render: (_, record) => (
                 <Space size="small">
-                    <Button onClick={()=>handleGetInfoUser(record)} size="small" type="primary">Update</Button>
+                    <Button onClick={()=>handleGetDetailTag(record)} size="small" type="primary">Update</Button>
                     <Popconfirm
                         title="Are you sure to delete this tag?"
                         onConfirm={()=>handleDeleteTag(record)}
@@ -274,7 +273,8 @@ function TagPage() {
                         </Button>
                         <Button
                             danger 
-                            onClick={() =>{formTag.resetFields(); dispatch(clearDetailTag())}}
+                            htmlType="reset"
+                            onClick={() =>dispatch(clearDetailTag())}
                         >
                             {"Reset"}
                         </Button>

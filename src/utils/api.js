@@ -33,7 +33,7 @@ const API = axios.create({
     withCredentials: true
 });
 
-const access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3OTMzNzQxLCJpYXQiOjE2NTc4NDczNDEsImp0aSI6ImY1OTVlOTFlN2I3ODRhYzNhZGYyNzFlMGZjZWYxZTYzIiwidXNlcl9pZCI6Mn0.PhtsJuIhEYV6ruN-TZP149CJqkgOOFrKmB8dO2QFg94"
+const access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4MDIwMjUxLCJpYXQiOjE2NTc5MzM4NTEsImp0aSI6ImJmZjdkMDZkMzBjZDRmYzI5MTk4OTU2NDA2YjNmODdhIiwidXNlcl9pZCI6MX0.WdJmVp5ATngGSzqsrmG3aUpr6nXyCZR8XIe4VssIv5g"
 
 function execApi(method, url, data, params, headers) {
    

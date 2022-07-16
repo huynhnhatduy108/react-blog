@@ -3,9 +3,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     isFetching: false,
     data: null,
-    listUser: null,
-    listUserSearch:{
-        data:[],
+    listUser:{
+        items:[],
         limit:5,
         page:1, 
         total_page:0,
@@ -23,10 +22,9 @@ const UserSlice = createSlice({
         clearStoreUser(state){
             state.isFetching = false
             state.data = null
-            state.listUser = null
             state.detailUser = null
-            state.listUserSearch = {
-                data:[],
+            state.listUser = {
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -35,9 +33,9 @@ const UserSlice = createSlice({
             state.errors = null
         },
 
-        clearUserSearch(state){
-            state.listUserSearch = {
-                data:[],
+        clearListUser(state){
+            state.listUser = {
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -56,8 +54,8 @@ const UserSlice = createSlice({
         },
         getListUserSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.listUser = action.payload
+            state.data = action.payload.data
+            state.listUser = action.payload.data
             state.errors = []
         },
         getListUserError(state, action) {
@@ -73,8 +71,8 @@ const UserSlice = createSlice({
         },
         getDetailUserSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.detailUser = action.payload
+            state.data = action.payload.data
+            state.detailUser = action.payload.data
             state.errors = []
         },
         getDetailUserError(state, action) {
@@ -151,7 +149,7 @@ const UserSlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStoreUser = UserSlice.actions.clearStoreUser;
-export const clearUserSearch = UserSlice.actions.clearUserSearch;
+export const clearListUser = UserSlice.actions.clearListUser;
 export const clearDetailUser = UserSlice.actions.clearDetailUser;
 
 export const getListUser = UserSlice.actions.getListUser;

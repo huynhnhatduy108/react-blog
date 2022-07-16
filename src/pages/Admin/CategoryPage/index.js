@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { adminRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -30,11 +30,22 @@ const dateFormat = "YYYY/MM/DD";
 function CategoryPage() {
     const [formCategory, formSeachCategory] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+    const [imageUrl, setImageUrl] = useState(null);
     const dispatch = useDispatch();
     const categoryStore = useSelector(getCategorySlice);
     const { isFetching, listTag, listCategorySearch, detailCategory, errors } = categoryStore;
     const {items, limit, page, total_page, total_record} = listCategorySearch;
+
+    useEffect(()=>{
+        dispatch(searchCategory({limit:5, page:1}));
+    },[])
+
+    useEffect(()=>{
+        if(detailCategory){
+            setImageUrl(detailCategory.thumbnail)
+            formCategory.setFieldsValue(detailCategory)
+        }
+    }, [detailCategory])
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -51,7 +62,6 @@ function CategoryPage() {
       };
 
     const handleSearchCategory = (values) => {
-        console.log('values', values);
         const {title_description} = values;
         dispatch(searchCategory({limit:limit, page:page, keyword:title_description}));
     };
@@ -65,12 +75,11 @@ function CategoryPage() {
     }
 
     const handleSubmit = (values) => {
-        console.log('values', values);
         if(detailCategory) {
-           dispatch(updateCategory({...values, id: detailCategory.id}))
+           dispatch(updateCategory({...values, thumbnail:imageUrl,id: detailCategory.id}))
         }
         else{
-            dispatch(createCategory(values))
+            dispatch(createCategory({...values,thumbnail:imageUrl}))
         }
     };
 
@@ -115,7 +124,7 @@ function CategoryPage() {
           key: "action",
           render: (_, record) => (
               <Space size="small">
-                   <Button type="primary" onClick={()=>handleGetDetailCategory(record)} >
+                   <Button size="small" type="primary" onClick={()=>handleGetDetailCategory(record)} >
                       Update
                   </Button>
                   <Popconfirm
@@ -125,7 +134,7 @@ function CategoryPage() {
                         okText="Yes"
                         cancelText="No"
                     >
-                  <Button  type="danger">Delete</Button>
+                  <Button size="small" type="danger">Delete</Button>
                   </Popconfirm>
 
               </Space>
@@ -170,7 +179,7 @@ function CategoryPage() {
                         <Col xs={20} sm={20} md={20} lg={20} xl={20}>
                             <Form.Item noStyle>
                                 <Form.Item name="title_description" noStyle>
-                                    <Input placeholder="Find by title, desciption" />
+                                    <Input placeholder="Find by title, description" />
                                 </Form.Item>
                             </Form.Item>
                         </Col>
@@ -193,8 +202,9 @@ function CategoryPage() {
                             total: total_record}}
                         columns={columns}
                         dataSource={items}
-                        loading={loading}
+                        // loading={loading}
                         onChange={handleTableChange}
+                        key="id"
                     />
                     {/* Create category */}
                     <div className="admin__create-post">CREATE CATEGORY</div>
@@ -278,21 +288,21 @@ function CategoryPage() {
                                         </Form.Item>
 
                                         <Form.Item >
-                                            <label>{"4. Desciption"}</label>
+                                            <label>{"4. description"}</label>
                                             <Form.Item
                                                 noStyle
-                                                name="desciption"
+                                                name="description"
                                                 rules={[
                                                     {
                                                         required: false,
                                                         message:
-                                                            "Please input desciption!",
+                                                            "Please input description!",
                                                     },
                                                 ]}
                                             >
                                                 <TextArea
                                                     rows={4}
-                                                    placeholder="Desciption of category"
+                                                    placeholder="description of category"
                                                 />
                                             </Form.Item>
                                         </Form.Item>
@@ -348,12 +358,12 @@ function CategoryPage() {
                         </Row>
                         <Button  style={{marginRight:"10px"}}
                              type="primary" htmlType="submit" onClick={() => {}}>
-                            Summit
+                            {detailCategory?"Update":"Create"}
                         </Button>
                         <Button
                             danger 
                             htmlType="reset"
-                            onClick={() =>dispatch(clearDetailCategory())}
+                            onClick={() =>{dispatch(clearDetailCategory());setImageUrl(null)}}
                         >
                             {"Reset"}
                         </Button>

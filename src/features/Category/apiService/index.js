@@ -1,13 +1,14 @@
 import { api, METHOD } from "../../../utils/api";
-import { formatPath } from "../../../utils/helper";
+import { formatPath, getQueryString } from "../../../utils/helper";
 import CategoryPaths from "./path";
 
 export const apiListCategory = () => {
   return api(METHOD.GET,formatPath(CategoryPaths.List));
 }
 
-export const apiSearchCategory = (param) => {
-  return api(METHOD.GET,formatPath(CategoryPaths.Search,param));
+export const apiSearchCategory = (params) => {
+  const queryParams = getQueryString(params);
+  return api(METHOD.GET,formatPath(CategoryPaths.Search, queryParams));
 }
 
 export const apiDetailCategory = (id) => {

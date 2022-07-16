@@ -5,7 +5,7 @@ const initialState = {
     data: null,
     listCategory: null,
     listCategorySearch:{
-        data:[],
+        items:[],
         limit:5,
         page:1, 
         total_page:0,
@@ -25,7 +25,7 @@ const CategorySlice = createSlice({
             state.data = null
             state.listCategory = null
             state.listCategorySearch = {
-                data:[],
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -37,7 +37,7 @@ const CategorySlice = createSlice({
 
         clearCategorySearch(state){
             state.listCategorySearch = {
-                data:[],
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -73,7 +73,8 @@ const CategorySlice = createSlice({
         },
         searchCategorySuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
+            state.data = action.payload.data
+            state.listCategorySearch = action.payload.data
             state.errors = []
         },
         searchCategoryError(state, action) {
@@ -89,8 +90,8 @@ const CategorySlice = createSlice({
         },
         getDetailCategorySuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.detailCategory = action.payload
+            state.data = action.payload.data
+            state.detailCategory = action.payload.data
             state.errors = []
         },
         getDetailCategoryError(state, action) {
@@ -151,8 +152,8 @@ const CategorySlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStoreCategory = CategorySlice.actions.clearStoreCategory;
-export const clearCategorySearch = CategorySlice.actions.clearStoreCategory;
-export const clearDetailCategory = CategorySlice.actions.clearStoreCategory;
+export const clearCategorySearch = CategorySlice.actions.clearCategorySearch;
+export const clearDetailCategory = CategorySlice.actions.clearDetailCategory;
 
 export const getListCategory = CategorySlice.actions.getListCategory;
 export const getListCategorySuccess = CategorySlice.actions.getListCategorySuccess;

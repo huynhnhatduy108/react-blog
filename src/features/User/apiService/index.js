@@ -1,11 +1,12 @@
 // import {formatPath, getQueryString} from "utils";
 // import {api, apiPost} from "utils/api";
 import { api, METHOD } from "../../../utils/api";
-import { formatPath } from "../../../utils/helper";
+import { formatPath, getQueryString } from "../../../utils/helper";
 import UserPaths from "./path";
 
-export const apiListUser = (param) => {
-  return api(METHOD.GET,formatPath(UserPaths.List));
+export const apiListUser = (params) => {
+  const queryParams = getQueryString(params);
+  return api(METHOD.GET,formatPath(UserPaths.List, queryParams));
 }
 
 export const apiInfoUser = (id) => {
@@ -13,7 +14,7 @@ export const apiInfoUser = (id) => {
 }
 
 export const apiCreateUser = (data) => {
-  return api(METHOD.GET,formatPath(UserPaths.Create),data);
+  return api(METHOD.POST,formatPath(UserPaths.Create),data);
 }
 
 export const apiUpdateUser = (data) => {

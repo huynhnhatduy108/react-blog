@@ -1,8 +1,9 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreateUser, apiDeleteUser, apiInfoUser, apiListUser, apiUpdateAvatarUser, apiUpdateUser } from "../apiService/index";
-import { createUser, createUserFailure, createUserSuccess, deleteUser, deleteUserFailure, deleteUserSuccess, getDetailUser, getDetailUserFailure, getDetailUserSuccess, getListUser, getListUserFailure, getListUserSuccess, updateAvatarUser, updateAvatarUserFailure, updateAvatarUserSuccess, updateUser, updateUserFailure, updateUserSuccess } from "./slice";
+import { createUser, createUserFailure, createUserSuccess, deleteUser, deleteUserFailure, deleteUserSuccess, getDetailUser, getDetailUserFailure, getDetailUserSuccess, getListUser, getListUserFailure, getListUserSuccess, getUserSlice, updateAvatarUser, updateAvatarUserFailure, updateAvatarUserSuccess, updateUser, updateUserFailure, updateUserSuccess } from "./slice";
 
 function* handleGetListUser(action) {
     try {
@@ -40,10 +41,15 @@ function* handleCreateUser(action) {
         );
         if (response.success) {
             yield put(createUserSuccess(response.data));
-            
+            const userStore = yield select(getUserSlice);
+            const {listUser} = userStore;
+            const {limit, page} = listUser
+            yield put(getListUser({limit, page}));
+            message.success("Create user success!");
         } 
     } catch (error) {
         yield put(createUserFailure(error));
+        message.error("Create user success!");
     }
 }
 
@@ -55,9 +61,16 @@ function* handleUpdateUser(action) {
         );
         if (response.success) {
             yield put(updateUserSuccess(response.data));
+            const userStore = yield select(getUserSlice);
+            const {listUser} = userStore;
+            const {limit, page} = listUser
+            yield put(getListUser({limit, page}));
+            message.success("Update user success!");
         } 
     } catch (error) {
         yield put(updateUserFailure(error));
+        message.error("Update user error!");
+
     }
 }
 
@@ -69,9 +82,16 @@ function* handleDeleteUser(action) {
         );
         if (response.success) {
             yield put(deleteUserSuccess(response.data));
+            const userStore = yield select(getUserSlice);
+            const {listUser} = userStore;
+            const {limit, page} = listUser
+            yield put(getListUser({limit, page}));
+            message.success("Delete user success!");
         } 
     } catch (error) {
         yield put(deleteUserFailure(error));
+        message.error("Delete user error!");
+
     }
 }
 

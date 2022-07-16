@@ -21,8 +21,9 @@ import {
 import "./style.css";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
-import { clearDetailUser, createUser, deleteUser, getDetailUser, getUserSlice, updateUser } from "../../../features/User/store/slice";
+import { clearDetailUser, createUser, deleteUser, getDetailUser, getListUser, getUserSlice, updateUser } from "../../../features/User/store/slice";
 import { useDispatch, useSelector } from "react-redux";
+import { PASSWORD_HIDDEN, ROLE_USER } from "../../../utils/constants";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -31,26 +32,27 @@ function UserPage() {
     const [formUser, formSeachUser] = Form.useForm(); 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+    const [imageUrl, setImageUrl] = useState(null);
     const userStore = useSelector(getUserSlice);
-    const { isFetching, listUser, listUserSearch, detailUser, errors } = userStore;
-    const {items, limit, page, total_page, total_record} = listUserSearch;
+    const { isFetching, listUser, detailUser, errors } = userStore;
+    const {items, limit, page, total_page, total_record} = listUser;
 
     useEffect(()=>{
-        // dispatch(searchUser({limit:5, page:1}));
+        dispatch(getListUser({limit:5, page:1}));
     },[])
 
     useEffect(()=>{
-        // if(detailUser){
-        //     formUser.setFieldsValue(detailUser)
-        // }
+        if(detailUser){
+            setImageUrl(detailUser.avatar_url)
+            formUser.setFieldsValue({...detailUser,password:PASSWORD_HIDDEN, comfirm_password:PASSWORD_HIDDEN})
+        }
     },[detailUser])
 
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
         const res = await uploadFileCloudinary(info.file, "my-uploads");
-        await setLoading(true);
+        await setLoading(false);
         if (res.url){
             setImageUrl(res.url)
         }
@@ -58,37 +60,31 @@ function UserPage() {
 
     const handleTableChange = (newPagination, filters, sorter) => {
         const {current, pageSize} = newPagination;
-        // dispatch(searchUser({limit:pageSize, page:current}));
+        dispatch(getListUser({limit:pageSize, page:current}));
     };
 
     const handleGetDetailUser =(user)=>{
-        console.log("user", user);
-        // dispatch(getDetailUser(user.id))
+        dispatch(getDetailUser(user.id))
 
     }
 
     const handleDeleteUser =(user)=>{
-        console.log("user", user);
-        // dispatch(deleteUser(user.id));
-
+        dispatch(deleteUser(user.id));
     }
 
     const handleSearchUser =(values)=>{
-        console.log("values", values);
-
+        const {username_email} = values;
+        dispatch(getListUser({limit:limit, page:page, keyword:username_email}));
     }
 
     const handleSubmit = (values) => {
-        console.log("values", values);
-
-        // if(detailUser) {
-        //    dispatch(updateUser({...values, id: detailUser.id}))
-        // }
-        // else{
-        //     dispatch(createUser(values))
-        // }
+        if(detailUser) {
+           dispatch(updateUser({...values, avatar_url:imageUrl, role:values.role??0, id: detailUser.id}))
+        }
+        else{
+            dispatch(createUser({...values, avatar_url:imageUrl, role:values.role??0}))
+        }
     };
-
 
 
     const uploadButton = (
@@ -125,8 +121,8 @@ function UserPage() {
         title: "Role",
         dataIndex: "role",
         key: "role",
-        render: (role)=>(<Tag color={role=="ADMIN"? "geekblue" : "green"} key={role}>
-                        {role.toUpperCase()}
+        render: (role)=>(<Tag color={role==1? "geekblue" : "green"} key={role}>
+                        {ROLE_USER[role].value}
                     </Tag>)
       },
       {
@@ -154,66 +150,6 @@ function UserPage() {
           ),
       },
   ];
-  const data = [
-      {
-          key: "1",
-          username:"johnbrown",
-          full_name: "John Brown",
-          phone:"0461944241",
-          role:"ADMIN",
-          avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYsviRv2XHdAXRCNnNknNl8K69vmw9hqhPQ&usqp=CAU" ,
-      },
-      {
-          key: "2",
-          username:"jimgreen",
-          full_name: "Jim Green",
-          phone:"0461944241",
-          role:"USER",
-          avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-      },
-      {
-          key: "3",
-          username:"joeblack",
-          full_name: "Joe Black",
-          phone: "0461944241",
-          role:"USER",
-          avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-      },
-
-      {
-        key: "2",
-        username:"jimgreen",
-        full_name: "Jim Green",
-        phone:"0461944241",
-        role:"USER",
-        avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-    },
-    {
-        key: "3",
-        username:"joeblack",
-        full_name: "Joe Black",
-        phone: "0461944241",
-        role:"USER",
-        avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-    },
-    {
-        key: "2",
-        username:"jimgreen",
-        full_name: "Jim Green",
-        phone:"0461944241",
-        role:"USER",
-        avatar_url:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlpvDL5s63lWuZM35sR4jgdQX_ly4QTBdTwpnJ5KNnBc62MeK8ZRCTHDc1ic3DYUS9KX8&usqp=CAU' ,
-    },
-    {
-        key: "3",
-        username:"joeblack",
-        full_name: "Joe Black",
-        phone: "0461944241",
-        role:"USER",
-        avatar_url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorW5mNrZbv0ozJ8mZ_u6OmM7rr__lwBc_egLGICefQ4H8tDOTlRf99m-9L1225F2k6QQ&usqp=CAU" ,
-    },
-  ];
-
 
     return (
         <div>
@@ -274,8 +210,9 @@ function UserPage() {
                             total: total_record}}
                          columns={columns}
                          dataSource={items}
-                         loading={loading}
+                        //  loading={loading}
                          onChange={handleTableChange}
+                         key="id"
                     />
                 </div>
                 {/* Create user */}
@@ -297,7 +234,7 @@ function UserPage() {
                                                 },
                                             ]}
                                         >
-                                            <Input placeholder="Username of user" />
+                                            <Input disabled={!detailUser?false:true} placeholder="Username of user" />
                                         </Form.Item>
                                     </Form.Item>
 
@@ -310,7 +247,7 @@ function UserPage() {
                                             name="full_name"
                                             rules={[
                                                 {
-                                                    required: false,
+                                                    required: true,
                                                     message: "Please input Name!",
                                                 },
                                             ]}
@@ -330,13 +267,13 @@ function UserPage() {
                                             name="email"
                                             rules={[
                                                 {
-                                                    required: false,
+                                                    required: true,
                                                     message:
                                                         "Please input email!",
                                                 },
                                             ]}
                                         >
-                                            <Input placeholder="Email of user" />
+                                            <Input disabled={!detailUser?false:true} placeholder="Email of user" />
                                         </Form.Item>
                                     </Form.Item>
 
@@ -369,7 +306,7 @@ function UserPage() {
                                             name="intro"
                                             rules={[
                                                 {
-                                                    required: true,
+                                                    required: false,
                                                     message:
                                                         "Please input intro!",
                                                 },
@@ -388,13 +325,13 @@ function UserPage() {
                                             name="password"
                                             rules={[
                                                 {
-                                                    required: false,
+                                                    required: detailUser?false:true,
                                                     message:
                                                         "Please input password!",
                                                 },
                                             ]}
                                         >
-                                            <Input placeholder="password of user" />
+                                            <Input disabled={!detailUser?false:true} type="password" placeholder="password of user" />
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item>
@@ -404,20 +341,37 @@ function UserPage() {
                                             name="comfirm_password"
                                             rules={[
                                                 {
-                                                    required: false,
+                                                    required: detailUser?false:true,
                                                     message:
                                                         "Please input password again!",
                                                 },
                                             ]}
                                         >
-                                            <Input placeholder="comfirm password of user" />
+                                            <Input disabled={!detailUser?false:true} type="password" placeholder="comfirm password of user" />
                                         </Form.Item>
                                     </Form.Item>
-
+                                    <Form.Item>
+                                    <label>{"9. Role"}</label>
+                                        <Form.Item
+                                            noStyle
+                                            name="role"
+                                            rules={[
+                                                {
+                                                    required: false,
+                                                    message:
+                                                        "Please choose role!",
+                                                },
+                                            ]}
+                                        >
+                                            <Select defaultValue={detailUser?.role??0} placeholder="Role of user">
+                                                {ROLE_USER.map((item, imdex)=><Option key={item.key} value={item.key}>{item.value}</Option>)}
+                                            </Select>
+                                        </Form.Item>
+                                    </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                     <Form.Item>
-                                        <label>{"8. Profile"}</label>
+                                        <label>{"6. Profile"}</label>
                                         <Form.Item
                                             noStyle
                                             name="profile"
@@ -434,32 +388,13 @@ function UserPage() {
                                             />
                                         </Form.Item>
                                     </Form.Item>
-                                    <Form.Item>
-                                    <label>{"9. Role"}</label>
-                                        <Form.Item
-                                            noStyle
-                                            name="role"
-                                            rules={[
-                                                {
-                                                    required: false,
-                                                    message:
-                                                        "Please choose role!",
-                                                },
-                                            ]}
-                                        >
-                                            <Select defaultValue={"USER"} placeholder="Role of user">
-                                                <Option value="ADMIN">Admin</Option>
-                                                <Option value="USER">User</Option>
-                                                <Option value="OTHER">Orther</Option>
-                                            </Select>
-                                        </Form.Item>
-                                    </Form.Item>
+                                  
 
                                     <Form.Item>
-                                        <label>{"10. Avatar"}</label>
+                                        <label>{"8. Avatar"}</label>
                                         <Form.Item
                                             noStyle
-                                            name="avatar"
+                                            name="avatar_url"
                                             rules={[
                                                 {
                                                     required: false,
@@ -505,7 +440,7 @@ function UserPage() {
                     <Button
                         danger 
                         htmlType="reset"
-                        onClick={() =>dispatch(clearDetailUser())}
+                        onClick={() =>{dispatch(clearDetailUser()); setImageUrl(null)}}
                     >
                         {"Reset"}
                     </Button>

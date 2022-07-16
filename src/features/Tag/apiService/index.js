@@ -3,7 +3,7 @@ import { formatPath, getQueryString } from "../../../utils/helper";
 import TagPaths from "./path";
 
 export const apiListTag = (param) => {
-  // return api(METHOD.POST,formatPath(TagPaths.Detail, id));
+  return api(METHOD.GET,formatPath(TagPaths.List));
 }
 
 export const apiSearchTag = (params) => {
@@ -20,7 +20,6 @@ export const apiCreateTag = (data) => {
 }
 
 export const apiUpdateTag = (data) => {
-  console.log('dataUpdate', data);
   return api(METHOD.PUT,formatPath(TagPaths.Update, data.id),data);
 }
 

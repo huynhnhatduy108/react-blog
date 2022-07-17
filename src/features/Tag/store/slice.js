@@ -3,9 +3,9 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     isFetching: false,
     data: null,
-    listTag: null,
+    listTag: [],
     listTagSearch:{
-        data:[],
+        items:[],
         limit:5,
         page:1, 
         total_page:0,
@@ -23,9 +23,9 @@ const TagSlice = createSlice({
         clearStoreTag(state){
             state.isFetching = false
             state.data = null
-            state.listTag = null
+            state.listTag = []
             state.listTagSearch = {
-                data:[],
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -35,9 +35,13 @@ const TagSlice = createSlice({
             state.errors = null
         },
 
+        clearListTag(state){
+            state.listTag = []
+        },
+
         clearTagSearch(state){
             state.listTagSearch = {
-                data:[],
+                items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
@@ -48,7 +52,7 @@ const TagSlice = createSlice({
         clearDetailTag(state){
             state.detailTag = null
         },
-
+       
         // list
         getListTag(state, action) {
             state.isFetching = true
@@ -56,8 +60,8 @@ const TagSlice = createSlice({
         },
         getListTagSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.listTag = action.payload
+            state.data = action.payload.data
+            state.listTag = action.payload.data
             state.errors = []
         },
         getListTagError(state, action) {
@@ -154,6 +158,7 @@ const TagSlice = createSlice({
 export const clearStoreTag = TagSlice.actions.clearStoreTag;
 export const clearTagSearch = TagSlice.actions.clearTagSearch;
 export const clearDetailTag = TagSlice.actions.clearDetailTag;
+export const clearListTag = TagSlice.actions.clearListTag;
 
 export const getListTag = TagSlice.actions.getListTag;
 export const getListTagSuccess = TagSlice.actions.getListTagSuccess;

@@ -3,7 +3,14 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     isFetching: false,
     data: null,
-    listPost: null,
+    listPost: [],
+    listPostPaging:{
+        items:[],
+        limit:5,
+        page:1, 
+        total_page:0,
+        total_record:0,
+    },
     detailPost: null,
     errors: null,
 }
@@ -16,9 +23,34 @@ const PostSlice = createSlice({
         clearStorePost(state){
             state.isFetching = false
             state.data = null
-            state.listPost = null
+            state.listPost = []
             state.detailPost = null
+            state.listPostPaging={
+                items:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
             state.errors = null
+        },
+
+        clearListPost(state){
+            state.listPost = []
+        },
+
+        clearListPostPaging(state){
+            state.listPostPaging={
+                items:[],
+                limit:5,
+                page:1, 
+                total_page:0,
+                total_record:0,
+            }
+        },
+
+        clearDetailPost(state){
+            state.detailPost = null
         },
 
         // list
@@ -28,8 +60,9 @@ const PostSlice = createSlice({
         },
         getListPostSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.listPost = action.payload
+            state.data = action.payload.data
+            state.listPost = action.payload.data
+            state.listPostPaging = action.payload.data
             state.errors = []
         },
         getListPostError(state, action) {
@@ -45,8 +78,8 @@ const PostSlice = createSlice({
         },
         getDetailPostByIdSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.detailPost = action.payload
+            state.data = action.payload.data
+            state.detailPost = action.payload.data
             state.errors = []
         },
         getDetailPostByIdError(state, action) {
@@ -62,8 +95,8 @@ const PostSlice = createSlice({
         },
         getDetailPostBySlugSuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.detailPost = action.payload
+            state.data = action.payload.data
+            state.detailPost = action.payload.data
             state.errors = []
         },
         getDetailPostBySlugError(state, action) {
@@ -124,6 +157,9 @@ const PostSlice = createSlice({
 
 // ************************** Action *******************************
 export const clearStorePost = PostSlice.actions.clearStorePost;
+export const clearListPost = PostSlice.actions.clearListPost;
+export const clearListPostPaging = PostSlice.actions.clearListPostPaging;
+export const clearDetailPost = PostSlice.actions.clearDetailPost;
 
 export const getListPost = PostSlice.actions.getListPost;
 export const getListPostSuccess = PostSlice.actions.getListPostSuccess;

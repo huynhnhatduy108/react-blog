@@ -93,8 +93,8 @@ function TagPage() {
             title: "Action",
             key: "action",
             render: (_, record) => (
-                <Space size="small">
-                    <Button onClick={()=>handleGetDetailTag(record)} size="small" type="primary">Update</Button>
+                <Space size="middle">
+                    <Button onClick={()=>handleGetDetailTag(record)} type="primary">Update</Button>
                     <Popconfirm
                         title="Are you sure to delete this tag?"
                         onConfirm={()=>handleDeleteTag(record)}
@@ -102,7 +102,7 @@ function TagPage() {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button size="small" type="danger">Delete</Button>
+                        <Button type="danger">Delete</Button>
                     </Popconfirm>
 
                 </Space>
@@ -178,7 +178,7 @@ function TagPage() {
                         onChange={handleTableChange}
                         rowKey="id"
                     />
-                    <div className="admin__create-post">CREATE TAG</div>
+                    <div className="admin__create-post">{detailTag?"UPDATE TAG":"CREATE TAG"}</div>
                     <Form form={formTag} onFinish={handleSubmit} name="formTag">
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>

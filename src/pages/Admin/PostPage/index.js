@@ -32,13 +32,18 @@ import UserPage from "../UserPage";
 import LoginPage from "../LoginPage";
 import "./style.css";
 import {
+    clearDetailPost,
     createPost,
+    deletePost,
     getDetailPostById,
     getListPost,
     getPostSlice,
+    updatePost,
 } from "../../../features/Post/store/slice";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { FomatDate } from "../../../utils/helper";
+import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
+import { getCategorySlice, getListCategory } from "../../../features/Category/store/slice";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -46,24 +51,40 @@ const dateFormat = "YYYY/MM/DD";
 
 function PostPage() {
     const [formPost, formSeachPost] = Form.useForm();
-    const [pagination, setPagination] = useState({
-        current: 1,
-        pageSize: 5,
-        total: 9,
-    });
-    const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+
     const dispatch = useDispatch();
     const editorRef = useRef(null);
     const postStore = useSelector(getPostSlice);
-    const { isFetching, listPost, detailPost, errors } = postStore;
+    const tagStore = useSelector(getTagSlice);
+    const categoryStore = useSelector(getCategorySlice);
+
+    const { isFetching, listPost, listPostPaging,detailPost, errors } = postStore;
+    const {items, limit, page, total_page, total_record} = listPostPaging;
+
+    const { listTag } = tagStore;
+    const { listCategory } = categoryStore;
+
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState();
     const [content, setContent] = useState("");
-    console.log("listPost", listPost);
 
     useEffect(() => {
-        // dispatch(getListPost({detail:1}));
-        // dispatch(getDetailPostById(1));
+        dispatch(getListPost({detail:1, limit:limit, page:page}));
+        dispatch(getListTag());
+        dispatch(getListCategory());
     }, []);
+
+    useEffect(()=>{
+        if(detailPost){
+            setImageUrl(detailPost.thumbnail)
+            formPost.setFieldsValue({
+                ...detailPost, 
+                categories:detailPost.categories.map(category=>{return category.category_id}),
+                tags:detailPost.tags.map(tag=>{return tag.tag_id}),
+            })
+        }
+    }, [detailPost])
+
 
     const handleUploadFile = async (info) => {
         await setLoading(true);
@@ -75,30 +96,43 @@ function PostPage() {
     };
 
     const handleTableChange = (newPagination, filters, sorter) => {
-
-        setPagination(newPagination);
+        const {current, pageSize} = newPagination;
+        dispatch(getListPost({detail:1,limit:pageSize, page:current}));
     };
 
     const handleSearchPost = (values) => {
-        const {} = values;
-
+        const {title_or_content,tags,categories} = values;
+        dispatch(getListPost({detail:1,limit:limit, page:page, keyword:title_or_content, tags, categories}));
     };
 
-    const handleSubmit = (values) => {
-        const { title,category, content, meta_title, parent, published, sumary, tag } = values;
-        const data ={
-                        title,
-                        category:category??[], 
-                        content, 
-                        meta_title, 
-                        parent, 
-                        published:published?published.format("DD/MM/YYYY"):moment(new Date()).format("DD/MM/YYYY"), 
-                        sumary, 
-                        tag:tag??[], 
-                        thumbnail:imageUrl}
-        console.log("data", data);
+    const handleGetDetailPost =(post)=>{
+        dispatch(getDetailPostById(post.post_id))
+    }
 
-        dispatch(createPost(data))
+    const handleDeletePost =(post)=>{
+        dispatch(deletePost(post.post_id))
+    }
+
+    const handleSubmit = (values) => {
+        const { title,categories, content, meta_title, parent, published, sumary, tags } = values;
+        const data = {
+                title,
+                categories:categories??[], 
+                content, 
+                meta_title, 
+                parent, 
+                published:published?published.format("DD/MM/YYYY"):moment(new Date()).format("DD/MM/YYYY"), 
+                sumary, 
+                tags:tags??[], 
+                thumbnail:imageUrl}
+        
+        console.log("data", data);
+        if(detailPost) {
+            dispatch(updatePost({...data, id: detailPost.post_id}))
+         }
+         else{
+            dispatch(createPost(data))
+        }
 
     };
 
@@ -124,8 +158,8 @@ function PostPage() {
         },
         {
             title: "Author",
-            dataIndex: "author",
-            key: "author",
+            dataIndex: "author_name",
+            key: "author_name",
         },
         {
             title: "Categories",
@@ -134,13 +168,13 @@ function PostPage() {
             render: (categories) => (
                 <>
                     {categories.map((category, index) => {
-                        let color = category.length > 5 ? "geekblue" : "green";
+                        let color = category.title.length > 5 ? "geekblue" : "green";
                         if (category === "loser") {
                             color = "volcano";
                         }
                         return (
-                            <Tag color={color} key={category}>
-                                {category.toUpperCase()}
+                            <Tag color={color} key={category.category_id}>
+                                {category.title}
                             </Tag>
                         );
                     })}
@@ -154,15 +188,15 @@ function PostPage() {
             render: (_, { tags }) => (
                 <>
                     {tags.map((tag) => {
-                        let color = tag.length > 5 ? "geekblue" : "green";
+                        let color = tag.slug.length > 5 ? "geekblue" : "green";
 
                         if (tag === "loser") {
                             color = "volcano";
                         }
 
                         return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
+                            <Tag color={color} key={tag.tag_id}>
+                                {tag.slug}
                             </Tag>
                         );
                     })}
@@ -185,99 +219,22 @@ function PostPage() {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary">Update</Button>
-                    <Button type="danger">Delete</Button>
+                    <Button onClick={()=>handleGetDetailPost(record)} type="primary">Update</Button>
+                    <Popconfirm
+                        title="Are you sure to delete this post?"
+                        onConfirm={()=>handleDeletePost(record)}
+                        onCancel={()=>{}}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger">Delete</Button>
+                    </Popconfirm>
+
                 </Space>
             ),
         },
     ];
 
-    const data = [
-        {
-            key: "1",
-            author: "John Brown",
-            title: "10 Blog Examples for Your",
-            categories: ["code", "developer"],
-            tags: ["react", "node"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png",
-        },
-        {
-            key: "2",
-            title: "",
-            author: "Jim Green",
-            title: "London No. 1 Lake Park",
-            categories: ["lifestyle", "developer"],
-            tags: ["loser", "python"],
-            thumbnail:
-                "https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg",
-        },
-        {
-            key: "3",
-            author: "Joe Black",
-            title: "10 Blog Examples for Your",
-            categories: ["lifestyle", "developer", "hacking"],
-            tags: ["cool", "teacher", "hacking"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png",
-        },
-        {
-            key: "11",
-            author: "John Brown",
-            title: "10 Blog Examples for Your",
-            categories: ["code", "developer"],
-            tags: ["react", "node"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png",
-        },
-        {
-            key: "12",
-            title: "",
-            author: "Jim Green",
-            title: "London No. 1 Lake Park",
-            categories: ["lifestyle", "developer"],
-            tags: ["loser", "python"],
-            thumbnail:
-                "https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg",
-        },
-        {
-            key: "13",
-            author: "Joe Black",
-            title: "10 Blog Examples for Your",
-            categories: ["lifestyle", "developer", "hacking"],
-            tags: ["cool", "teacher", "hacking"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png",
-        },
-        {
-            key: "21",
-            author: "John Brown",
-            title: "10 Blog Examples for Your",
-            categories: ["code", "developer"],
-            tags: ["react", "node"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/4ae6b499dfd3459592e79b822323259c.png",
-        },
-        {
-            key: "22",
-            title: "",
-            author: "Jim Green",
-            title: "London No. 1 Lake Park",
-            categories: ["lifestyle", "developer"],
-            tags: ["loser", "python"],
-            thumbnail:
-                "https://img.freepik.com/free-vector/hand-painted-watercolor-galaxy-background_52683-63441.jpg",
-        },
-        {
-            key: "23",
-            author: "Joe Black",
-            title: "10 Blog Examples for Your",
-            categories: ["lifestyle", "developer", "hacking"],
-            tags: ["cool", "teacher", "hacking"],
-            thumbnail:
-                "https://public.bnbstatic.com/static/academy/uploads/c5ee3a6ef69847dda30cdf3e0dfa123e.png",
-        },
-    ];
 
     return (
         <div>
@@ -328,21 +285,15 @@ function PostPage() {
                                         xl={10}
                                     >
                                         <Form.Item noStyle>
-                                            <Form.Item name="category" noStyle>
+                                            <Form.Item name="categories" noStyle>
                                                 <Select
                                                     mode="multiple"
                                                     style={{ width: "100%" }}
                                                     placeholder="Choose category"
                                                 >
-                                                    <Option value="jack">
-                                                        Jack
-                                                    </Option>
-                                                    <Option value="lucy">
-                                                        Lucy
-                                                    </Option>
-                                                    <Option value="Yiminghe">
-                                                        yiminghe
-                                                    </Option>
+                                                    {listCategory.map((category,index)=><Option key={category.id} value={category.id}>
+                                                        {category.title}
+                                                    </Option>)}
                                                 </Select>
                                             </Form.Item>
                                         </Form.Item>
@@ -355,21 +306,15 @@ function PostPage() {
                                         xl={10}
                                     >
                                         <Form.Item noStyle>
-                                            <Form.Item name="tag" noStyle>
+                                            <Form.Item name="tags" noStyle>
                                                 <Select
                                                     mode="multiple"
                                                     style={{ width: "100%" }}
                                                     placeholder="Choose tags"
                                                 >
-                                                    <Option value="jack">
-                                                        Jack
-                                                    </Option>
-                                                    <Option value="lucy">
-                                                        Lucy
-                                                    </Option>
-                                                    <Option value="Yiminghe">
-                                                        yiminghe
-                                                    </Option>
+                                                   {listTag.map((tag,index)=><Option key={tag.id} value={tag.id}>
+                                                        {tag.title}
+                                                    </Option>)}
                                                 </Select>
                                             </Form.Item>
                                         </Form.Item>
@@ -393,15 +338,18 @@ function PostPage() {
                     </Form>
 
                     <Table
-                        pagination={pagination}
+                        pagination={{current: page,
+                            pageSize: limit,
+                            total: total_record}}
                         columns={columns}
-                        dataSource={data}
+                        dataSource={items}
                         loading={loading}
                         onChange={handleTableChange}
+                        rowKey="post_id"
                     />
 
                     {/* Create post */}
-                    <div className="admin__create-post">CREATE POST</div>
+                    <div className="admin__create-post">{detailPost?"UPDATE POST":"CREATE POST"}</div>
                     <Form form={formPost} onFinish={handleSubmit}>
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -529,9 +477,9 @@ function PostPage() {
                                         xl={12}
                                     >
                                         <Form.Item>
-                                            <label>{"5. Category"}</label>
+                                            <label>{"5. Categories"}</label>
                                             <Form.Item
-                                                name="category"
+                                                name="categories"
                                                 noStyle
                                                 rules={[
                                                     {
@@ -542,15 +490,9 @@ function PostPage() {
                                                 ]}
                                             >
                                                 <Select mode="multiple" placeholder="Choose category of post">
-                                                    <Option value="jack">
-                                                        Jack
-                                                    </Option>
-                                                    <Option value="lucy">
-                                                        Lucy
-                                                    </Option>
-                                                    <Option value="Yiminghe">
-                                                        yiminghe
-                                                    </Option>
+                                                    {listCategory.map((category,index)=><Option key={category.id} value={category.id}>
+                                                        {category.title}
+                                                    </Option>)}
                                                 </Select>
                                             </Form.Item>
                                         </Form.Item>
@@ -583,10 +525,10 @@ function PostPage() {
                                         xl={12}
                                     >
                                         <Form.Item>
-                                            <label>{"6. Tag"}</label>
+                                            <label>{"6. Tags"}</label>
                                             <Form.Item
                                                 noStyle
-                                                name="tag"
+                                                name="tags"
                                                 rules={[
                                                     {
                                                         required: false,
@@ -599,15 +541,9 @@ function PostPage() {
                                                     mode="multiple"
                                                     placeholder="Choose tag of post"
                                                 >
-                                                    <Option value="jack">
-                                                        Jack
-                                                    </Option>
-                                                    <Option value="lucy">
-                                                        Lucy
-                                                    </Option>
-                                                    <Option value="Yiminghe">
-                                                        yiminghe
-                                                    </Option>
+                                                   {listTag.map((tag,index)=><Option key={tag.id} value={tag.id}>
+                                                        {tag.title}
+                                                    </Option>)}
                                                 </Select>
                                             </Form.Item>
                                         </Form.Item>
@@ -659,7 +595,7 @@ function PostPage() {
                                         lg={24}
                                         xl={24}
                                     >
-                                        <Form.Item>
+                                        {/* <Form.Item>
                                             <label>{"9. Content"}</label>
                                             <Form.Item
                                                 noStyle
@@ -672,31 +608,6 @@ function PostPage() {
                                                     },
                                                 ]}
                                             >
-                                                {/* <Editor
-                                                onInit={(evt, editor) =>
-                                                    (editorRef.current = editor)
-                                                }
-                                                cloudChannel='5-stable'
-
-                                                // tinymceScriptSrc="/path/to/tinymce.min.js"
-                                                apiKey="n1gm5s2923aec5q1x6xgk9hyq48eoabd7qtuwhkd357rr0xx"
-                                                initialValue=""
-                                                init={{
-                                                    height: 500,
-                                                    menubar: false,
-                                                    plugins: [
-                                                        "advlist autolink lists link image charmap print preview anchor",
-                                                        "searchreplace visualblocks code fullscreen",
-                                                        "insertdatetime media table paste code help wordcount",                                                    ],
-                                                    toolbar:
-                                                        "undo redo | formatselect | " +
-                                                        "bold italic backcolor | alignleft aligncenter " +
-                                                        "alignright alignjustify | bullist numlist outdent indent | " +
-                                                        "removeformat | help ",
-                                                    content_style:
-                                                        "body { font-family:'Lexend Deca', sans-serif; font-size:14px ; color: rgba(0, 0, 0, 0.85); line-height: 1}",
-                                                }}
-                                            /> */}
                                                 <ReactQuill
                                                     theme={"snow"}
                                                     placeholder={
@@ -761,13 +672,25 @@ function PostPage() {
                                                     ]}
                                                 />
                                             </Form.Item>
-                                        </Form.Item>
+                                        </Form.Item> */}
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
-                        <Button type="primary" htmlType="submit">
-                            Summit
+                        <Button
+                            style={{marginRight:"10px"}}
+                            type="primary"
+                            htmlType="submit"
+                            onClick={() => {}}
+                        >
+                            {detailPost?"Update":"Create"}
+                        </Button>
+                        <Button
+                            danger 
+                            htmlType="reset"
+                            onClick={() =>dispatch(clearDetailPost())}
+                        >
+                            {"Reset"}
                         </Button>
                     </Form>
                 </div>

@@ -135,8 +135,8 @@ function UserPage() {
           title: "Action",
           key: "action",
           render: (_, record) => (
-            <Space size="small">
-                <Button onClick={()=>handleGetDetailUser(record)} size="small" type="primary">Update</Button>
+            <Space size="middle">
+                <Button onClick={()=>handleGetDetailUser(record)} type="primary">Update</Button>
                 <Popconfirm
                     title="Are you sure to delete this user?"
                     onConfirm={()=>handleDeleteUser(record)}
@@ -144,7 +144,7 @@ function UserPage() {
                     okText="Yes"
                     cancelText="No"
                 >
-                    <Button size="small" type="danger">Delete</Button>
+                    <Button type="danger">Delete</Button>
                 </Popconfirm>
             </Space>
           ),
@@ -216,7 +216,7 @@ function UserPage() {
                     />
                 </div>
                 {/* Create user */}
-                <div className="admin__create-post">CREATE USER</div>
+                <div className="admin__create-post">{detailUser?"UPDATE USER":"CREATE USER"}</div>
                 <Form form={formUser} onFinish={handleSubmit} name="formUser">
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>

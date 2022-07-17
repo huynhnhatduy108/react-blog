@@ -3,7 +3,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     isFetching: false,
     data: null,
-    listCategory: null,
+    listCategory: [],
     listCategorySearch:{
         items:[],
         limit:5,
@@ -23,7 +23,7 @@ const CategorySlice = createSlice({
         clearStoreCategory(state){
             state.isFetching = false
             state.data = null
-            state.listCategory = null
+            state.listCategory = []
             state.listCategorySearch = {
                 items:[],
                 limit:5,
@@ -33,6 +33,10 @@ const CategorySlice = createSlice({
             }
             state.detailCategory = null
             state.errors = null
+        },
+
+        clearListCategory(state){
+            state.listCategory = []
         },
 
         clearCategorySearch(state){
@@ -56,8 +60,8 @@ const CategorySlice = createSlice({
         },
         getListCategorySuccess(state, action) {
             state.isFetching = false
-            state.data = action.payload
-            state.listCategory = action.payload
+            state.data = action.payload.data
+            state.listCategory = action.payload.data
             state.errors = []
         },
         getListCategoryError(state, action) {
@@ -154,6 +158,7 @@ const CategorySlice = createSlice({
 export const clearStoreCategory = CategorySlice.actions.clearStoreCategory;
 export const clearCategorySearch = CategorySlice.actions.clearCategorySearch;
 export const clearDetailCategory = CategorySlice.actions.clearDetailCategory;
+export const clearListCategory = CategorySlice.actions.clearListCategory;
 
 export const getListCategory = CategorySlice.actions.getListCategory;
 export const getListCategorySuccess = CategorySlice.actions.getListCategorySuccess;

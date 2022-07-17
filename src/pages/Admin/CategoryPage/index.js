@@ -123,8 +123,8 @@ function CategoryPage() {
           title: "Action",
           key: "action",
           render: (_, record) => (
-              <Space size="small">
-                   <Button size="small" type="primary" onClick={()=>handleGetDetailCategory(record)} >
+              <Space size="middle">
+                   <Button type="primary" onClick={()=>handleGetDetailCategory(record)} >
                       Update
                   </Button>
                   <Popconfirm
@@ -134,7 +134,7 @@ function CategoryPage() {
                         okText="Yes"
                         cancelText="No"
                     >
-                  <Button size="small" type="danger">Delete</Button>
+                  <Button type="danger">Delete</Button>
                   </Popconfirm>
 
               </Space>
@@ -207,7 +207,7 @@ function CategoryPage() {
                         key="id"
                     />
                     {/* Create category */}
-                    <div className="admin__create-post">CREATE CATEGORY</div>
+                    <div className="admin__create-post">{detailCategory?"UPDATE CATEGORY":"CREATE CATEGORY"}</div>
                     <Form form={formCategory} onFinish={handleSubmit} name="formCategory">
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>

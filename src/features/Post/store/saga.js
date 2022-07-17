@@ -1,8 +1,9 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug} from "../apiService/index";
-import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getPostSlice, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -51,9 +52,15 @@ function* handleCreatePost(action) {
         );
         if (response.success) {
             yield put(createPostSuccess(response.data));
+            const postStore = yield select(getPostSlice);
+            const {listPostPaging} = postStore;
+            const {limit, page} = listPostPaging
+            yield put(getListPost({limit, page, detail:1}));
+            message.success("Create post success!")
         } 
     } catch (error) {
         yield put(createPostError(error));
+        message.error("Create post error!")
     }
 }
 
@@ -65,9 +72,15 @@ function* handleUpdatePost(action) {
         );
         if (response.success) {
             yield put(updatePostSuccess(response.data));
+            const postStore = yield select(getPostSlice);
+            const {listPostPaging} = postStore;
+            const {limit, page} = listPostPaging
+            yield put(getListPost({limit, page, detail:1}));
+            message.success("Update post success!")
         } 
     } catch (error) {
         yield put(updatePostError(error));
+        message.error("Update post error!")
     }
 }
 
@@ -79,9 +92,16 @@ function* handleDeletePost(action) {
         );
         if (response.success) {
             yield put(deletePostSuccess(response.data));
+            const postStore = yield select(getPostSlice);
+            const {listPostPaging} = postStore;
+            const {limit, page} = listPostPaging
+            yield put(getListPost({limit, page, detail:1}));
+            message.success("Delete post success!")
         } 
     } catch (error) {
         yield put(deletePostError(error));
+        message.error("Delete post error!")
+
     }
 }
 

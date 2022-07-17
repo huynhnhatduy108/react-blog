@@ -33,22 +33,29 @@ export const formatPath = (path, ...params) => {
     return path;
   }
 
+  export const trueTypeOf = (obj) => Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+
   export const getQueryString = (init) => {
-    const qs = {};
+    const params = new URLSearchParams();
     Object.keys(init).map((k) => {
-      const t = typeof init[k];
-      switch (t) {
+      const type = trueTypeOf(init[k]);
+      switch (type) {
         case 'object':
-          qs[k] = '';
+          // params 
           break;
         case 'string':
         case 'number':
-          qs[k] = init[k].toString();
+          params.append(k,init[k].toString())
+          break;
+        case 'array':
+          init[k].map((item)=>{
+            params.append(k,item)
+          })
           break;
         default:
           break;
       }
       return k;
     })
-    return new URLSearchParams(qs).toString();
+    return params.toString()
   }

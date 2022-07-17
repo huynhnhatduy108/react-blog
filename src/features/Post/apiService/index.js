@@ -22,7 +22,7 @@ export const apiCreatePost = (data) => {
 }
 
 export const apiUpdatePost = (data) => {
-  return api(METHOD.PUT,formatPath(PostPaths.Update),{});
+  return api(METHOD.PUT,formatPath(PostPaths.Update, data.id), data);
 }
 
 export const apiDeletePost = (id) => {

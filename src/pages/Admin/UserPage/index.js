@@ -74,7 +74,7 @@ function UserPage() {
 
     const handleSearchUser =(values)=>{
         const {username_email} = values;
-        dispatch(getListUser({limit:limit, page:page, keyword:username_email}));
+        dispatch(getListUser({limit:limit, page:1, keyword:username_email}));
     }
 
     const handleSubmit = (values) => {

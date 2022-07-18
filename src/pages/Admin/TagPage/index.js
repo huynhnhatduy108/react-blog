@@ -52,7 +52,7 @@ function TagPage() {
 
     const handleSearchTag = (values) => {
         const {title_description} = values;
-        dispatch(searchTag({limit:limit, page:page, keyword:title_description}));
+        dispatch(searchTag({limit:limit, page:1, keyword:title_description}));
     };
 
     const handleGetDetailTag =(tag)=>{

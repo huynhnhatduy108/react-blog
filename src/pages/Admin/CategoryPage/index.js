@@ -63,7 +63,7 @@ function CategoryPage() {
 
     const handleSearchCategory = (values) => {
         const {title_description} = values;
-        dispatch(searchCategory({limit:limit, page:page, keyword:title_description}));
+        dispatch(searchCategory({limit:limit, page:1, keyword:title_description}));
     };
 
     const handleGetDetailCategory =(category)=>{

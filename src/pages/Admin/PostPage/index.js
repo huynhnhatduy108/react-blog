@@ -21,7 +21,6 @@ import {
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { Editor } from "@tinymce/tinymce-react";
 import ReactQuill from "react-quill"; // ES6
 import 'react-quill/dist/quill.snow.css';
 
@@ -44,10 +43,12 @@ import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { FomatDate } from "../../../utils/helper";
 import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { getCategorySlice, getListCategory } from "../../../features/Category/store/slice";
+import Editor from "../../../components/Editor";
+// import Editor from "../../../components/Editor/EditorWithUseQuill";
 
 const { TextArea } = Input;
 const { Option } = Select;
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = "DD/MM/YYYY HH:mm:ss";
 
 function PostPage() {
     const [formPost, formSeachPost] = Form.useForm();
@@ -81,6 +82,12 @@ function PostPage() {
                 ...detailPost, 
                 categories:detailPost.categories.map(category=>{return category.category_id}),
                 tags:detailPost.tags.map(tag=>{return tag.tag_id}),
+                published_at: detailPost.published_at?moment(detailPost.published_at):null
+            })
+        }
+        else{
+            formPost.setFieldsValue({
+                published_at: moment(new Date(),dateFormat)
             })
         }
     }, [detailPost])
@@ -102,7 +109,7 @@ function PostPage() {
 
     const handleSearchPost = (values) => {
         const {title_or_content,tags,categories} = values;
-        dispatch(getListPost({detail:1,limit:limit, page:page, keyword:title_or_content, tags, categories}));
+        dispatch(getListPost({detail:1,limit:limit, page:1, keyword:title_or_content, tags, categories}));
     };
 
     const handleGetDetailPost =(post)=>{
@@ -113,28 +120,39 @@ function PostPage() {
         dispatch(deletePost(post.post_id))
     }
 
+    
+
     const handleSubmit = (values) => {
-        const { title,categories, content, meta_title, parent, published, sumary, tags } = values;
+        const { title,categories, content, meta_title, parent, published_at, sumary, tags } = values;
         const data = {
                 title,
                 categories:categories??[], 
                 content, 
                 meta_title, 
                 parent, 
-                published:published?published.format("DD/MM/YYYY"):moment(new Date()).format("DD/MM/YYYY"), 
+                published_at:published_at?published_at.format(dateFormat):moment(new Date()).format(dateFormat), 
                 sumary, 
                 tags:tags??[], 
                 thumbnail:imageUrl}
         
         console.log("data", data);
-        if(detailPost) {
-            dispatch(updatePost({...data, id: detailPost.post_id}))
-         }
-         else{
-            dispatch(createPost(data))
-        }
+        console.log("content", content);
+
+        
+        // console.log("editorRef", editorRef);
+        // if(detailPost) {
+        //     dispatch(updatePost({...data, id: detailPost.post_id}))
+        //  }
+        //  else{
+        //     dispatch(createPost(data))
+        // }
 
     };
+
+    const handleResetFields = () =>{
+        formPost.resetFields()
+        dispatch(clearDetailPost());
+    }
 
     const uploadButton = (
         <div>
@@ -442,7 +460,7 @@ function PostPage() {
                                                     style={{ width: "100%" }}
                                                 >
                                             <Form.Item
-                                                name="published"
+                                                name="published_at"
                                                 noStyle
                                                 rules={[
                                                     {
@@ -454,10 +472,7 @@ function PostPage() {
                                             >                               
                                                 <DatePicker
                                                     showTime
-                                                    defaultValue={moment(
-                                                        new Date(),
-                                                        dateFormat
-                                                    )}
+                                                    format={dateFormat}                                                 
                                                     style={{
                                                         width: "100%",
                                                     }}
@@ -595,7 +610,7 @@ function PostPage() {
                                         lg={24}
                                         xl={24}
                                     >
-                                        {/* <Form.Item>
+                                        <Form.Item>
                                             <label>{"9. Content"}</label>
                                             <Form.Item
                                                 noStyle
@@ -608,71 +623,9 @@ function PostPage() {
                                                     },
                                                 ]}
                                             >
-                                                <ReactQuill
-                                                    theme={"snow"}
-                                                    placeholder={
-                                                        "Write something..."
-                                                    }
-                                                    modules={{
-                                                        toolbar: [
-                                                            [
-                                                                {
-                                                                    header: [
-                                                                        1,
-                                                                        2,
-                                                                        false,
-                                                                    ],
-                                                                },
-                                                                { font: [] },
-                                                            ],
-                                                            [
-                                                                "bold",
-                                                                "italic",
-                                                                "underline",
-                                                                "strike",
-                                                                "blockquote",
-                                                            ],
-                                                            [
-                                                                {
-                                                                    list: "ordered",
-                                                                },
-                                                                {
-                                                                    list: "bullet",
-                                                                },
-                                                                {
-                                                                    indent: "-1",
-                                                                },
-                                                                {
-                                                                    indent: "+1",
-                                                                },
-                                                            ],
-                                                            [
-                                                                "link",
-                                                                "image",
-                                                                "video",
-                                                            ],
-                                                            ["clean"],
-                                                        ],
-                                                    }}
-                                                    formats={[
-                                                        "header",
-                                                        "font",
-                                                        "size",
-                                                        "bold",
-                                                        "italic",
-                                                        "underline",
-                                                        "strike",
-                                                        "blockquote",
-                                                        "list",
-                                                        "bullet",
-                                                        "indent",
-                                                        "link",
-                                                        "image",
-                                                        "video",
-                                                    ]}
-                                                />
+                                               <Editor />
                                             </Form.Item>
-                                        </Form.Item> */}
+                                        </Form.Item>
                                     </Col>
                                 </Row>
                             </Col>
@@ -687,8 +640,7 @@ function PostPage() {
                         </Button>
                         <Button
                             danger 
-                            htmlType="reset"
-                            onClick={() =>dispatch(clearDetailPost())}
+                            onClick={handleResetFields}
                         >
                             {"Reset"}
                         </Button>

@@ -25,6 +25,7 @@ import CategoryPage from "./pages/Admin/CategoryPage";
 import TagPage from "./pages/Admin/TagPage";
 import UserPage from "./pages/Admin/UserPage";
 import LoginPage from "./pages/Admin/LoginPage";
+import CommentPage from "./pages/Admin/CommentPage";
 // import "./App.css";
 // import "antd/dist/antd.min.css";
 // const { Option } = Select;
@@ -91,6 +92,7 @@ const App = () => {
                     <Route path="admin/tag" element={<TagPage/>} />
                     <Route path="admin/user" element={<UserPage/>} />
                     <Route path="admin/login" element={<LoginPage/>} />
+                    <Route path="admin/comment" element={<CommentPage/>} />
 
                 </Routes>
             </BrowserRouter>

@@ -5,6 +5,8 @@ import "quill/dist/quill.snow.css";
 import hljs from "highlight.js";
 import "highlight.js/styles/tokyo-night-dark.css";
 // import 'highlight.js/styles/darcula.css';
+// import ImageResize from 'quill-image-resize-module';
+import ImageResize from 'quill-image-resize-module-react';
 
 import "quill-emoji/dist/quill-emoji.css";
 import "./style.css";
@@ -103,6 +105,14 @@ const modules = {
     //     }
     //   }
     // },
+    imageResize:{
+      handleStyles: {
+          displaySize: true,
+          backgroundColor: "black",
+          border: "none",
+          color: "white",
+      },
+      modules: ["Resize", "DisplaySize", "Toolbar"],},
     'emoji-toolbar': true,
     // 'emoji-textarea': true,
     'emoji-shortname': true,
@@ -150,6 +160,8 @@ const Editor = (props, ref) => {
         ],
     });
 
+
+
     if (Quill && !quill) {
         Quill.register({
           'formats/emoji': EmojiBlot,
@@ -157,8 +169,10 @@ const Editor = (props, ref) => {
           'modules/emoji-toolbar': ToolbarEmoji,
           'modules/emoji-textarea': TextAreaEmoji,
           "modules/blotFormatter":BlotFormatter,
+          'modules/imageResize': ImageResize,
         }, true);
     }
+    
 
     useImperativeHandle(ref, () => ({
         getContents:()=>{
@@ -166,6 +180,7 @@ const Editor = (props, ref) => {
         },
         setContents:(content)=>{
           if (quill) {
+            quill.deleteText(0,quill.getLength())
             const delta = quill.clipboard.convert(content);
             quill.setContents(delta, "silent");
           }

@@ -24,7 +24,7 @@ export const uploadFileCloudinary = async (file, preset) =>{
                 {method: "POST",body: data}
                 ).then(res=>res.json()).catch(err=>err.json())
         if (dataResponse.url){
-            message.success("Upload img success!")
+            // message.success("Upload img success!")
             return dataResponse
         }
         message.error("Upload img error!");

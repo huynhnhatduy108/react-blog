@@ -4,12 +4,22 @@ const initialState = {
     isFetching: false,
     data: null,
     listPost: [],
+    listPostUserSearch:{
+        items:[],
+        limit:15,
+        page:1, 
+        total_page:0,
+        total_record:0,
+        isFetching: false
+    },
     listPostPaging:{
         items:[],
         limit:5,
         page:1, 
         total_page:0,
         total_record:0,
+        isFetching: false
+
     },
     detailPost: null,
     errors: null,
@@ -25,12 +35,21 @@ const PostSlice = createSlice({
             state.data = null
             state.listPost = []
             state.detailPost = null
+            state.listPostUserSearch ={
+                items:[],
+                limit:15,
+                page:1, 
+                total_page:0,
+                total_record:0,
+                isFetching: false,
+            }
             state.listPostPaging={
                 items:[],
                 limit:5,
                 page:1, 
                 total_page:0,
                 total_record:0,
+                isFetching:false
             }
             state.errors = null
         },
@@ -46,6 +65,18 @@ const PostSlice = createSlice({
                 page:1, 
                 total_page:0,
                 total_record:0,
+                isFetching:false
+            }
+        },
+
+        clearListPostUserSearch(state){
+            state.listPostUserSearch={
+                items:[],
+                limit:15,
+                page:1, 
+                total_page:0,
+                total_record:0,
+                isFetching:false
             }
         },
 
@@ -62,14 +93,53 @@ const PostSlice = createSlice({
             state.isFetching = false
             state.data = action.payload.data
             state.listPost = action.payload.data
-            state.listPostPaging = action.payload.data
+            state.listPostPaging = {...state.listPostPaging,...action.payload.data} 
             state.errors = []
         },
         getListPostError(state, action) {
             state.isFetching = false
             state.data =null
+            state.listPostPaging ={...state.listPostPaging}
             state.errors = action.payload
         },
+
+        // readmore list post
+        readMoreListPost(state, action) {
+            state.listPostPaging.isFetching= true
+        },
+
+        readMoreListPostSuccess(state, action) {
+            state.listPostPaging.isFetching= false
+            state.listPostPaging.limit = action.payload.data.limit
+            state.listPostPaging.page = action.payload.data.page
+            state.listPostPaging.total_page = action.payload.data.total_page
+            state.listPostPaging.total_record = action.payload.data.total_record
+            state.listPostPaging.items = [...state.listPostPaging.items,...action.payload.data.items]
+           
+        },
+
+        readMoreListPostError(state, action) {
+            state.listPostPaging.isFetching= false
+            state.errors = action.payload
+        },
+
+        // list post user search
+        getListPostUserSeach(state, action) {
+            state.listPostUserSearch.isFetching = true
+            state.errors = []
+        },
+        getListPostUserSeachSuccess(state, action) {
+            state.listPostUserSearch.isFetching = false
+            state.listPostUserSearch ={...state.listPostUserSearch,...action.payload.data} 
+            state.errors = []
+        },
+        getListPostUserSeachError(state, action) {
+            state.listPostUserSearch.isFetching = false
+            state.listPostUserSearch ={...state.listPostUserSearch} 
+            state.errors = action.payload
+        },
+
+
 
         // detail post by id
         getDetailPostById(state, action) {
@@ -160,10 +230,19 @@ export const clearStorePost = PostSlice.actions.clearStorePost;
 export const clearListPost = PostSlice.actions.clearListPost;
 export const clearListPostPaging = PostSlice.actions.clearListPostPaging;
 export const clearDetailPost = PostSlice.actions.clearDetailPost;
+export const clearListPostUserSearch = PostSlice.actions.clearListPostUserSearch;
 
 export const getListPost = PostSlice.actions.getListPost;
 export const getListPostSuccess = PostSlice.actions.getListPostSuccess;
 export const getListPostError = PostSlice.actions.getListPostError;
+
+export const readMoreListPost = PostSlice.actions.readMoreListPost;
+export const readMoreListPostSuccess = PostSlice.actions.readMoreListPostSuccess;
+export const readMoreListPostError = PostSlice.actions.readMoreListPostError;
+
+export const getListPostUserSeach = PostSlice.actions.getListPostUserSeach;
+export const getListPostUserSeachSuccess = PostSlice.actions.getListPostUserSeachSuccess;
+export const getListPostUserSeachError = PostSlice.actions.getListPostUserSeachError;
 
 export const getDetailPostById = PostSlice.actions.getDetailPostById;
 export const getDetailPostByIdSuccess = PostSlice.actions.getDetailPostByIdSuccess;

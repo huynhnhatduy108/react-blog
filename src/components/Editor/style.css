@@ -1,4 +1,8 @@
 
 .ql-editor {
-    min-height: 18em !important;
+    min-height: 40em !important;
+    font-size: 16px !important;
+    font-family: 'Lexend Deca', sans-serif !important;
+    line-height: inherit !important;
+    padding: 12px 15px !important;
 }

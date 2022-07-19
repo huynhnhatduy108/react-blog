@@ -10,6 +10,19 @@ export const FomatDate = (date) =>{
 }
 
 
+export const plainText = (html)=>{
+  if (html){
+    return html.replace(/<style([\s\S]*?)<\/style>/gi, ' ')
+    .replace(/<script([\s\S]*?)<\/script>/gi, ' ')
+    .replace(/(<(?:.|\n)*?>)/gm, ' ')
+    .replace(/\s+/gm, ' ')
+    .replace("&nbsp;",' ')
+    .replace("&nbsp;"," ")
+  }
+  return ""
+}
+
+
 export function convertToDate(dateTime) {
     const current_time = new Date(dateTime)
     current_time.setHours(0,0,0,0)

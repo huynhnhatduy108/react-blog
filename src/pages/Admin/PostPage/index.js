@@ -43,8 +43,7 @@ import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { FomatDate } from "../../../utils/helper";
 import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { getCategorySlice, getListCategory } from "../../../features/Category/store/slice";
-import Editor from "../../../components/Editor";
-// import Editor from "../../../components/Editor/EditorWithUseQuill";
+import Editor from "../../../components/Editor/EditorWithUseQuill";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -59,7 +58,7 @@ function PostPage() {
     const tagStore = useSelector(getTagSlice);
     const categoryStore = useSelector(getCategorySlice);
 
-    const { isFetching, listPost, listPostPaging,detailPost, errors } = postStore;
+    const { isFetching, listPostPaging,detailPost, errors } = postStore;
     const {items, limit, page, total_page, total_record} = listPostPaging;
 
     const { listTag } = tagStore;
@@ -67,7 +66,6 @@ function PostPage() {
 
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-    const [content, setContent] = useState("");
 
     useEffect(() => {
         dispatch(getListPost({detail:1, limit:limit, page:page}));
@@ -84,6 +82,7 @@ function PostPage() {
                 tags:detailPost.tags.map(tag=>{return tag.tag_id}),
                 published_at: detailPost.published_at?moment(detailPost.published_at):null
             })
+            editorRef.current.setContents(detailPost.content)
         }
         else{
             formPost.setFieldsValue({
@@ -123,33 +122,33 @@ function PostPage() {
     
 
     const handleSubmit = (values) => {
-        const { title,categories, content, meta_title, parent, published_at, sumary, tags } = values;
+        const { title,categories, meta_title, parent, published_at, summary, tags } = values;
         const data = {
                 title,
                 categories:categories??[], 
-                content, 
                 meta_title, 
                 parent, 
                 published_at:published_at?published_at.format(dateFormat):moment(new Date()).format(dateFormat), 
-                sumary, 
+                summary, 
                 tags:tags??[], 
-                thumbnail:imageUrl}
-        
-        console.log("data", data);
-        console.log("content", content);
+                thumbnail:imageUrl,
+                content:editorRef.current.getContents()
+            }
 
+        console.log("data", data);
         
-        // console.log("editorRef", editorRef);
-        // if(detailPost) {
-        //     dispatch(updatePost({...data, id: detailPost.post_id}))
-        //  }
-        //  else{
-        //     dispatch(createPost(data))
-        // }
+        if(detailPost) {
+            dispatch(updatePost({...data, id: detailPost.post_id}))
+         }
+         else{
+            dispatch(createPost(data))
+        }
 
     };
 
     const handleResetFields = () =>{
+        editorRef.current.setContents();
+        setImageUrl()
         formPost.resetFields()
         dispatch(clearDetailPost());
     }
@@ -513,21 +512,21 @@ function PostPage() {
                                         </Form.Item>
 
                                         <Form.Item>
-                                            <label>{"7. Sumary"}</label>
+                                            <label>{"7. Summary"}</label>
                                             <Form.Item
-                                                name="sumary"
+                                                name="summary"
                                                 noStyle
                                                 rules={[
                                                     {
                                                         required: false,
                                                         message:
-                                                            "Please input sumary!",
+                                                            "Please input summary!",
                                                     },
                                                 ]}
                                             >
                                                 <TextArea
                                                     rows={7}
-                                                    placeholder="Sumary of post"
+                                                    placeholder="summary of post"
                                                 />
                                             </Form.Item>
                                         </Form.Item>
@@ -610,40 +609,27 @@ function PostPage() {
                                         lg={24}
                                         xl={24}
                                     >
-                                        <Form.Item>
-                                            <label>{"9. Content"}</label>
-                                            <Form.Item
-                                                noStyle
-                                                name="content"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message:
-                                                            "Please input content!",
-                                                    },
-                                                ]}
-                                            >
-                                               <Editor />
-                                            </Form.Item>
-                                        </Form.Item>
+                                        <Editor ref={editorRef} />
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
+                       <div style={{marginTop:20}}>
                         <Button
-                            style={{marginRight:"10px"}}
-                            type="primary"
-                            htmlType="submit"
-                            onClick={() => {}}
-                        >
-                            {detailPost?"Update":"Create"}
-                        </Button>
-                        <Button
-                            danger 
-                            onClick={handleResetFields}
-                        >
-                            {"Reset"}
-                        </Button>
+                                style={{marginRight:"10px"}}
+                                type="primary"
+                                htmlType="submit"
+                                onClick={() => {}}
+                            >
+                                {detailPost?"Update":"Create"}
+                            </Button>
+                            <Button
+                                danger 
+                                onClick={handleResetFields}
+                            >
+                                {"Reset"}
+                            </Button>
+                       </div>
                     </Form>
                 </div>
                 <div style={{ padding: 40 }}></div>

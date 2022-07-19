@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 // import { useDispatch } from "react-redux";
 import "./style.css";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
 
 function Widget(props) {
-    // const dispatch = useDispatch();
-    const {chart=false}  = props;
+    const {chart=false ,listTag}  = props;
     const [email, setEmail] = useState();
     const [chartCoin, setChartCoin] = useState([]);
 
     useEffect(() => {
-        axios
+        if (chart){
+            axios
             .get(
                 "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false"
             )
@@ -20,9 +22,9 @@ function Widget(props) {
             .catch((err) => {
                 console.log("err", err);
             });
+        }
     }, []);
 
-    console.log('chartCoin', chartCoin);
 
     const handleChangeEmail = (e) => {
         e.preventDefault();
@@ -39,15 +41,6 @@ function Widget(props) {
             .catch((err) => console.log("err", err));
     };
 
-    const tags = [
-        "design (16)",
-        "fashion (20)",
-        "travel (16)",
-        "music (5)",
-        "video (96)",
-        "adventure (0)",
-        "photography (15)",
-    ];
     return (
         <div className="widget">
             {chart?<div className="chart__currency">
@@ -134,10 +127,10 @@ function Widget(props) {
                     <h3 className="tags__title-h3 margin-0">Tags</h3>
                 </div>
                 <div className="tags__list">
-                    {tags &&
-                        tags.map((item, index) => (
-                            <div className="tags__item" key={index}>
-                                <div className="">{item}</div>
+                    {listTag.length &&
+                        listTag.map((item, index) => (
+                            <div className="tags__item" key={item.id}>
+                                <div className="">{item.title} (15)</div>
                             </div>
                         ))}
                 </div>

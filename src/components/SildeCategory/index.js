@@ -28,46 +28,34 @@ const categoryContainerStyle = {
     // "position": "relative",
   };
 
-function SildeCategory() {
-    const categories = [
-        "design",
-        "fashion",
-        "travel",
-        "music",
-        "video",
-        "adventure",
-        "photography",
-    ];
-
-    
-    console.log("genColor", genColor());
-
-    const settings = {
-        // dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        autoplay: true,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                },
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
             },
-            {
-                breakpoint: 739,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
+        },
+        {
+            breakpoint: 739,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
             },
-        ],
-    };
+        },
+    ],
+};
 
+function SildeCategory(props) {
+    const {listCategory} = props;
     return (
         <div className="silde_category">
             <div className="grid wide">
@@ -75,11 +63,11 @@ function SildeCategory() {
                     <h3 className="silde_category-title-h3">Categories</h3>
                 </div>
                 <Slider {...settings}>
-                    {categories.length &&
-                        categories.map((item, index) => (
-                            <div key={index} className="category__item">
+                    {listCategory.length &&
+                        listCategory.map((item, index) => (
+                            <div key={item.id} className="category__item">
                                 <div className="category__container" style={categoryContainerStyle}>
-                                    <h3 className="category__title">{item}</h3>
+                                    <h3 className="category__title">{item.title}</h3>
                                 </div>
                             </div>
                         ))}

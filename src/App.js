@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { Select } from "antd";
 import { GoogleLogin } from "react-google-login";
 import PostType1 from "./components/PostType1/index";
-import Header from "./components/Hearder";
+import Header from "./components/Header";
 import IntroPost from "./components/IntroPost";
 import ListPost from "./components/ListPost";
 import SildeCategory from "./components/SildeCategory";

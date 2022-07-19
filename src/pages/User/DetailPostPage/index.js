@@ -1,7 +1,7 @@
 import React from "react";
 import DetailPost from "../../../components/DetailPost";
 import Footer from "../../../components/Footer";
-import Header from "../../../components/Hearder";
+import Header from "../../../components/Header";
 
 function PostPage() {
     return (

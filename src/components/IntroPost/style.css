@@ -30,9 +30,10 @@
     z-index: 10;
     left: 15px;
     top: 15px;
+    width: 65px;
     border: 1px solid #787878;
     background-color: #ffffff;
-    padding: 22px 10px;
+    padding: 22px 0px;
     text-align: center;
     border-radius: 10px;
 }
@@ -46,7 +47,9 @@
     margin: 0;
 
 }
-
+.post__content-meta-author{
+    text-transform: uppercase;
+}
 
 .post__content{
 

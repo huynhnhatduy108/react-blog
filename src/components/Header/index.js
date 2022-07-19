@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./style.css";
 import { useState } from "react";
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { getListPostUserSeach, getPostSlice } from "../../features/Post/store/slice";
+import { useDebounce } from "../../hooks/useDebounce";
 
 function Header() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [keyword, setKeyword] = useState("");
-    const [isSearch, setIsSearch] = useState(false);
-    const navigate = useNavigate();
+    const [isSearch, setIsSearch] = useState(false);  
+    const postStore = useSelector(getPostSlice);
+    const {listPostUserSearch} = postStore;
+    const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
+    console.log('items', items);
+
+    const keyWordDebounce = useDebounce(keyword,500);
+    useEffect(() => {
+        if (keyWordDebounce) {
+            dispatch(getListPostUserSeach({detail:1, keyword:keyWordDebounce, limit:10, page:1, is_pagination:1}))
+        }
+       
+    }, [keyWordDebounce])
 
     const handleOnClickIcon = () => {
         setIsOpen(!isOpen);
@@ -122,8 +138,8 @@ function Header() {
                                     {isSearch ? (
                                     <div className="header__mobile-search-result">
                                         <div className="search__result-list">
-                                            {listSearch.length &&
-                                                listSearch.map(
+                                            {items?.length ?
+                                                items.map(
                                                     (item, index) => (
                                                         <div className="search__result-post">
                                                             <div className="result__post-img">
@@ -152,7 +168,7 @@ function Header() {
                                                             </div>
                                                         </div>
                                                     )
-                                                )}
+                                                ):<>nodata</>}
                                         </div>
                                     </div>
                                       ) : (

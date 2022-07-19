@@ -3,7 +3,7 @@ import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug} from "../apiService/index";
-import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getPostSlice, updatePost, updatePostError, updatePostSuccess } from "./slice";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -13,6 +13,30 @@ function* handleGetListPost(action) {
         } 
     } catch (error) {
         yield put(getListPostError(error));
+    }
+}
+
+
+function* handleReadMoreListPost(action) {
+    try {
+        const response= yield call(apiListPost,action.payload);
+        if (response.success) {
+            yield put(readMoreListPostSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(readMoreListPostError(error));
+    }
+}
+
+
+function* handleGetListPostUserSearch(action) {
+    try {
+        const response= yield call(apiListPost,action.payload);
+        if (response.success) {
+            yield put(getListPostUserSeachSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(getListPostUserSeachError(error));
     }
 }
 
@@ -107,6 +131,8 @@ function* handleDeletePost(action) {
 
 export default function* PostSaga() {
     yield takeLatest(getListPost.type, handleGetListPost);
+    yield takeLatest(readMoreListPost.type, handleReadMoreListPost);
+    yield takeLatest(getListPostUserSeach.type, handleGetListPostUserSearch);
     yield takeLatest(getDetailPostById.type, handleGetDatailPostById);
     yield takeLatest(getDetailPostBySlug.type, handleGetDatailPostBySlug);
     yield takeLatest(createPost.type, handleCreatePost);

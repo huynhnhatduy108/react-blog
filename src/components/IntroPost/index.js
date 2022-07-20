@@ -4,14 +4,14 @@ import moment from 'moment';
 import { plainText } from "../../utils/helper";
 
 function IntroPost(props) {
-    const { dataPost } = props;
+    const { dataPost,navigate } = props;
 
     return (
         <div className="intro__post">
             <div className="grid wide">
                 <div className="row no-gutters">
                     <div className="col l-8 m-8 c-12">
-                        <div className="post">
+                        <div className="post" onClick={()=>navigate(`/p/${dataPost[0]?.slug}`)}>
                             <div className="post__img">
                                 <img
                                     className="post__img-img"
@@ -63,7 +63,7 @@ function IntroPost(props) {
                     <div className="col l-4 m-4 c-12">
                         <div>
                             <div className="">
-                                <div className="post">
+                                <div className="post" onClick={()=>navigate(`/p/${dataPost[1]?.slug}`)}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img "
@@ -113,7 +113,7 @@ function IntroPost(props) {
                                 </div>
                             </div>
                             <div className="">
-                                <div className="post">
+                                <div className="post" onClick={()=>navigate(`/p/${dataPost[2]?.slug}`)}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img"

@@ -181,6 +181,12 @@
     cursor: pointer;
 }
 
+.tag-active{
+    transition: linear 0.3s;
+    background-color: #c5c5c5;
+    color: white;
+}
+
 .search__tags-item:hover{
     transition: linear 0.3s;
     background-color: #c5c5c5;

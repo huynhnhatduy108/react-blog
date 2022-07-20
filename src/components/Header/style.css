@@ -187,7 +187,7 @@
         position: absolute;
         width: 320px;
         border: 1px solid #dcdcdc;
-        right: 0;
+        right: -1px;
         top: 60px;
         min-height: 35px;
         /* max-height: 525px; */
@@ -196,7 +196,7 @@
 
     }
     .header__mobile-search-result{
-        height: 485px;
+        max-height: 485px;
         overflow-y: scroll;
     }
 }
@@ -208,13 +208,13 @@
         position: absolute;
         width: 450px;
         border: 1px solid #dcdcdc;
-        right: 0;
+        right: -1px;
         top: 60px;
         min-height: 34px;
         border-radius: 10px;
     }
     .header__mobile-search-result{
-        height: 485px;
+        max-height: 485px;
         overflow-y: scroll;
     }
 

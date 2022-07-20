@@ -107,8 +107,9 @@ function PostPage() {
     };
 
     const handleSearchPost = (values) => {
-        const {title_or_content,tags,categories} = values;
-        dispatch(getListPost({detail:1,limit:limit, page:1, keyword:title_or_content, tags, categories}));
+        const {title_or_content, tag, category} = values;
+        console.log("values", values);
+        dispatch(getListPost({detail:1,limit:limit, page:1, keyword:title_or_content, tag, category}));
     };
 
     const handleGetDetailPost =(post)=>{
@@ -302,9 +303,9 @@ function PostPage() {
                                         xl={10}
                                     >
                                         <Form.Item noStyle>
-                                            <Form.Item name="categories" noStyle>
+                                            <Form.Item name="category" noStyle>
                                                 <Select
-                                                    mode="multiple"
+                                                    // mode="multiple"
                                                     style={{ width: "100%" }}
                                                     placeholder="Choose category"
                                                 >
@@ -323,9 +324,9 @@ function PostPage() {
                                         xl={10}
                                     >
                                         <Form.Item noStyle>
-                                            <Form.Item name="tags" noStyle>
+                                            <Form.Item name="tag" noStyle>
                                                 <Select
-                                                    mode="multiple"
+                                                    // mode="multiple"
                                                     style={{ width: "100%" }}
                                                     placeholder="Choose tags"
                                                 >

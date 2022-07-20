@@ -5,6 +5,15 @@
 
 .post{
     padding:10px 10px ;
+    cursor: pointer;
+}
+
+.post:hover .post__content-line{
+    width: 40%;
+}
+
+.post:hover .post__content-title-h3 ,.post:hover .post3__content-title-h3 ,.post:hover .post2__content-title-h3{
+    font-weight: bold;
 }
 
 .post__img{
@@ -60,6 +69,8 @@
     height: 2px;
     margin: 10px 0px;
     background-color: #c8c8c8;
+    transition: all 0.3s;
+
 }
 
 .post__content-title{
@@ -77,6 +88,8 @@
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    transition: all 0.3s;
+
 }
 
 .post__content-text{
@@ -112,6 +125,8 @@
     overflow: hidden;
     display: -webkit-box;
     text-overflow: ellipsis;
+    transition: all 0.3s;
+
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }

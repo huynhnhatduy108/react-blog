@@ -1,101 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { useNavigate } from 'react-router-dom';
+import { getQueryString } from "../../utils/helper";
+import { useQuery } from "../../hooks/useQuery";
+import { useDispatch } from "react-redux";
+import { getListPostUserSeach } from "../../features/Post/store/slice";
 
-const categories = [
-    { id: 1, name: "design", quantity: 122 },
-    { id: 2, name: "fashion", quantity: 18 },
-    { id: 3, name: "travel", quantity: 16 },
-    { id: 4, name: "music", quantity: 2 },
-    { id: 5, name: "video", quantity: 4 },
-    { id: 6, name: "adventure", quantity: 36 },
-    { id: 7, name: "photography", quantity: 22 },
-    { id: 8, name: "photo", quantity: 22 },
 
-];
-
-const tags = [
-    { id: 1, name: "design", quantity: 122 },
-    { id: 2, name: "fashion", quantity: 18 },
-    { id: 3, name: "travel", quantity: 16 },
-    { id: 4, name: "music", quantity: 2 },
-    { id: 5, name: "video", quantity: 4 },
-    { id: 6, name: "adventure", quantity: 36 },
-    { id: 7, name: "photography", quantity: 22 },
-    { id: 8, name: "content", quantity: 45 },
-];
-
-const listSearch = [
-    {
-        id: 1,
-        url: "https://technext.github.io/original/img/blog-img/4.jpg",
-        title: "Expand your career opportunities with Python Curabitur ",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-    {
-        id: 2,
-        url: "https://goctienao.com/wp-content/uploads/2019/09/ethereum-la-gi.jpeg",
-        title: "Expand your career opportunities with Python Curabitur venenatis efficitur lorem sed tempor",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-    {
-        id: 3,
-        url: "https://cafebitcoin.org/wp-content/uploads/2021/09/Solana.png",
-        title: "Expand your career opportunities with Python Curabiturtempor",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-    {
-        id: 4,
-        url: "https://cryptoitunes.com/images/binance/1645005617965/original/introducing-bnb-chain-the-evolution-of-binance-smart-chain.png",
-        title: "Expand your career opportunities with Python Curabiturtempor",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-    {
-        id: 5,
-        url: "https://phongduy.com/wp-content/uploads/2021/12/Polygon-coin.jpg",
-        title: "Expand your career opportunities with Python Curabiturtempor",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-    {
-        id: 6,
-        url: "https://codelearn.io/Upload/Blog/react-js-co-ban-phan-1-63738082145.3856.jpg",
-        title: "Expand your career opportunities with Python Curabiturtempor",
-        content:
-            "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-    },
-];
-
-function Search() {
+function Search(props) {
+    const {listTag, listCategory} = props;
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const query = useQuery();
+	const keyword = query.get("keyword");
+    const category = query.get("category");
+    const tag = query.get("tag");
+
     const [currenCategory, setCurrenCategory] = useState("All");
+    const [currenCategoryID, setCurrenCategoryID] = useState();
+    const [currenTagID, setCurrenTagID] = useState();
     const [isSearch, setIsSearch] = useState(false);
-    const [keywork, setKeywork] = useState("");
+    const [keywordSearch, setkeywordSearch] = useState("");
     const [isExpand, setIsExpand] = useState(false);
 
-    const hanleChangeCategorySearch = (e) => {
-        setCurrenCategory(e.target.value);
-        console.log("e", e.target.value);
-    };
+    useEffect(()=>{
+        if(keyword || category || tag){
+            dispatch(getListPostUserSeach({detail:1, keyword:keyword, limit:9, page:1, is_pagination:1, category:category, tag:tag}))
+            keyword && setkeywordSearch(keyword);
+            if (category){
+                console.log("category", category);
+                const index = listCategory?.findIndex((item)=>item.id==category)
+                setCurrenCategoryID(category);
+                setCurrenCategory(listCategory[index]?.title)
+            }
+            if(tag){
+                setCurrenTagID(tag)
+            }
+        }
+        else{
+            dispatch(getListPostUserSeach({detail:1, limit:9, page:1, is_pagination:1}))
+        }
+    },[keyword, category, tag])
 
-    const handleSearchPost = (e) => {
-        setKeywork(e.target.value);
-        e.target.value && e.target.value.length
-            ? setIsSearch(true)
-            : setIsSearch(false);
+    const handleChangeKeyWord = (e) => {
+        setkeywordSearch(e.target.value);
     };
 
     const handleExpandSelect = () => {
         setIsExpand(!isExpand);
     };
 
-    // const handlChooseOption = () => {
-    //     setIsExpand(!isExpand);
-    // };
+    const handleKeyDown = (e) =>{
+        if (e.key == 'Enter') {
+            const params = {
+                keyword:keywordSearch,
+                category :currenCategoryID,
+                tag: currenTagID
+            }
+            const queryParams = getQueryString(params); 
+            console.log('queryParams', queryParams)
+            navigate(`/search?${queryParams}`)
+
+          }
+    }
+
+    const hanldeSearchPost =()=>{
+        const params = {
+            keyword:keywordSearch,
+            category :currenCategoryID,
+            tag: currenTagID
+        }
+        const queryParams = getQueryString(params); 
+        console.log("queryParams", queryParams);
+        navigate(`/search?${queryParams}`)
+    }
+
+    const handleSeletTag =(tagID)=>{
+        if(tagID==currenTagID){
+            setCurrenTagID();
+        }
+        else{
+            setCurrenTagID(tagID);
+        }
+    }
+
 
     return (
         <div className="search">
@@ -122,11 +111,11 @@ function Search() {
                                             onClick={() =>
                                                 setCurrenCategory("All")
                                             }
-                                            class="fa-solid fa-angle-down cursor"
+                                            className="fa-solid fa-angle-down cursor"
                                         ></i>
                                     ) : (
                                         <i onClick={() =>
-                                            setCurrenCategory("All")} class="fa-solid fa-xmark cursor"></i>
+                                            setCurrenCategory("All")} className="fa-solid fa-xmark cursor"></i>
                                     )}
                                 </div>
                             </div>
@@ -134,60 +123,40 @@ function Search() {
                                 <div className="search__categories-expand">
                                     <div
                                         className="search__categories-option"
-                                        onClick={() => {setCurrenCategory("All"); setIsExpand(!isExpand); }}
+                                        onClick={() => {setCurrenCategory("All"); setCurrenCategoryID(); setIsExpand(!isExpand); }}
                                     >
                                         {"All"}
                                     </div>
 
-                                    {categories?.length &&
-                                        categories.map((item, index) => (
+                                    {listCategory?.length &&
+                                        listCategory.map((item, index) => (
                                             <div
                                                 className="search__categories-option"
                                                 onClick={() =>
-                                                   { setCurrenCategory(item.name);setIsExpand(!isExpand);
+                                                   { setCurrenCategory(item.title); setCurrenCategoryID(item.id);setIsExpand(!isExpand);
                                                 }}
                                             >
-                                                {item.name}
+                                                {item.title}
                                             </div>
                                         ))}
                                 </div>
                             ) : (
                                 ""
                             )}
-                            {/* <select
-                                onChange={hanleChangeCategorySearch}
-                                className="search__categories-select"
-                            >
-                                <option
-                                    className="search__categories-item"
-                                    value={0}
-                                    key={0}
-                                >
-                                    All
-                                </option>
-                                {categories &&
-                                    categories.map((item, index) => (
-                                        <option
-                                            className="search__categories-item"
-                                            value={item.id}
-                                            key={item.id}
-                                        >
-                                            {`${item.name}`}
-                                        </option>
-                                    ))}
-                            </select> */}
                         </div>
                         <div className="search__vertical"></div>
                         <div className="search__input-surround">
                             <div className="search__input-mobile">
                                 <input
-                                    onChange={handleSearchPost}
+                                    onKeyDown={handleKeyDown}
+                                    onChange={handleChangeKeyWord}
+                                    value={keywordSearch}
                                     className="search__input"
                                     placeholder="Input keyword search"
                                 />
-                                <i className="search__mobile-icon fa-solid fa-magnifying-glass"></i>
+                                <i onClick={hanldeSearchPost} className="search__mobile-icon fa-solid fa-magnifying-glass"></i>
                             </div>
-                            {isSearch ? (
+                            {/* {isSearch ? (
                                 <div className="search__result">
                                     <div className="search__result-list">
                                         {listSearch.length &&
@@ -217,21 +186,22 @@ function Search() {
                                 </div>
                             ) : (
                                 ""
-                            )}
+                            )} */}
                         </div>
                         <div className="search__icon">
-                            <i className="search__icon-icon fa-solid fa-magnifying-glass"></i>
+                            <i onClick={hanldeSearchPost} className="search__icon-icon fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>
                     <div className="search__tags">
-                        {tags &&
-                            tags.map((item, index) => (
+                        {listTag &&
+                            listTag.map((item, index) => (
                                 <div
-                                    className="search__tags-item"
+                                    className={`search__tags-item ${item.id==currenTagID?"tag-active":""}`}
                                     key={item.id}
+                                    onClick={()=>handleSeletTag(item.id)}
                                 >
                                     <div className="">
-                                        {`${item.name} (${item.quantity})`}
+                                        {`${item.title} (${"15"})`}
                                     </div>
                                 </div>
                             ))}
@@ -242,7 +212,7 @@ function Search() {
             </div>
             <div className="search__back-home">
                 <button onClick={()=>navigate(`/`)} className="back__home-button">
-                    <i class="back__home-icon fa-solid fa-angles-left"></i>BACK
+                    <i className="back__home-icon fa-solid fa-angles-left"></i>BACK
                     HOME
                 </button>
             </div>

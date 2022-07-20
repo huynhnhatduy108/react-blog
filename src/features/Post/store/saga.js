@@ -3,7 +3,7 @@ import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 
 import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug} from "../apiService/index";
-import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -37,6 +37,17 @@ function* handleGetListPostUserSearch(action) {
         } 
     } catch (error) {
         yield put(getListPostUserSeachError(error));
+    }
+}
+
+function* handleReadMorePostUserSearch(action) {
+    try {
+        const response= yield call(apiListPost,action.payload);
+        if (response.success) {
+            yield put(readMorePostUserSeachSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(readMorePostUserSeachError(error));
     }
 }
 
@@ -133,6 +144,8 @@ export default function* PostSaga() {
     yield takeLatest(getListPost.type, handleGetListPost);
     yield takeLatest(readMoreListPost.type, handleReadMoreListPost);
     yield takeLatest(getListPostUserSeach.type, handleGetListPostUserSearch);
+    yield takeLatest(readMorePostUserSeach.type, handleReadMorePostUserSearch);
+
     yield takeLatest(getDetailPostById.type, handleGetDatailPostById);
     yield takeLatest(getDetailPostBySlug.type, handleGetDatailPostBySlug);
     yield takeLatest(createPost.type, handleCreatePost);

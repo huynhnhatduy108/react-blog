@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 function Widget(props) {
-    const {chart=false ,listTag}  = props;
+    const {chart=false ,listTag, navigate}  = props;
     const [email, setEmail] = useState();
     const [chartCoin, setChartCoin] = useState([]);
 
@@ -59,7 +59,7 @@ function Widget(props) {
                     <div className="chart__currency-table-td">
                     {chartCoin.length &&
                         chartCoin.map((item, index) => (
-                            <div className="chart__coin-title">
+                            <div className="chart__coin-title" key={index}>
                                 <div className="chart__currency-name">
                                     <img  className="chart__currency-img" src={item.image} />
                                     <div className="chart__currency-symbol">{item.name}<span className="chart__currency-sym">{item.symbol}</span></div>
@@ -68,7 +68,7 @@ function Widget(props) {
                                     ${item.current_price}
                                 </div>
                                 <div className={`chart__currency-hour ${item.market_cap_change_percentage_24h<0?"currency__down":"currency__up"}`}>
-                                {item.market_cap_change_percentage_24h<0?<i class="fa-solid fa-caret-down chart__currency-hour-icon"></i>:<i class="fa-solid fa-caret-up chart__currency-hour-icon"></i>} 
+                                {item.market_cap_change_percentage_24h<0?<i className="fa-solid fa-caret-down chart__currency-hour-icon"></i>:<i className="fa-solid fa-caret-up chart__currency-hour-icon"></i>} 
                                  {` ${Math.abs(item.market_cap_change_percentage_24h.toFixed(2))}`}%
                                 </div>
                             </div>
@@ -127,9 +127,9 @@ function Widget(props) {
                     <h3 className="tags__title-h3 margin-0">Tags</h3>
                 </div>
                 <div className="tags__list">
-                    {listTag.length &&
+                    {listTag?.length &&
                         listTag.map((item, index) => (
-                            <div className="tags__item" key={item.id}>
+                            <div className="tags__item" key={item.id} onClick={()=>navigate(`/search?tag=${item.id}`)}>
                                 <div className="">{item.title} (15)</div>
                             </div>
                         ))}

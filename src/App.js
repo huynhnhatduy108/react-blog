@@ -82,7 +82,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={ <HomePage />} />
                     <Route path="search" element={<SearchPage/>} />
-                    <Route path=":text" exact={false} element={<PostDetailPage/>} />
+                    <Route path="p/:slug" exact={false} element={<PostDetailPage/>} />
                     <Route path="contact" element={<ContactPage/>} />
                     <Route path='*' exact={true} element={<PageNotFound/>} />
                     {/* Admin */}

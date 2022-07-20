@@ -2,7 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import "./style.css";
 
-function SildePost() {
+function SildePost(props) {
+    const {} = props;
     const settings = {
         dots: true,
         infinite: true,
@@ -47,8 +48,8 @@ function SildePost() {
                 </div>
                 <Slider {...settings}>
                     {listPost.length &&
-                        listPost.map((item) => (
-                            <div className="silde__post-container">
+                        listPost.map((item, index) => (
+                            <div className="silde__post-container" key={index}>
                                 <div className="post">
                                 <div className="post__img">
                                     <img
@@ -65,9 +66,6 @@ function SildePost() {
                                 </div>
                                 <div className="post__content">
                                     <div className="post__content-line"></div>
-                                    {/* <div className="post__content-categary cursor">
-                                        REACTJS
-                                    </div> */}
                                     <div>
                                         <div className="post3__content-title">
                                             <h3 className="post3__content-title-h3 font-25">

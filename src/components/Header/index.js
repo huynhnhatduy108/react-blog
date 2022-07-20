@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getListPostUserSeach, getPostSlice } from "../../features/Post/store/slice";
 import { useDebounce } from "../../hooks/useDebounce";
+import { plainText } from "../../utils/helper";
+import NoData from "../NoData";
+import Loading from "../Loading";
 
 function Header() {
     const navigate = useNavigate();
@@ -16,7 +19,6 @@ function Header() {
     const postStore = useSelector(getPostSlice);
     const {listPostUserSearch} = postStore;
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
-    console.log('items', items);
 
     const keyWordDebounce = useDebounce(keyword,500);
     useEffect(() => {
@@ -43,51 +45,6 @@ function Header() {
         setIsSearch(false);
         setIsOpen(false);
     }
-
-    const listSearch = [
-        {
-            id: 1,
-            url: "https://technext.github.io/original/img/blog-img/4.jpg",
-            title: "Expand your career opportunities with Python Curabitur ",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-        {
-            id: 2,
-            url: "https://goctienao.com/wp-content/uploads/2019/09/ethereum-la-gi.jpeg",
-            title: "Expand your career opportunities with Python Curabitur venenatis efficitur lorem sed tempor",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-        {
-            id: 3,
-            url: "https://cafebitcoin.org/wp-content/uploads/2021/09/Solana.png",
-            title: "Expand your career opportunities with Python Curabiturtempor",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-        {
-            id: 4,
-            url: "https://cryptoitunes.com/images/binance/1645005617965/original/introducing-bnb-chain-the-evolution-of-binance-smart-chain.png",
-            title: "Expand your career opportunities with Python Curabiturtempor",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-        {
-            id: 5,
-            url: "https://phongduy.com/wp-content/uploads/2021/12/Polygon-coin.jpg",
-            title: "Expand your career opportunities with Python Curabiturtempor",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-        {
-            id: 6,
-            url: "https://codelearn.io/Upload/Blog/react-js-co-ban-phan-1-63738082145.3856.jpg",
-            title: "Expand your career opportunities with Python Curabiturtempor",
-            content:
-                "Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.",
-        },
-    ];
 
     return (
         <div className="header">
@@ -138,16 +95,15 @@ function Header() {
                                     {isSearch ? (
                                     <div className="header__mobile-search-result">
                                         <div className="search__result-list">
-                                            {items?.length ?
+                                            {isFetching? <Loading/>:(items?.length ?
                                                 items.map(
                                                     (item, index) => (
                                                         <div className="search__result-post">
                                                             <div className="result__post-img">
                                                                 <img
                                                                     className=""
-                                                                    src={
-                                                                        item.url
-                                                                    }
+                                                                    src={item.thumbnail}
+                                                                    alt={item.title}
                                                                 />
                                                             </div>
                                                             <div className="result__post-content">
@@ -160,15 +116,13 @@ function Header() {
                                                                 </div>
                                                                 <div className="result__post-content-text">
                                                                     <p className="">
-                                                                        {
-                                                                            item.content
-                                                                        }
+                                                                        {plainText(item.content)}
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     )
-                                                ):<>nodata</>}
+                                                ):<NoData/>)}
                                         </div>
                                     </div>
                                       ) : (
@@ -180,13 +134,14 @@ function Header() {
                         {isSearch ? (
                             <div className="header__search-result">
                                 <div className="search__result-list">
-                                    {listSearch.length &&
-                                        listSearch.map((item, index) => (
+                                    {isFetching? <Loading/>:(items?.length ?
+                                        items?.map((item, index) => (
                                             <div className="search__result-post">
                                                 <div className="result__post-img">
                                                     <img
                                                         className=""
-                                                        src={item.url}
+                                                        src={item.thumbnail}
+                                                        alt={item.title}
                                                     />
                                                 </div>
                                                 <div className="result__post-content">
@@ -197,12 +152,12 @@ function Header() {
                                                     </div>
                                                     <div className="result__post-content-text">
                                                         <p className="">
-                                                            {item.content}
+                                                            {plainText(item.content)}
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        )):<NoData/>)}
                                 </div>
                             </div>
                         ) : (

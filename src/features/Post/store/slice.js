@@ -138,6 +138,25 @@ const PostSlice = createSlice({
             state.listPostUserSearch ={...state.listPostUserSearch} 
             state.errors = action.payload
         },
+        
+        // list post user search read more
+        readMorePostUserSeach(state, action) {
+            state.listPostUserSearch.isFetching = true
+            state.errors = []
+        },
+        readMorePostUserSeachSuccess(state, action) {
+            state.listPostUserSearch.isFetching= false
+            state.listPostUserSearch.limit = action.payload.data.limit
+            state.listPostUserSearch.page = action.payload.data.page
+            state.listPostUserSearch.total_page = action.payload.data.total_page
+            state.listPostUserSearch.total_record = action.payload.data.total_record
+            state.listPostUserSearch.items = [...state.listPostUserSearch.items,...action.payload.data.items]
+        },
+        readMorePostUserSeachError(state, action) {
+            state.listPostUserSearch.isFetching = false
+            state.listPostUserSearch ={...state.listPostUserSearch} 
+            state.errors = action.payload
+        },
 
 
 
@@ -243,6 +262,10 @@ export const readMoreListPostError = PostSlice.actions.readMoreListPostError;
 export const getListPostUserSeach = PostSlice.actions.getListPostUserSeach;
 export const getListPostUserSeachSuccess = PostSlice.actions.getListPostUserSeachSuccess;
 export const getListPostUserSeachError = PostSlice.actions.getListPostUserSeachError;
+
+export const readMorePostUserSeach = PostSlice.actions.readMorePostUserSeach;
+export const readMorePostUserSeachSuccess = PostSlice.actions.readMorePostUserSeachSuccess;
+export const readMorePostUserSeachError = PostSlice.actions.readMorePostUserSeachError;
 
 export const getDetailPostById = PostSlice.actions.getDetailPostById;
 export const getDetailPostByIdSuccess = PostSlice.actions.getDetailPostByIdSuccess;

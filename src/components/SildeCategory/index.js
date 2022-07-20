@@ -55,17 +55,17 @@ const categoryContainerStyle = {
 };
 
 function SildeCategory(props) {
-    const {listCategory} = props;
+    const {listCategory, navigate} = props;
     return (
         <div className="silde_category">
             <div className="grid wide">
                 <div className="silde_category-line">
                     <h3 className="silde_category-title-h3">Categories</h3>
                 </div>
-                <Slider {...settings}>
+                <Slider key={"id"} {...settings}>
                     {listCategory.length &&
                         listCategory.map((item, index) => (
-                            <div key={item.id} className="category__item">
+                            <div key={item.id} className="category__item" onClick={()=>navigate(`/search?category=${item.id}`)}>
                                 <div className="category__container" style={categoryContainerStyle}>
                                     <h3 className="category__title">{item.title}</h3>
                                 </div>

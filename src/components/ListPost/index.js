@@ -8,7 +8,7 @@ import { readMoreListPost } from "../../features/Post/store/slice";
 import Loading from "../Loading";
 
 function ListPost(props) {
-    const {listTag, dataPost, pagination} = props;
+    const {listTag, dataPost, pagination, navigate} = props;
     const { page, total_page, isFetching } = pagination;
     const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ function ListPost(props) {
                         <div className="row no-gutters">
                             {dataPost?.length && dataPost.map((item, index)=>
                                 <div className="col l-6 m-6 c-12" key={item.post_id}>
-                                    <div className="post">
+                                    <div className="post"  onClick={()=>navigate(`/p/${item.slug}`)}>
                                         <div className="post__img">
                                             <img
                                                 className="post3__img-img"
@@ -83,7 +83,7 @@ function ListPost(props) {
                         </div>
                     </div>
                     <div className="col l-4 m-12 c-12">
-                        <Widget listTag={listTag}/>
+                        <Widget navigate={navigate} listTag={listTag}/>
                     </div>
                 </div>
             </div>

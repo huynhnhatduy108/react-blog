@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Header from "../../../components/Header";
 import IntroPost from './../../../components/IntroPost';
 import ListPost from './../../../components/ListPost';
@@ -11,6 +12,7 @@ import { getListPost, getListPostUserSeach, getPostSlice } from '../../../featur
 
 const HomePage=()=> {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const tagStore = useSelector(getTagSlice);
   const categoryStore = useSelector(getCategorySlice);
   const postStore = useSelector(getPostSlice);
@@ -28,9 +30,9 @@ const HomePage=()=> {
   return (
     <div>
       <Header />
-      <IntroPost dataPost ={items.slice(0, 3)} />
-      <ListPost dataPost={items.slice(3, items.length)} listTag={listTag} pagination={{limit, page, total_page, total_record, isFetching}}/>
-      <SildeCategory listCategory={listCategory}/>
+      <IntroPost navigate={navigate} dataPost ={items.slice(0, 3)} />
+      <ListPost navigate={navigate} dataPost={items.slice(3, items.length)} listTag={listTag} pagination={{limit, page, total_page, total_record, isFetching}}/>
+      <SildeCategory navigate={navigate} listCategory={listCategory}/>
       <Footer/>
     </div>
   )

@@ -3,16 +3,10 @@ import "./style.css";
 import CommentPost from "./../../components/Comment";
 import SildePost from "./../../components/SildePost";
 import { EmailShareButton, FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
+import moment from 'moment';
 
 function DetailPost(props) {
-    const {widget } = props;
-
-    const tags = [
-        { id: 1, name: "design", quantity: 122 },
-        { id: 2, name: "fashion", quantity: 18 },
-        { id: 3, name: "travel", quantity: 16 },
-        { id: 4, name: "music", quantity: 2 },
-    ];
+    const {widget, detailPost, navigate } = props;
 
     return (
         <div className="detail__post">
@@ -22,20 +16,19 @@ function DetailPost(props) {
                         <div className="detail">
                             <div className="detail__title">
                                 <h1>
-                                    Coin98 (C98) là gì? Toàn tập về tiền điện tử
-                                    C98 Toàn tập về tiền điện tử C98
+                                    {detailPost?.title}
                                 </h1>
                             </div>
                             <div className="detail__author">
                                 <div className="detail__author-left">
                                     <div className="author__avatar">
-                                        <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png"/>
+                                        <img src={detailPost?.author_avatar} alt={detailPost?.author_name}/>
                                     </div>
                                     <div className="author__create">
-                                        <span className="author__create-name">Nhat Duy</span>
-                                        <span className="author__create-day">26/08/21</span>
+                                        <span className="author__create-name">{detailPost?.author_name}</span>
+                                        <span className="author__create-day">{moment(detailPost?.published_at).format('DD/MM/YYYY')}</span>
                                         <div className="author__create-line"></div>
-                                        <span className="author__create-time">08:18</span>
+                                        <span className="author__create-time">{moment(detailPost?.published_at).format('HH:MM')}</span>
                                     </div>
                                 </div>
                                 <div className="detail__author-right">
@@ -49,37 +42,28 @@ function DetailPost(props) {
 
                             </div>
                             <div className="detail__thumnail">
-                                <img src="https://cdn.blogtienao.com/wp-content/uploads/2022/02/no-luc-thuc-day-thanh-toan-tien-dien-tu-cua-solana-pay.jpg"/>
+                                <img src={detailPost?.thumbnail} alt={detailPost?.author_name}/>
                             </div>
                             <div className="detail__content">
-                                Coin98 là gì? Coin98 là một hệ sinh thái DeFi
-                                với mục đích giúp người dùng tiếp cận với DeFi
-                                một cách dễ dàng. Để phục vụ cho mục tiêu đó,
-                                Coin98 đã phát triển một bộ sản phẩm phục vụ đầy
-                                đủ nhu cầu của người dùng, từ giao dịch, lưu trữ
-                                đến quản lí tài sản, cho vay, tiết kiệm,... Đặc
-                                biệt, bộ sản phẩm của Coin98 cung cấp trên
-                                Multi-chain, đem lại trải nghiệm DeFi thông minh
-                                vượt trội, người dùng không cần phải thực hiện
-                                quá nhiều bước hay hiểu biết sâu về Blockchain.
-                                Các sản phẩm của Coin98
+                                 <div dangerouslySetInnerHTML={{ __html: detailPost?.content }} />
                             </div>
                             <div className="detail__list-tags">
-                                {tags &&
-                                tags.map((item, index) => (
+                                {detailPost?.tags.length &&
+                                detailPost?.tags.map((item, index) => (
                                     <div
                                         className="search__tags-item"
                                         key={item.id}
+                                        onClick={()=>navigate(`/search?tag=${item.tag_id}`)}
                                     >
                                         <div className="">
-                                            {`${item.name} (${item.quantity})`}
+                                            {`#${item.slug}`}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div className="detail__share">
                                 <div className="detail__share-text">Share :</div>
-                                <FacebookShareButton url={"https://viblo.asia/p/bien-google-sheet-thanh-mot-rest-api-va-ket-hop-voi-react-3P0lP1Qg5ox"}
+                                <FacebookShareButton url={window.location.href}
                                                     quote={"Blog info currency"}
                                                     hashtag={"#duyblog"}
                                                     description={"aiueo"}
@@ -91,7 +75,7 @@ function DetailPost(props) {
                                 <div className="detail__share-email detail__share-icon"><i className=" fa-solid fa-envelope"></i></div>
                                 </EmailShareButton>
                                 <LinkedinShareButton title={'LinkedIn share test'}
-                                    url={'http://example.com'}
+                                    url={window.location.href}
                                     summary={'LinkedIn share demo test'}
                                     description={'LinkedIn share demo test'}>
                                 <div className="detail__share-linked detail__share-icon"><i className=" fa-brands fa-linkedin-in"></i></div>

@@ -8,10 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPostSlice } from '../../../features/Post/store/slice';
 import { getListTag, getTagSlice } from '../../../features/Tag/store/slice';
 import { getCategorySlice, getListCategory } from '../../../features/Category/store/slice';
+import { useNavigate } from 'react-router';
 
 function SearchPage() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const postStore = useSelector(getPostSlice);
   const tagStore = useSelector(getTagSlice);
   const categoryStore = useSelector(getCategorySlice);
@@ -34,7 +35,7 @@ function SearchPage() {
     <div>
         <Search listCategory={listCategory} listTag={listTag}/>
         <div className='gap-50'></div>
-        {isFetching? <Loading/>:items?.length? <ListSearch listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:<NoData/>}
+        {isFetching? <Loading/>:items?.length? <ListSearch navigate={navigate} listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:<NoData/>}
         <div className='gap-50'></div>
         <Footer/>
     </div>

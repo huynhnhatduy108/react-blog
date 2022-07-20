@@ -21,6 +21,7 @@ function Header() {
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
     const keyWordDebounce = useDebounce(keyword,500);
+
     useEffect(() => {
         if (keyWordDebounce) {
             dispatch(getListPostUserSeach({detail:1, keyword:keyWordDebounce, limit:10, page:1, is_pagination:1}))
@@ -40,6 +41,12 @@ function Header() {
             ? setIsSearch(true)
             : setIsSearch(false);
     };
+
+    const handleRedirectToDetailPage =(slug)=>{
+        navigate(`/p/${slug}`);
+        setIsOpen(false);
+        setIsSearch(false)
+    }
 
     const handleClickout =()=>{
         setIsSearch(false);
@@ -98,7 +105,9 @@ function Header() {
                                             {isFetching? <Loading/>:(items?.length ?
                                                 items.map(
                                                     (item, index) => (
-                                                        <div className="search__result-post">
+                                                        <div className="search__result-post" 
+                                                            onClick={()=>handleRedirectToDetailPage(item.slug)} 
+                                                            key={item.post_id}>
                                                             <div className="result__post-img">
                                                                 <img
                                                                     className=""
@@ -136,7 +145,9 @@ function Header() {
                                 <div className="search__result-list">
                                     {isFetching? <Loading/>:(items?.length ?
                                         items?.map((item, index) => (
-                                            <div className="search__result-post">
+                                            <div className="search__result-post" 
+                                                onClick={()=>handleRedirectToDetailPage(item?.slug)} 
+                                                key={item.post_id}>
                                                 <div className="result__post-img">
                                                     <img
                                                         className=""

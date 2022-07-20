@@ -7,13 +7,14 @@ import { useDispatch } from "react-redux";
 import { readMorePostUserSeach } from "../../features/Post/store/slice";
 
 function ListSearch(props) {
+    const {listPostUserSearch, listCategory, listTag, navigate} = props;
+
     const dispatch = useDispatch();
     const query = useQuery();
 	const keyword = query.get("keyword");
     const category = query.get("category");
     const tag = query.get("tag");
 
-    const {listPostUserSearch, listCategory, listTag} = props;
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
     const handleReadMore = ()=>{
@@ -27,7 +28,7 @@ function ListSearch(props) {
                 <div className="row no-gutters">
                     {items?.length && items.map((item, index)=>
                         <div className="col l-4 m-6 c-12" key={item.post_id}>
-                        <div className="post">
+                        <div className="post" onClick={()=>navigate(`/p/${item?.slug}`)}>
                             <div className="post__img">
                                 <img
                                     className="post3__img-img"

@@ -5,7 +5,6 @@ import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, de
 
 function* handleUserCommentToPost(action) {
     try {
-        console.log("action", action);
         const response= yield call(
             apiUserCommentToPost,
             action.payload,

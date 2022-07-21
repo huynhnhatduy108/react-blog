@@ -11,7 +11,7 @@ function IntroPost(props) {
             <div className="grid wide">
                 <div className="row no-gutters">
                     <div className="col l-8 m-8 c-12">
-                        <div className="post" onClick={()=>navigate(`/p/${dataPost[0]?.slug}`)}>
+                        <div className="post" onClick={()=>{navigate(`/p/${dataPost[0]?.slug}`); window.scrollTo(0, 0)}}>
                             <div className="post__img">
                                 <img
                                     className="post__img-img"
@@ -63,7 +63,7 @@ function IntroPost(props) {
                     <div className="col l-4 m-4 c-12">
                         <div>
                             <div className="">
-                                <div className="post" onClick={()=>navigate(`/p/${dataPost[1]?.slug}`)}>
+                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[1]?.slug}`); window.scrollTo(0, 0)}}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img "
@@ -113,7 +113,7 @@ function IntroPost(props) {
                                 </div>
                             </div>
                             <div className="">
-                                <div className="post" onClick={()=>navigate(`/p/${dataPost[2]?.slug}`)}>
+                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[2]?.slug}`); window.scrollTo(0, 0)}}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img"

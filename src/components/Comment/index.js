@@ -53,7 +53,7 @@ function Comment(props) {
             </div>
             <div className="comment__area">
                 <div className="comment__area-text">
-                    <textarea onChange={(event)=>setContentComment(event.target.value)} placeholder="Input content to comment..."></textarea>
+                    <textarea onChange={(event)=>setContentComment(event.target.value)} placeholder="Input content to comment..." value={contentComment}>{contentComment}</textarea>
                 </div>
                 <div className="comment__sent">
                     <button className="comment__sent-button" onClick={()=>handleSendComment(undefined)}>
@@ -80,7 +80,7 @@ function Comment(props) {
                                 </div>
                             </div>
                             <div className="comment__content">
-                                <textarea disabled>{item.content}</textarea>                                   
+                                <textarea disabled value={item.content}>{item.content}</textarea>                                   
                                 {/* </p> */}
                                 <div className="comment__content-reply">
                                     <button
@@ -123,7 +123,7 @@ function Comment(props) {
                                         </div>
                                     </div>
                                     <div className="comment__content">
-                                        <textarea disabled>{sub.content}</textarea>
+                                        <textarea disabled value={sub.content}>{sub.content}</textarea>
                                     </div>
                             </div>
                             ):""}
@@ -132,7 +132,7 @@ function Comment(props) {
                             <div className="comment__items-answer">
                                 <div className="comment__area">
                                     <div className="comment__area-text">
-                                        <textarea onChange={(event)=>setContentReply(event.target.value)} placeholder="Input content to comment..."></textarea>
+                                        <textarea value={contentReply} onChange={(event)=>setContentReply(event.target.value)} placeholder="Input content to comment...">{contentReply}</textarea>
                                     </div>
                                     <div className="comment__sent">
                                         <button className="comment__sent-button" onClick={()=>handleSendComment(item.comment_id)}>

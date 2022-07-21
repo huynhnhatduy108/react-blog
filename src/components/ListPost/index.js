@@ -24,7 +24,7 @@ function ListPost(props) {
                         <div className="row no-gutters">
                             {dataPost?.length && dataPost.map((item, index)=>
                                 <div className="col l-6 m-6 c-12" key={item.post_id}>
-                                    <div className="post"  onClick={()=>navigate(`/p/${item.slug}`)}>
+                                    <div className="post"  onClick={()=>{navigate(`/p/${item.slug}`);window.scrollTo(0, 0)}}>
                                         <div className="post__img">
                                             <img
                                                 className="post3__img-img"

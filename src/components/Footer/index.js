@@ -15,7 +15,7 @@ function Footer() {
                     <div onClick={()=>navigate(`/search`)} className="footer__menu-item">
                         <div className="">SEARCH</div>
                     </div>
-                    <div onClick={()=>navigate(`/`)} className="footer__menu-item">
+                    <div onClick={()=>window.location.href="https://resume-huynhnhatduy108.vercel.app/"} className="footer__menu-item">
                         <div className="">ABOUT ME</div>
                     </div>
                     <div onClick={()=>navigate(`/contact`)} className="footer__menu-item">

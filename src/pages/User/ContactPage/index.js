@@ -3,8 +3,9 @@ import Footer from '../../../components/Footer';
 import "./style.css";
 import ImgContact from './../../../assets/img/undrawcontact.svg';
 
-
 function ContactPage() {
+window.scrollTo(0, 0);
+
   return (
     <div className='contact__page'>
         <div className='contact__page-container grid wide'>

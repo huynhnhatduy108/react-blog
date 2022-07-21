@@ -8,6 +8,8 @@ import { getCategorySlice } from "../../../features/Category/store/slice";
 import { getDetailPostBySlug, getPostSlice } from "../../../features/Post/store/slice";
 import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { useNavigate, useParams  } from 'react-router-dom';
+import SildePost from "../../../components/SildePost";
+import { getCommentSlice } from "../../../features/Comment/store/slice";
 
 function PostPage() {
     const dispatch = useDispatch();
@@ -17,12 +19,13 @@ function PostPage() {
     const postStore = useSelector(getPostSlice);
     const tagStore = useSelector(getTagSlice);
     const categoryStore = useSelector(getCategorySlice);
+    const commentStore = useSelector(getCommentSlice);
 
-    const {listPostUserSearch, detailPost} = postStore;
+    const {listPostUserSearch, detailPost, listPostRelation} = postStore;
     const {listCategory} = categoryStore;
     const {listTag} = tagStore;
+    const {listComment} = commentStore;
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
-    console.log("detailPost",detailPost ); 
 
     useEffect(()=>{
         if (!listTag.length){
@@ -37,7 +40,9 @@ function PostPage() {
         <div className="post__page">
             <Header/>
             <div className="gap-50"></div>
-            <DetailPost detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>
+            <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>
+            <div className="gap-40"></div>
+                <SildePost navigate={navigate} listPostRelation={listPostRelation}/>
             <div className="gap-50"></div>
             <Footer/>
         </div>

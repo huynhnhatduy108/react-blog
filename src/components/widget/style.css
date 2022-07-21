@@ -178,6 +178,7 @@
 }
 
 .tags__item{
+    cursor: pointer;
     padding: 0 35px;
     border: 1px solid #c5c5c5;
     font-size: 14px;

@@ -21,6 +21,7 @@ const initialState = {
         isFetching: false
 
     },
+    listPostRelation:[],
     detailPost: null,
     errors: null,
 }
@@ -35,6 +36,7 @@ const PostSlice = createSlice({
             state.data = null
             state.listPost = []
             state.detailPost = null
+            state.listPostRelation = []
             state.listPostUserSearch ={
                 items:[],
                 limit:15,
@@ -78,6 +80,10 @@ const PostSlice = createSlice({
                 total_record:0,
                 isFetching:false
             }
+        },
+
+        clearListPostRelation(state){
+            state.listPostRelation = []
         },
 
         clearDetailPost(state){
@@ -159,6 +165,19 @@ const PostSlice = createSlice({
         },
 
 
+         // list post relation
+        getListPostRelation(state, action) {
+            state.isFetching = true
+        },
+        getListPostRelationSuccess(state, action) {
+            state.isFetching = false
+            state.listPostRelation= action.payload.data
+        },
+        getListPostRelationError(state, action) {
+            state.isFetching = false
+            state.listPostRelation =[...state.listPostRelation]
+            state.errors = action.payload
+        },
 
         // detail post by id
         getDetailPostById(state, action) {
@@ -266,6 +285,10 @@ export const getListPostUserSeachError = PostSlice.actions.getListPostUserSeachE
 export const readMorePostUserSeach = PostSlice.actions.readMorePostUserSeach;
 export const readMorePostUserSeachSuccess = PostSlice.actions.readMorePostUserSeachSuccess;
 export const readMorePostUserSeachError = PostSlice.actions.readMorePostUserSeachError;
+
+export const getListPostRelation = PostSlice.actions.getListPostRelation;
+export const getListPostRelationSuccess = PostSlice.actions.getListPostRelationSuccess;
+export const getListPostRelationError = PostSlice.actions.getListPostRelationError;
 
 export const getDetailPostById = PostSlice.actions.getDetailPostById;
 export const getDetailPostByIdSuccess = PostSlice.actions.getDetailPostByIdSuccess;

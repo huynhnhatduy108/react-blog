@@ -1,8 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { userCommentToPost } from "../../features/Comment/store/slice";
 import "./style.css";
+import ImgUserDefault from './../../assets/img/defaultuser.png';
+import moment from "moment";
 
-function Comment() {
-    const [isAnswer, setIsAnswer] = useState(false);
+function Comment(props) {
+    const {post_id,listComment } = props;
+    const dispatch = useDispatch();
+    const [comments, setComments] = useState([]);
+    const [contentComment, setContentComment] = useState("");
+    const [contentReply, setContentReply] = useState("");
+
+    useEffect(()=>{
+        const term = listComment.map(item=> {return{...item,isAnswer: false}})
+        setComments(term);
+        
+    }, [listComment])
+
+    const handleSendComment = (comment_id)=>{
+        if (!(comment_id?contentReply:contentComment)) return
+        const data = {
+            post_id:post_id,
+            parent:comment_id,
+            content:comment_id?contentReply:contentComment
+        }
+        // console.log("data", data);
+        dispatch(userCommentToPost(data))
+    }
+
+    const handleClickReply = (comment_id) =>{
+        const index = comments.findIndex(item=> item.comment_id == comment_id)
+        if (index>-1){
+            const term = [...comments]
+            if (term[index].isAnswer){
+                term[index].isAnswer = !term[index].isAnswer;
+                setComments(term);
+            }
+            else{
+                const term = [...comments].map(item=>{return {...item, isAnswer:item.comment_id == comment_id}})
+                setComments(term);
+            }
+            setContentReply("")
+        }
+    }
+
+
     return (
         <div className="comment">
             <div className="comment__title">
@@ -10,187 +53,104 @@ function Comment() {
             </div>
             <div className="comment__area">
                 <div className="comment__area-text">
-                    <textarea placeholder="Input content to comment..."></textarea>
+                    <textarea onChange={(event)=>setContentComment(event.target.value)} placeholder="Input content to comment..."></textarea>
                 </div>
                 <div className="comment__sent">
-                    <button className="comment__sent-button">
-                        <i class="fa-solid fa-paper-plane"></i> Send
+                    <button className="comment__sent-button" onClick={()=>handleSendComment(undefined)}>
+                        <i className="fa-solid fa-paper-plane"></i> Send
                     </button>
                 </div>
             </div>
             <div className="comment__line"></div>
             <div className="comment__list">
-                <div className="comment__items">
-                    <div className="user__comment">
-                        <div className="user__comment-avatar">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ3-3n1Pei31eQDaoVOCrFQ3_383hUT_t7Fg&usqp=CAU" />
-                        </div>
-                        <div className="user__comment-info">
-                            <div className="user__comment-name">
-                                Le Thanh Huy
+                {comments?.length?comments?.map((item)=>
+                    <div className="comment__items-container" key={item.comment_id}>
+                        <div className="comment__items">
+                            <div className="user__comment">
+                                <div className="user__comment-avatar">
+                                    <img src={item.user_avatar??ImgUserDefault} />
+                                </div>
+                                <div className="user__comment-info">
+                                    <div className="user__comment-name">
+                                        {item.user_name?`${item.user_name} (Admin)`:"User"}
+                                    </div>
+                                    <div className="user__comment-time">
+                                        {moment(item.created_at).format("DD/MM/YYYY - HH:MM")}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="user__comment-time">
-                                9/22/2021 - 5:20
+                            <div className="comment__content">
+                                <textarea disabled>{item.content}</textarea>                                   
+                                {/* </p> */}
+                                <div className="comment__content-reply">
+                                    <button
+                                        onClick={()=>handleClickReply(item.comment_id)}
+                                        className="comment__content-reply-button"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="12"
+                                            viewBox="0 0 12 10.8"
+                                        >
+                                            <path
+                                                id="chat"
+                                                d="M3.48,8.32V4.6H1.2A1.2,1.2,0,0,0,0,5.8V9.4a1.2,1.2,0,0,0,1.2,1.2h.6v1.8l1.8-1.8h3A1.2,1.2,0,0,0,7.8,9.4V8.308a.574.574,0,0,1-.12.013H3.48ZM10.8,1.6H5.4A1.2,1.2,0,0,0,4.2,2.8V7.6H8.4l1.8,1.8V7.6h.6A1.2,1.2,0,0,0,12,6.4V2.8a1.2,1.2,0,0,0-1.2-1.2Z"
+                                                transform="translate(0 -1.6)"
+                                                fill="#707070"
+                                            ></path>
+                                        </svg>{" "}
+                                        Reply
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        {/* Answer */}
+                        {item?.sub_comment?.length?
+                            item?.sub_comment?.map((sub)=>
+                                <div className="comment__items-reply" key={sub.comment_id}>
+                                    <div className="user__comment">
+                                        <div className="user__comment-avatar">
+                                            <img src={sub.user_avatar??ImgUserDefault} />
+                                        </div>
+                                        <div className="user__comment-info">
+                                            <div className="user__comment-name">
+                                                {sub.user_name?`${sub.user_name} (Admin)`:"User"}
+                                            </div>
+                                            <div className="user__comment-time">
+                                                {moment(sub.created_at).format("DD/MM/YYYY - HH:MM")}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="comment__content">
+                                        <textarea disabled>{sub.content}</textarea>
+                                    </div>
+                            </div>
+                            ):""}
+                        {/* Reply all */}
+                        {item.isAnswer ? (
+                            <div className="comment__items-answer">
+                                <div className="comment__area">
+                                    <div className="comment__area-text">
+                                        <textarea onChange={(event)=>setContentReply(event.target.value)} placeholder="Input content to comment..."></textarea>
+                                    </div>
+                                    <div className="comment__sent">
+                                        <button className="comment__sent-button" onClick={()=>handleSendComment(item.comment_id)}>
+                                            <i className="fa-solid fa-paper-plane"></i> Send
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="comment__close-tab" onClick={()=>handleClickReply(item.comment_id)}><i className="fa-solid fa-x"></i></div>
+                            </div>
+                        ) : (
+                            ""
+                        )}
                     </div>
-                    <div className="comment__content">
-                        <p>
-                            The href attribute is required for an anchor to be
-                            keyboard accessible. Provide a valid, navigable
-                            address as the href value. If you cannot provide an
-                            href,
-                        </p>
-                        <div className="comment__content-reply">
-                            <button
-                                onClick={() => setIsAnswer(!isAnswer)}
-                                className="comment__content-reply-button"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="13"
-                                    height="12"
-                                    viewBox="0 0 12 10.8"
-                                >
-                                    <path
-                                        id="chat"
-                                        d="M3.48,8.32V4.6H1.2A1.2,1.2,0,0,0,0,5.8V9.4a1.2,1.2,0,0,0,1.2,1.2h.6v1.8l1.8-1.8h3A1.2,1.2,0,0,0,7.8,9.4V8.308a.574.574,0,0,1-.12.013H3.48ZM10.8,1.6H5.4A1.2,1.2,0,0,0,4.2,2.8V7.6H8.4l1.8,1.8V7.6h.6A1.2,1.2,0,0,0,12,6.4V2.8a1.2,1.2,0,0,0-1.2-1.2Z"
-                                        transform="translate(0 -1.6)"
-                                        fill="#707070"
-                                    ></path>
-                                </svg>{" "}
-                                Reply
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {/* Answer */}
-                <div className="comment__items-reply">
-                    <div className="user__comment">
-                        <div className="user__comment-avatar">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ3-3n1Pei31eQDaoVOCrFQ3_383hUT_t7Fg&usqp=CAU" />
-                        </div>
-                        <div className="user__comment-info">
-                            <div className="user__comment-name">
-                                Le Thanh Huy
-                            </div>
-                            <div className="user__comment-time">
-                                9/22/2021 - 5:20
-                            </div>
-                        </div>
-                    </div>
-                    <div className="comment__content">
-                        <p>
-                            The href attribute is required for an anchor to be
-                            keyboard accessible. Provide a valid, navigable
-                            address as the href value. If you cannot provide an
-                            href,
-                        </p>
-                    </div>
-                </div>
-                {isAnswer ? (
-                    <div className="comment__items-answer">
-                        <div className="comment__area">
-                            <div className="comment__area-text">
-                                <textarea placeholder="Input content to comment..."></textarea>
-                            </div>
-                            <div className="comment__sent">
-                                <button className="comment__sent-button">
-                                    <i class="fa-solid fa-paper-plane"></i> Send
-                                </button>
-                            </div>
-                        </div>
-                        <div className="comment__close-tab" onClick={() => setIsAnswer(!isAnswer)}><i class="fa-solid fa-x"></i></div>
-                    </div>
-                ) : (
-                    ""
-                )}
-                <div className="comment__items">
-                    <div className="user__comment">
-                        <div className="user__comment-avatar">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ3-3n1Pei31eQDaoVOCrFQ3_383hUT_t7Fg&usqp=CAU" />
-                        </div>
-                        <div className="user__comment-info">
-                            <div className="user__comment-name">
-                                Le Thanh Huy
-                            </div>
-                            <div className="user__comment-time">
-                                9/22/2021 - 5:20
-                            </div>
-                        </div>
-                    </div>
-                    <div className="comment__content">
-                        <p>
-                            The href attribute is required for an anchor to be
-                            keyboard accessible. Provide a valid, navigable
-                            address as the href value. If you cannot provide an
-                            href,
-                        </p>
-                        <div className="comment__content-reply">
-                            <button className="comment__content-reply-button">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="13"
-                                    height="12"
-                                    viewBox="0 0 12 10.8"
-                                >
-                                    <path
-                                        id="chat"
-                                        d="M3.48,8.32V4.6H1.2A1.2,1.2,0,0,0,0,5.8V9.4a1.2,1.2,0,0,0,1.2,1.2h.6v1.8l1.8-1.8h3A1.2,1.2,0,0,0,7.8,9.4V8.308a.574.574,0,0,1-.12.013H3.48ZM10.8,1.6H5.4A1.2,1.2,0,0,0,4.2,2.8V7.6H8.4l1.8,1.8V7.6h.6A1.2,1.2,0,0,0,12,6.4V2.8a1.2,1.2,0,0,0-1.2-1.2Z"
-                                        transform="translate(0 -1.6)"
-                                        fill="#707070"
-                                    ></path>
-                                </svg>{" "}
-                                Reply
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className="comment__items">
-                    <div className="user__comment">
-                        <div className="user__comment-avatar">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ3-3n1Pei31eQDaoVOCrFQ3_383hUT_t7Fg&usqp=CAU" />
-                        </div>
-                        <div className="user__comment-info">
-                            <div className="user__comment-name">
-                                Le Thanh Huy
-                            </div>
-                            <div className="user__comment-time">
-                                9/22/2021 - 5:20
-                            </div>
-                        </div>
-                    </div>
-                    <div className="comment__content">
-                        <p>
-                            The href attribute is required for an anchor to be
-                            keyboard accessible. Provide a valid, navigable
-                            address as the href value. If you cannot provide an
-                            href,
-                        </p>
-                        <div className="comment__content-reply">
-                            <button className="comment__content-reply-button">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="13"
-                                    height="12"
-                                    viewBox="0 0 12 10.8"
-                                >
-                                    <path
-                                        id="chat"
-                                        d="M3.48,8.32V4.6H1.2A1.2,1.2,0,0,0,0,5.8V9.4a1.2,1.2,0,0,0,1.2,1.2h.6v1.8l1.8-1.8h3A1.2,1.2,0,0,0,7.8,9.4V8.308a.574.574,0,0,1-.12.013H3.48ZM10.8,1.6H5.4A1.2,1.2,0,0,0,4.2,2.8V7.6H8.4l1.8,1.8V7.6h.6A1.2,1.2,0,0,0,12,6.4V2.8a1.2,1.2,0,0,0-1.2-1.2Z"
-                                        transform="translate(0 -1.6)"
-                                        fill="#707070"
-                                    ></path>
-                                </svg>{" "}
-                                Reply
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                ):""}
             </div>
-            <div className="comment__loadmore">
+            {/* <div className="comment__loadmore">
                 <button className="comment__loadmore-button">Load more</button>
-            </div>
+            </div> */}
         </div>
     );
 }

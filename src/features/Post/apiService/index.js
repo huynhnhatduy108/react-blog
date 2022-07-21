@@ -9,6 +9,10 @@ export const apiListPost = (params) => {
   return api(METHOD.GET,formatPath(PostPaths.List, queryParams));
 }
 
+export const apiListPostRelation = (data) => {
+  return api(METHOD.POST,formatPath(PostPaths.ListRelation), data);
+}
+
 export const apiDetailPostById = (id) => {
   return api(METHOD.GET,formatPath(PostPaths.DetailById, id));
 }

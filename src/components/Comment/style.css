@@ -120,9 +120,15 @@
 
 }
 
-.comment__content p{
-    margin: 10px 0;
+.comment__content textarea{
     font-size: 14px;
+    width: 100%;
+    min-height: 10px;
+    border: none;
+    margin-top: 10px;
+    outline:none;
+    border: none;
+    background-color: white;
 }
 
 .detail__share{

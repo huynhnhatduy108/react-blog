@@ -3,7 +3,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     isFetching: false,
     dataComment: null,
-    listComment: null,
+    listComment: [],
     comment: null,
     errors: null,
 }
@@ -16,23 +16,47 @@ const CommentSlice = createSlice({
         clearStoreComment(state){
             state.isFetching = false
             state.dataComment = null
-            state.listComment = null
+            state.listComment = []
             state.comment = null
             state.errors = null
         },
 
         // Comment To Post
-        commentToPost(state, action) {
+        userCommentToPost(state, action) {
             state.isFetching = true
             state.errors = []
         },
-        commentToPostSuccess(state, action) {
+        userCommentToPostSuccess(state, action) {
+            state.isFetching = false
+            if(action.payload.data.comment_parent_id){
+                const term = [...state.listComment]
+                const index = term.findIndex(item=>item.comment_id = action.payload.data.comment_parent_id)
+                term[index].sub_comment = [...term[index].sub_comment, action.payload.data]
+                state.listComment = term
+            }
+            else{
+                state.listComment = [action.payload.data,...state.listComment]
+            }
+            state.errors = []
+        },
+        userCommentToPostError(state, action) {
+            state.isFetching = false
+            state.dataComment =null
+            state.errors = action.payload
+        },
+
+        // Admin comment reply
+        adminCommentReply(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        adminCommentReplySuccess(state, action) {
             state.isFetching = false
             state.dataComment = action.payload
             state.comment = action.payload
             state.errors = []
         },
-        commentToPostError(state, action) {
+        adminCommentReplyError(state, action) {
             state.isFetching = false
             state.dataComment =null
             state.errors = action.payload
@@ -61,8 +85,7 @@ const CommentSlice = createSlice({
         },
         listCommentByPostSuccess(state, action) {
             state.isFetching = false
-            state.listComment = action.payload
-            state.dataComment = action.payload
+            state.listComment = action.payload.data
             state.errors = []
         },
         listCommentByPostError(state, action) {
@@ -77,9 +100,13 @@ const CommentSlice = createSlice({
 // ************************** Action *******************************
 export const clearStoreComment = CommentSlice.actions.clearStoreComment;
 
-export const commentToPost = CommentSlice.actions.commentToPost;
-export const commentToPostSuccess = CommentSlice.actions.commentToPostSuccess;
-export const commentToPostError = CommentSlice.actions.commentToPostError;
+export const userCommentToPost = CommentSlice.actions.userCommentToPost;
+export const userCommentToPostSuccess = CommentSlice.actions.userCommentToPostSuccess;
+export const userCommentToPostError = CommentSlice.actions.userCommentToPostError;
+
+export const adminCommentReply = CommentSlice.actions.adminCommentReply;
+export const adminCommentReplySuccess = CommentSlice.actions.adminCommentReplySuccess;
+export const adminCommentReplyError = CommentSlice.actions.adminCommentReplyError;
 
 export const deleteComment = CommentSlice.actions.deleteComment;
 export const deleteCommentSuccess = CommentSlice.actions.deleteCommentSuccess;

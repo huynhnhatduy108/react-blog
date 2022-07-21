@@ -1,9 +1,10 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import { listCommentByPost } from "../../Comment/store/slice";
 
-import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug} from "../apiService/index";
-import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
+import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug, apiListPostRelation} from "../apiService/index";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostRelation, getListPostRelationError, getListPostRelationSuccess, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -51,6 +52,18 @@ function* handleReadMorePostUserSearch(action) {
     }
 }
 
+function* handleGetListPostRelation(action) {
+    try {
+        const response= yield call(apiListPostRelation,action.payload);
+        if (response.success) {
+            yield put(getListPostRelationSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(getListPostRelationError(error));
+    }
+}
+
+
 function* handleGetDatailPostById(action) {
     try {
         const response= yield call(
@@ -73,6 +86,16 @@ function* handleGetDatailPostBySlug(action) {
         );
         if (response.success) {
             yield put(getDetailPostBySlugSuccess(response.data));
+            const {tags, categories, post_id} = response.data.data
+            const tags_id = tags.map((item)=>item.tag_id)
+            const categories_id = categories.map((item)=>item.category_id)
+            const data ={
+                post_id:post_id,
+                tags: tags_id,
+                categories:categories_id
+            } 
+            yield put(listCommentByPost(post_id))
+            yield put(getListPostRelation(data))
         } 
     } catch (error) {
         yield put(getDetailPostBySlugError(error));
@@ -145,6 +168,7 @@ export default function* PostSaga() {
     yield takeLatest(readMoreListPost.type, handleReadMoreListPost);
     yield takeLatest(getListPostUserSeach.type, handleGetListPostUserSearch);
     yield takeLatest(readMorePostUserSeach.type, handleReadMorePostUserSearch);
+    yield takeLatest(getListPostRelation.type, handleGetListPostRelation);
 
     yield takeLatest(getDetailPostById.type, handleGetDatailPostById);
     yield takeLatest(getDetailPostBySlug.type, handleGetDatailPostBySlug);

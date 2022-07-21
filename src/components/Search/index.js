@@ -34,13 +34,13 @@ function Search(props) {
                 setCurrenCategoryID(category);
                 setCurrenCategory(listCategory[index]?.title)
             }
-            if(tag){
                 setCurrenTagID(tag)
-            }
+        
         }
         else{
             dispatch(getListPostUserSeach({detail:1, limit:9, page:1, is_pagination:1}))
         }
+        window.scroll(0,0)
     },[keyword, category, tag])
 
     const handleChangeKeyWord = (e) => {
@@ -77,12 +77,19 @@ function Search(props) {
     }
 
     const handleSeletTag =(tagID)=>{
+        let params = {
+            keyword:keywordSearch,
+            category :currenCategoryID,
+            tag: tagID
+        }
+
         if(tagID==currenTagID){
-            setCurrenTagID();
+            params ={...params,tag:undefined}
+            setCurrenTagID()
         }
-        else{
-            setCurrenTagID(tagID);
-        }
+      
+        const queryParams = getQueryString(params); 
+        navigate(`/search?${queryParams}`)
     }
 
 
@@ -201,7 +208,7 @@ function Search(props) {
                                     onClick={()=>handleSeletTag(item.id)}
                                 >
                                     <div className="">
-                                        {`${item.slug} (${"15"})`}
+                                        {`${item.slug} (${item.post_count})`}
                                     </div>
                                 </div>
                             ))}

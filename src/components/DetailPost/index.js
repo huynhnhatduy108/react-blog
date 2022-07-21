@@ -1,12 +1,11 @@
 import React from "react";
 import "./style.css";
 import CommentPost from "./../../components/Comment";
-import SildePost from "./../../components/SildePost";
 import { EmailShareButton, FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
 import moment from 'moment';
 
 function DetailPost(props) {
-    const {widget, detailPost, navigate } = props;
+    const {widget, detailPost, navigate, listComment } = props;
 
     return (
         <div className="detail__post">
@@ -52,7 +51,7 @@ function DetailPost(props) {
                                 detailPost?.tags.map((item, index) => (
                                     <div
                                         className="search__tags-item"
-                                        key={item.id}
+                                        key={item.tag_id}
                                         onClick={()=>navigate(`/search?tag=${item.tag_id}`)}
                                     >
                                         <div className="">
@@ -83,7 +82,7 @@ function DetailPost(props) {
                             </div>
                         </div>
                         <div className="comment__post">
-                            <CommentPost/>
+                            <CommentPost listComment={listComment} post_id={detailPost?.post_id}/>
                         </div>
                     </div>
                     <div className="col l-4 m-12 c-12">
@@ -92,10 +91,7 @@ function DetailPost(props) {
                         </div>
                     </div>
                 </div>
-                <div className="gap-40"></div>
-                <div className="">
-                    <SildePost/>
-                </div>
+                
             </div>
         </div>
     );

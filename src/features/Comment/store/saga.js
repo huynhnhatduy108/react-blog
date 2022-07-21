@@ -1,21 +1,37 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
-import { apiCommentToPost, apiDeleteComment, apiGetlistCommentByPost } from "../apiService";
-import { commentToPost, commentToPostError, commentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess } from "./slice";
+import { apiUserCommentToPost, apiDeleteComment, apiGetlistCommentByPost, apiAdminCommentReply } from "../apiService";
+import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess, adminCommentReplySuccess, adminCommentReplyError, adminCommentReply } from "./slice";
 
-function* handleCommentToPost(action) {
+function* handleUserCommentToPost(action) {
     try {
+        console.log("action", action);
         const response= yield call(
-            apiCommentToPost,
+            apiUserCommentToPost,
             action.payload,
         );
         if (response.success) {
-            yield put(commentToPostSuccess(response.data));
+            yield put(userCommentToPostSuccess(response.data));
         } 
     } catch (error) {
-        yield put(commentToPostError(error));
+        yield put(userCommentToPostError(error));
     }
 }
+
+function* handleAdminCommentReply(action) {
+    try {
+        const response= yield call(
+            apiAdminCommentReply,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(adminCommentReplySuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(adminCommentReplyError(error));
+    }
+}
+
 
 function* handleDeleteComment(action) {
     try {
@@ -48,7 +64,8 @@ function* handleGetListCommentByPost(action) {
 
 
 export default function* CommentSaga() {
-    yield takeLatest(commentToPost.type, handleCommentToPost);
+    yield takeLatest(userCommentToPost.type, handleUserCommentToPost);
+    yield takeLatest(adminCommentReply.type, handleAdminCommentReply);
     yield takeLatest(deleteComment.type, handleDeleteComment);
     yield takeLatest(listCommentByPost.type, handleGetListCommentByPost);
    

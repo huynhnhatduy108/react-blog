@@ -1,11 +1,13 @@
 import React from "react";
 import Slider from "react-slick";
 import "./style.css";
+import moment from 'moment';
+import { plainText } from "../../utils/helper";
 
 function SildePost(props) {
-    const {} = props;
+    const {listPostRelation, navigate } = props;
     const settings = {
-        dots: true,
+        // dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 4,
@@ -38,8 +40,6 @@ function SildePost(props) {
         ],
     };
 
-    const listPost = [1, 2, 3, 4, 5, 6];
-
     return (
         <div className="silde__post">
             <div className="grid wide">
@@ -47,20 +47,22 @@ function SildePost(props) {
                     <h3 className="silde__post-title-h3">POST RELATION</h3>
                 </div>
                 <Slider {...settings}>
-                    {listPost.length &&
-                        listPost.map((item, index) => (
-                            <div className="silde__post-container" key={index}>
+                    {listPostRelation?.length &&
+                        listPostRelation.map((item, index) => (
+                            <div className="silde__post-container" key={item.post_id} onClick={()=>{navigate(`/p/${item.slug}`); window.scrollTo(0, 0)}}>
                                 <div className="post">
                                 <div className="post__img">
                                     <img
                                         className="post4__img-img"
-                                        src="https://public.bnbstatic.com/image/cms/content/body/202206/9d1b16ad973125fbb5f5c9c2f402ebdb.png"
-                                        alt=""
+                                        src={item.thumbnail}
+                                        alt={item.title}
                                     />
                                     <div className="post__img-publish">
-                                        <p className="img__publish-day">13</p>
+                                        <p className="img__publish-day">
+                                            {moment(item.published_at).format('DD')}
+                                        </p>
                                         <p className="img__publish-month">
-                                            March
+                                            {moment(item.published_at).format('MMMM')}
                                         </p>
                                     </div>
                                 </div>
@@ -69,26 +71,12 @@ function SildePost(props) {
                                     <div>
                                         <div className="post3__content-title">
                                             <h3 className="post3__content-title-h3 font-25">
-                                                10 Tips to organize the perfect
-                                                party, Nullam vestibulum
-                                                convallis risus vel condimentum
-                                                to organize the perfect party,{" "}
+                                                {item.title}
                                             </h3>
                                         </div>
                                         <div className="post3__content-text">
                                             <p className="post3__content-text-p margin-0 text-justify">
-                                                Curabitur venenatis efficitur
-                                                lorem sed tempor. Integer
-                                                aliquet tempor cursus. Nullam
-                                                vestibulum convallis risus vel
-                                                condimentum. Nullam auctor lorem
-                                                in libero luctus, vel volutpat
-                                                quam tincidunt.aliquet tempor
-                                                cursus. Nullam vestibulum
-                                                convallis risus vel condimentum.
-                                                Nullam auctor lorem in libero
-                                                luctus, vel volutpat quam
-                                                tincidunt.
+                                                {plainText(item.content)}
                                             </p>
                                         </div>
                                     </div>

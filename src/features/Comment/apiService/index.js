@@ -1,17 +1,23 @@
 // import {formatPath, getQueryString} from "utils";
 // import {apiGet, apiPost} from "utils/api";
+import { api, METHOD } from "../../../utils/api";
+import { formatPath } from "../../../utils/helper";
 import CommentPaths from "./path";
 
-
-export const apiCommentToPost = (payload) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+export const apiGetlistCommentByPost = (id) => {
+  return api(METHOD.GET,formatPath(CommentPaths.ListCommentByPost, id));
 }
 
-export const apiDeleteComment = (payload) => {
-  // return apiGet(formatPath(PaperPaths.Detail, id));
+export const apiUserCommentToPost = (data) => {
+  return api(METHOD.POST,formatPath(CommentPaths.UserCommentToPost, data.post_id), data);
 }
 
-export const apiGetlistCommentByPost = (payload) => {
-  // return apiGet(formatPath(PaperPaths., id));
+export const apiAdminCommentReply = (data) => {
+  return api(METHOD.POST,formatPath(CommentPaths.AdminCommentReply, data.post_id), data);
 }
+
+export const apiDeleteComment = (id) => {
+  return api(METHOD.DELETE,formatPath(CommentPaths.DeleteComment, id));
+}
+
 

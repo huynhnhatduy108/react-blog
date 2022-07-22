@@ -66,6 +66,11 @@
     /* font-style: italic; */
 }
 
+.validate_contact{
+    color: red;
+    margin-left: 5px;
+}
+
 .contact__input-name{
 
 }

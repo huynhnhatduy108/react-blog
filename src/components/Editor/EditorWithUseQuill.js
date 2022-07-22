@@ -7,6 +7,7 @@ import "highlight.js/styles/tokyo-night-dark.css";
 // import 'highlight.js/styles/darcula.css';
 // import ImageResize from 'quill-image-resize-module';
 import ImageResize from 'quill-image-resize-module-react';
+import ImageCompress from 'quill-image-compress';
 
 import "quill-emoji/dist/quill-emoji.css";
 import "./style.css";
@@ -91,20 +92,16 @@ const modules = {
         ["code-block"],
         ['emoji'],
     ],
-    // keyboard: {
-    //   bindings: {
-    //     tab: false,
-    //     custom: {
-    //       key: 13,
-    //       shiftKey: true,
-    //       handler: function () { /** do nothing */ }
-    //     },
-    //     handleEnter: {
-    //       key: 13,
-    //       handler: function () { /** do nothing */ }
-    //     }
-    //   }
-    // },
+    imageCompress: {
+        quality: 0.9, // default
+        maxWidth: 1000, // default
+        maxHeight: 1000, // default
+        imageType: 'image/jpeg', // default
+        keepImageTypes:['image/jpeg', 'image/png', 'image/jpg'],
+        debug: false, 
+        suppressErrorLogging: false, // default
+        insertIntoEditor: undefined, // default
+    },
     imageResize:{
       handleStyles: {
           displaySize: true,
@@ -112,7 +109,8 @@ const modules = {
           border: "none",
           color: "white",
       },
-      modules: ["Resize", "DisplaySize", "Toolbar"],},
+    //   parchment: this.Quill.import('parchment'),
+    modules: ["Resize", "DisplaySize", "Toolbar"],},
     'emoji-toolbar': true,
     // 'emoji-textarea': true,
     'emoji-shortname': true,
@@ -170,6 +168,7 @@ const Editor = (props, ref) => {
           'modules/emoji-textarea': TextAreaEmoji,
           "modules/blotFormatter":BlotFormatter,
           'modules/imageResize': ImageResize,
+          'modules/imageCompress': ImageCompress,
         }, true);
     }
     

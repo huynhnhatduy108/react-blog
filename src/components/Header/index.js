@@ -60,7 +60,7 @@ function Header() {
                 <div className="header__container">
                     <div onClick={()=>navigate("/")} className="header__logo">
                         <p className="header__logo-name ">NhatDuy</p>
-                        <p className="header__logo-sub-name">Lifestyle Blog</p>
+                        <p className="header__logo-sub-name">Cryptocurrency Blog</p>
                     </div>
                     <div className="header__search">
                         <div className="header__search-container">

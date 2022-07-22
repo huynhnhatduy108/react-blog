@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "./style.css";
 import moment from 'moment';
-import { plainText } from "../../utils/helper";
+import { plainText, scrollTo } from "../../utils/helper";
 
 function SildePost(props) {
     const {listPostRelation, navigate } = props;
@@ -49,7 +49,7 @@ function SildePost(props) {
                 <Slider {...settings}>
                     {listPostRelation?.length &&
                         listPostRelation.map((item, index) => (
-                            <div className="silde__post-container" key={item.post_id} onClick={()=>{navigate(`/p/${item.slug}`); window.scrollTo(0, 0)}}>
+                            <div className="silde__post-container" key={item.post_id} onClick={()=>{navigate(`/p/${item.slug}`); scrollTo()}}>
                                 <div className="post">
                                 <div className="post__img">
                                     <img

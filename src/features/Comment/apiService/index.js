@@ -20,4 +20,6 @@ export const apiDeleteComment = (id) => {
   return api(METHOD.DELETE,formatPath(CommentPaths.DeleteComment, id));
 }
 
-
+export const apiDeleteCommentByPostId = (id) => {
+  return api(METHOD.DELETE,formatPath(CommentPaths.DeleteCommentByPostId, id));
+}

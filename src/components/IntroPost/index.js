@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import moment from 'moment';
-import { plainText } from "../../utils/helper";
+import { plainText, scrollTo } from "../../utils/helper";
 
 function IntroPost(props) {
     const { dataPost,navigate } = props;
@@ -11,7 +11,7 @@ function IntroPost(props) {
             <div className="grid wide">
                 <div className="row no-gutters">
                     <div className="col l-8 m-8 c-12">
-                        <div className="post" onClick={()=>{navigate(`/p/${dataPost[0]?.slug}`); window.scrollTo(0, 0)}}>
+                        <div className="post" onClick={()=>{navigate(`/p/${dataPost[0]?.slug}`); scrollTo()}}>
                             <div className="post__img">
                                 <img
                                     className="post__img-img"
@@ -53,8 +53,7 @@ function IntroPost(props) {
                                         </a>
                                     </p>
                                     <p className="post__content-meta-comment color-gray margin-0">
-                                        {/* {dataPost[0]?.comment} */}
-                                        3 comments
+                                        {dataPost[0]?.comment_count??0} comments
                                     </p>
                                 </div>
                             </div>
@@ -63,7 +62,7 @@ function IntroPost(props) {
                     <div className="col l-4 m-4 c-12">
                         <div>
                             <div className="">
-                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[1]?.slug}`); window.scrollTo(0, 0)}}>
+                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[1]?.slug}`); scrollTo()}}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img "
@@ -105,15 +104,14 @@ function IntroPost(props) {
                                                 </a>
                                             </p>
                                             <p className="post__content-meta-comment color-gray margin-0">
-                                                {/* {dataPost[1]?.comment} */}
-                                                3 comments
+                                                {dataPost[1]?.comment_count??0} comments
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="">
-                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[2]?.slug}`); window.scrollTo(0, 0)}}>
+                                <div className="post" onClick={()=>{navigate(`/p/${dataPost[2]?.slug}`); scrollTo()}}>
                                     <div className="post__img">
                                         <img
                                             className="post2__img-img"
@@ -155,8 +153,7 @@ function IntroPost(props) {
                                                 </a>
                                             </p>
                                             <p className="post__content-meta-comment color-gray margin-0">
-                                                {/* {dataPost[2]?.comment} */}
-                                                3 comments
+                                                {dataPost[2]?.comment_count??0} comments
                                             </p>
                                         </div>
                                     </div>

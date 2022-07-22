@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import { useNavigate } from 'react-router-dom';
+import { scrollTo } from "../../utils/helper";
 
 function Footer() {
     const navigate = useNavigate();
@@ -9,16 +10,16 @@ function Footer() {
         <div className="footer">
             <div className="grid wide">
                 <div className="footer__menu">
-                    <div onClick={()=>navigate(`/`)} className="footer__menu-item">
+                    <div onClick={()=>{navigate(`/`); scrollTo()}} className="footer__menu-item">
                         <div className="">HOME</div>
                     </div>
-                    <div onClick={()=>navigate(`/search`)} className="footer__menu-item">
+                    <div onClick={()=>{navigate(`/search`); scrollTo()}} className="footer__menu-item">
                         <div className="">SEARCH</div>
                     </div>
-                    <div onClick={()=>window.location.href="https://resume-huynhnhatduy108.vercel.app/"} className="footer__menu-item">
+                    <div onClick={()=>{window.location.href="https://resume-huynhnhatduy108.vercel.app/";}} className="footer__menu-item">
                         <div className="">ABOUT ME</div>
                     </div>
-                    <div onClick={()=>navigate(`/contact`)} className="footer__menu-item">
+                    <div onClick={()=>{navigate(`/contact`); scrollTo()}} className="footer__menu-item">
                         <div className="">CONTACT</div>
                     </div>
                 </div>

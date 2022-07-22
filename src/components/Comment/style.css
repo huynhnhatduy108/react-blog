@@ -72,7 +72,8 @@
 }
 
 .comment__list{
-
+    max-height: 631px;
+    overflow-y: scroll;
 }
 
 .comment__items{

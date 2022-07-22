@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import Widget from "../widget";
-import { plainText } from "../../utils/helper";
+import { plainText, scrollTo } from "../../utils/helper";
 import moment from 'moment';
 import { useDispatch } from "react-redux";
 import { readMoreListPost } from "../../features/Post/store/slice";
@@ -24,7 +24,7 @@ function ListPost(props) {
                         <div className="row no-gutters">
                             {dataPost?.length && dataPost.map((item, index)=>
                                 <div className="col l-6 m-6 c-12" key={item.post_id}>
-                                    <div className="post"  onClick={()=>{navigate(`/p/${item.slug}`);window.scrollTo(0, 0)}}>
+                                    <div className="post"  onClick={()=>{navigate(`/p/${item.slug}`);scrollTo()}}>
                                         <div className="post__img">
                                             <img
                                                 className="post3__img-img"
@@ -68,8 +68,7 @@ function ListPost(props) {
                                                     </a>
                                                 </p>
                                                 <p className="post__content-meta-comment color-gray margin-0">
-                                                    {/* {item.comment} */}
-                                                    3 comments
+                                                    {item.comment_count??0} comments
                                                 </p>
                                             </div>
                                         </div>

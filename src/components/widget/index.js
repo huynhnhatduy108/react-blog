@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { scrollTo } from "../../utils/helper";
 
 
 function Widget(props) {
@@ -12,10 +13,7 @@ function Widget(props) {
 
     useEffect(() => {
         if (chart){
-            axios
-            .get(
-                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false"
-            )
+            axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false")
             .then((response) => {
                 setChartCoin(response.data);
             })
@@ -32,9 +30,7 @@ function Widget(props) {
     };
     const handleRegisterEmail = () => {
         const [date, time] = new Date().toLocaleString().split(",");
-        axios
-            .post(
-                "https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
+        axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
                 { email: email, date: date, time: time }
             )
             .then((response) => {})
@@ -129,7 +125,7 @@ function Widget(props) {
                 <div className="tags__list">
                     {listTag?.length &&
                         listTag.map((item, index) => (
-                            <div className="tags__item" key={item.id} onClick={()=>navigate(`/search?tag=${item.id}`)}>
+                            <div className="tags__item" key={item.id} onClick={()=>{navigate(`/search?tag=${item.id}`); scrollTo()}}>
                                 <div className="">{item.slug} ({`${item.post_count}`})</div>
                             </div>
                         ))}

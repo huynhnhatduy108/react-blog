@@ -33,8 +33,6 @@ const CommentSlice = createSlice({
                 const index = term.findIndex(item=>item.comment_id == action.payload.data.comment_parent_id)
                 term[index].sub_comment = [...term[index].sub_comment, action.payload.data]
                 state.listComment = term
-
-                console.log("Have comment_parent_id");
             }
             else{
                 state.listComment = [action.payload.data,...state.listComment]
@@ -80,6 +78,23 @@ const CommentSlice = createSlice({
             state.errors = action.payload
         },
 
+        // Delete comment by post id
+        deleteCommentByPostId(state, action) {
+            state.isFetching = true
+            state.errors = []
+        },
+        deleteCommentByPostIdSuccess(state, action) {
+            state.isFetching = false
+            state.dataComment = action.payload
+            state.errors = []
+        },
+        deleteCommentByPostIdError(state, action) {
+            state.isFetching = false
+            state.dataComment =null
+            state.errors = action.payload
+        },
+
+
         // list comment to post
         listCommentByPost(state, action) {
             state.isFetching = true
@@ -113,6 +128,10 @@ export const adminCommentReplyError = CommentSlice.actions.adminCommentReplyErro
 export const deleteComment = CommentSlice.actions.deleteComment;
 export const deleteCommentSuccess = CommentSlice.actions.deleteCommentSuccess;
 export const deleteCommentError = CommentSlice.actions.deleteCommentError;
+
+export const deleteCommentByPostId = CommentSlice.actions.deleteCommentByPostId;
+export const deleteCommentByPostIdSuccess = CommentSlice.actions.deleteCommentByPostIdSuccess;
+export const deleteCommentByPostIdError = CommentSlice.actions.deleteCommentByPostIdError;
 
 export const listCommentByPost = CommentSlice.actions.listCommentByPost;
 export const listCommentByPostSuccess = CommentSlice.actions.listCommentByPostSuccess;

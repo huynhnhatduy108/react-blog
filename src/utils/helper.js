@@ -9,6 +9,13 @@ export const FomatDate = (date) =>{
   return "";
 }
 
+export const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 
 export const plainText = (html)=>{
   if (html){
@@ -46,29 +53,33 @@ export const formatPath = (path, ...params) => {
     return path;
   }
 
-  export const trueTypeOf = (obj) => Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+export const trueTypeOf = (obj) => Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
 
-  export const getQueryString = (init) => {
-    const params = new URLSearchParams();
-    Object.keys(init).map((k) => {
-      const type = trueTypeOf(init[k]);
-      switch (type) {
-        case 'object':
-          // params 
-          break;
-        case 'string':
-        case 'number':
-          params.append(k,init[k].toString())
-          break;
-        case 'array':
-          init[k].map((item)=>{
-            params.append(k,item)
-          })
-          break;
-        default:
-          break;
-      }
-      return k;
-    })
-    return params.toString()
-  }
+export const getQueryString = (init) => {
+  const params = new URLSearchParams();
+  Object.keys(init).map((k) => {
+    const type = trueTypeOf(init[k]);
+    switch (type) {
+      case 'object':
+        // params 
+        break;
+      case 'string':
+      case 'number':
+        params.append(k,init[k].toString())
+        break;
+      case 'array':
+        init[k].map((item)=>{
+          params.append(k,item)
+        })
+        break;
+      default:
+        break;
+    }
+    return k;
+  })
+  return params.toString()
+}
+
+export const scrollTo = (top= 0, left= 0, behavior= 'smooth')=>{
+    window.scrollTo({top, left, behavior});
+}

@@ -135,6 +135,7 @@
 
 ::-webkit-scrollbar {
     width: 8px;
+    height: 5px;
   }
 
 ::-webkit-scrollbar-thumb {
@@ -210,6 +211,7 @@
 }
 
 .result__post-img img{
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;

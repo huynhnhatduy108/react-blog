@@ -40,7 +40,6 @@ function Search(props) {
         else{
             dispatch(getListPostUserSeach({detail:1, limit:9, page:1, is_pagination:1}))
         }
-        window.scroll(0,0)
     },[keyword, category, tag])
 
     const handleChangeKeyWord = (e) => {
@@ -92,7 +91,7 @@ function Search(props) {
         navigate(`/search?${queryParams}`)
     }
 
-
+    
     return (
         <div className="search">
             <div className="search__background">

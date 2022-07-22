@@ -3,6 +3,7 @@ import "./style.css";
 import CommentPost from "./../../components/Comment";
 import { EmailShareButton, FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
 import moment from 'moment';
+import { scrollTo } from "../../utils/helper";
 
 function DetailPost(props) {
     const {widget, detailPost, navigate, listComment } = props;
@@ -32,7 +33,7 @@ function DetailPost(props) {
                                 </div>
                                 <div className="detail__author-right">
                                     <div className="author__comments-post">
-                                        <span className="author__comments-post-span"><i className="fa-solid fa-comment"></i> 4</span>
+                                        <span className="author__comments-post-span"><i className="fa-solid fa-comment"></i> {detailPost?.comment_count??0}</span>
                                     </div>
                                     <div className="author__views-post">
                                         <span className="author__views-post-span"><i className="fa-solid fa-eye"></i> 11.12k</span>
@@ -52,7 +53,7 @@ function DetailPost(props) {
                                     <div
                                         className="search__tags-item"
                                         key={item.tag_id}
-                                        onClick={()=>navigate(`/search?tag=${item.tag_id}`)}
+                                        onClick={()=>{navigate(`/search?tag=${item.tag_id}`); scrollTo()}}
                                     >
                                         <div className="">
                                             {`#${item.slug}`}

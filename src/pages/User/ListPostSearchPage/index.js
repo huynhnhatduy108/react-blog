@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Search from '../../../components/Search';
 import ListSearch from '../../../components/ListSearch';
 import Footer from '../../../components/Footer';

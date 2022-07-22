@@ -1,4 +1,5 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import { apiUserCommentToPost, apiDeleteComment, apiGetlistCommentByPost, apiAdminCommentReply, apiDeleteCommentByPostId } from "../apiService";
 import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess, adminCommentReplySuccess, adminCommentReplyError, adminCommentReply, deleteCommentByPostIdSuccess, deleteCommentByPostIdError, deleteCommentByPostId } from "./slice";
@@ -25,7 +26,12 @@ function* handleAdminCommentReply(action) {
         );
         if (response.success) {
             yield put(adminCommentReplySuccess(response.data));
+            message.success("Admin comment success!")
         } 
+        else{
+            yield put(adminCommentReplyError(response.error));
+            message.error("Admin comment error!")
+        }
     } catch (error) {
         yield put(adminCommentReplyError(error));
     }
@@ -39,10 +45,16 @@ function* handleDeleteComment(action) {
             action.payload,
         );
         if (response.success) {
-            yield put(deleteCommentSuccess(response.data));
+            yield put(deleteCommentSuccess(action.payload));
+            message.success("Delete comment success!")
         } 
+        else{
+            yield put(deleteCommentError(response.error));
+            message.error("Delete comment error!")
+        }
     } catch (error) {
         yield put(deleteCommentError(error));
+        message.error("Delete comment error!")
     }
 }
 
@@ -54,6 +66,7 @@ function* handleDeleteCommentByPostId(action) {
         );
         if (response.success) {
             yield put(deleteCommentByPostIdSuccess(response.data));
+            
         } 
     } catch (error) {
         yield put(deleteCommentByPostIdError(error));

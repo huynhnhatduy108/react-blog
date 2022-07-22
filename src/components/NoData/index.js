@@ -5,7 +5,7 @@ function NoData() {
   return (
     <div className='nodata'>
       <div className='nodata_container'>
-        <i class="fa-solid fa-database nodata__icon"></i>
+        <i className="fa-solid fa-database nodata__icon"></i>
       </div>
       <div className="nodata__text">No Data</div>
     </div>

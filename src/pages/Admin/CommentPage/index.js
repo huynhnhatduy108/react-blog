@@ -22,7 +22,7 @@ import {
 
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getCommentSlice, listCommentByPost } from "../../../features/Comment/store/slice";
+import { adminCommentReply, deleteComment, getCommentSlice, listCommentByPost } from "../../../features/Comment/store/slice";
 import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
 import ImgUserDefault from './../../../assets/img/defaultuser.png';
 
@@ -31,12 +31,12 @@ const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
 
 function CommentPage() {
-    const [formComment, formSeachComment] = Form.useForm();
+    const [formSeachComment] = Form.useForm();
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
     const [visibleModel, setVisibleModel] = useState(false);
-    const [nameCurrentPost, setNameCurrentPost ] = useState("");
+    const [currentPost, setCurrentPost ] = useState({});
 
     const [comments, setComments] = useState([]);
     const [contentComment, setContentComment] = useState("");
@@ -76,27 +76,49 @@ function CommentPage() {
     
     const handleCancel = () => {
         setVisibleModel(!visibleModel);
-    };
-
-    const handleDeleteComment = (post) => {
-        // dispatch(deleteTag(tag.id))
+        setContentComment("");
+        setContentReply("");
     };
 
     const handleViewAllComment = (post) => {
         dispatch(listCommentByPost(post.post_id));
-        console.log("post", post);
         setVisibleModel(!visibleModel);
-        setNameCurrentPost(post.title);
+        setCurrentPost(post);
     };
 
-    // const handleSubmit = (values) => {
-    //     if(detailTag) {
-    //        dispatch(updateTag({...values, id: detailTag.id}))
-    //     }
-    //     else{
-    //         dispatch(createTag(values))
-    //     }
-    // };
+    const handleDeleteAllComment = (post) => {
+        // dispatch(deleteTag(tag.id))
+    };
+
+    const handleDeleteComment = (comment_id, comment_parent_id) => {
+        dispatch(deleteComment({comment_id, comment_parent_id}))
+    };
+
+    const handleSendComment = (comment_id) => {
+        if (!(comment_id?contentReply:contentComment)) return
+            const data = {
+                post_id:currentPost.post_id,
+                parent:comment_id,
+                content:comment_id?contentReply:contentComment
+        }
+        dispatch(adminCommentReply(data))
+    };
+
+    const handleClickReply = (comment_id) =>{
+        const index = comments.findIndex(item=> item.comment_id == comment_id)
+        if (index>-1){
+            const term = [...comments]
+            if (term[index].isAnswer){
+                term[index].isAnswer = !term[index].isAnswer;
+                setComments(term);
+            }
+            else{
+                const term = [...comments].map(item=>{return {...item, isAnswer:item.comment_id == comment_id}})
+                setComments(term);
+            }
+            setContentReply("")
+        }
+    }
 
     const columns = [
         {
@@ -135,7 +157,7 @@ function CommentPage() {
                     </Button>
                     <Popconfirm
                         title="Are you sure to delete all comment?"
-                        onConfirm={() => handleDeleteComment(record)}
+                        onConfirm={() => handleDeleteAllComment(record)}
                         onCancel={() => {}}
                         okText="Yes"
                         cancelText="No"
@@ -219,7 +241,7 @@ function CommentPage() {
                     />
                     <Modal
                         visible={visibleModel}
-                        title={nameCurrentPost}
+                        title={currentPost.title}
                         onCancel={handleCancel}
                         width="80%"
                         footer={[
@@ -231,8 +253,8 @@ function CommentPage() {
                        <div className="admin__comment" >
                         <p style={{fontWeight:"bold"}}>{"Comment Post >>"}</p>
                         <div className="admin__comment-form" style={{position:"relative"}}>
-                            <TextArea rows={4} placeholder="Writing something to commment..."></TextArea>
-                            <Button type="primary" style={{position:"absolute", bottom:10, right: 10}}>Send</Button>
+                            <TextArea rows={4} placeholder="Writing something to commment..." onChange={(event)=>setContentComment(event.target.value)} value={contentComment}></TextArea>
+                            <Button type="primary" style={{position:"absolute", bottom:10, right: 10}} onClick={()=>handleSendComment(undefined)}>Send</Button>
                         </div>
                        </div>
                        {/* <br /> */}
@@ -244,13 +266,21 @@ function CommentPage() {
                                         <Col xs={2} style={{position:"relative"}}>
                                             <div style={{position: "absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)"}}>
                                                 <img style={{width:40, height:40, borderRadius:"50%"}} src={item.user_avatar??ImgUserDefault}/>
-                                                <p style={{margin:0}}>{item.user_name?`${item.user_name} (Admin)`:"User"}</p>
+                                                <p style={{margin:0}}>{item.user_name?`${item.user_name}`:"User"}</p>
                                             </div>
                                         </Col>
                                         <Col style={{flex:1, position:"relative"}}>
                                             <Input.TextArea style={{border:"none"}} disabled value={item.content} rows={4}/>
-                                            <Button type="primary" style={{position:"absolute", bottom:10, right: 90, zIndex:2}} onClick={()=>{}}>Reply</Button>
-                                            <Button danger type="primary" style={{position:"absolute", bottom:10, right: 10, zIndex:2}}>Delete</Button>
+                                            <Button type="primary" style={{position:"absolute", bottom:10, right: 90, zIndex:2}} onClick={()=>handleClickReply(item.comment_id)} >Reply</Button>
+                                            <Popconfirm
+                                                title="Are you sure to delete this comment?"
+                                                onConfirm={() => handleDeleteComment(item.comment_id, item.comment_parent_id)}
+                                                onCancel={() => {}}
+                                                okText="Yes"
+                                                cancelText="No"
+                                            >
+                                                <Button danger type="primary" style={{position:"absolute", bottom:10, right: 10, zIndex:2}}>Delete</Button>
+                                            </Popconfirm>
                                         </Col>
                                     </Input.Group>
                                     {/* <div className="admin__reply" style={{marginBottom:10,position:"relative"}}>
@@ -264,20 +294,28 @@ function CommentPage() {
                                                 <Col xs={2} style={{position:"relative"}}>
                                                     <div style={{position: "absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", }}>
                                                         <img style={{width:40, height:40, borderRadius:"50%"}} src={sub.user_avatar??ImgUserDefault}/>
-                                                        <p style={{margin:0}}>{item.user_name?`${item.user_name} (Admin)`:"User"}</p>
+                                                        <p style={{margin:0}}>{sub.user_name?`${sub.user_name}`:"User"}</p>
                                                     </div>
                                                 </Col>
                                                 <Col style={{flex:1, position:"relative"}}>
-                                                    <Input.TextArea style={{border:"none"}} disabled value={item.content} rows={3}/>
-                                                    <Button danger type="primary" style={{position:"absolute", bottom:10, right: 10, zIndex:2}}>Delete</Button>
+                                                    <Input.TextArea style={{border:"none"}} disabled value={sub.content} rows={3}/>
+                                                    <Popconfirm
+                                                        title="Are you sure to delete this comment?"
+                                                        onConfirm={() => handleDeleteComment(sub.comment_id, sub.comment_parent_id)}
+                                                        onCancel={() => {}}
+                                                        okText="Yes"
+                                                        cancelText="No"
+                                                    >
+                                                        <Button danger type="primary" style={{position:"absolute", bottom:10, right: 10, zIndex:2}}>Delete</Button>
+                                                    </Popconfirm>
                                                 </Col>
                                             </Input.Group>
                                         )}
                                     </div>
-                                    <div className="admin__reply" style={{position:"relative", marginLeft:10}}>
-                                        <TextArea rows={3} placeholder="Writing something to commment..."></TextArea>
-                                        <Button type="primary" style={{position:"absolute", bottom:10, right: 20}}>Send</Button>
-                                    </div>                                  
+                                   {item.isAnswer ?<div className="admin__reply" style={{position:"relative", marginLeft:10}}>
+                                        <TextArea rows={3} placeholder="Writing something to commment..." onChange={(event)=>setContentReply(event.target.value)} value={contentReply}></TextArea>
+                                        <Button type="primary" style={{position:"absolute", bottom:10, right: 20}} onClick={()=>handleSendComment(item.comment_id)}>Send</Button>
+                                    </div>:""}                               
                                 </div>
                             ):""}
                        </div>     

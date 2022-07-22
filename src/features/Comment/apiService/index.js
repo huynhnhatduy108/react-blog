@@ -16,8 +16,8 @@ export const apiAdminCommentReply = (data) => {
   return api(METHOD.POST,formatPath(CommentPaths.AdminCommentReply, data.post_id), data);
 }
 
-export const apiDeleteComment = (id) => {
-  return api(METHOD.DELETE,formatPath(CommentPaths.DeleteComment, id));
+export const apiDeleteComment = (data) => {
+  return api(METHOD.DELETE,formatPath(CommentPaths.DeleteComment, data.comment_id));
 }
 
 export const apiDeleteCommentByPostId = (id) => {

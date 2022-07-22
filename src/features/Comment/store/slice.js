@@ -52,8 +52,15 @@ const CommentSlice = createSlice({
         },
         adminCommentReplySuccess(state, action) {
             state.isFetching = false
-            state.dataComment = action.payload
-            state.comment = action.payload
+            if(action.payload.data.comment_parent_id){
+                const temp = [...state.listComment]
+                const index = temp.findIndex(item=>item.comment_id == action.payload.data.comment_parent_id)
+                temp[index].sub_comment = [...temp[index].sub_comment, action.payload.data]
+                state.listComment = temp
+            }
+            else{
+                state.listComment = [action.payload.data,...state.listComment]
+            }
             state.errors = []
         },
         adminCommentReplyError(state, action) {
@@ -69,8 +76,16 @@ const CommentSlice = createSlice({
         },
         deleteCommentSuccess(state, action) {
             state.isFetching = false
-            state.dataComment = action.payload
             state.errors = []
+            if(action.payload.comment_parent_id){
+                const temp = [...state.listComment]
+                const index = temp.findIndex(item=>item.comment_id == action.payload.comment_parent_id)
+                temp[index].sub_comment = [...temp[index].sub_comment].filter((item)=>item.comment_id != action.payload.comment_id)
+                state.listComment = temp
+            }
+            else{
+                state.listComment = [...state.listComment].filter((item)=>item.comment_id != action.payload.comment_id)
+            }
         },
         deleteCommentError(state, action) {
             state.isFetching = false

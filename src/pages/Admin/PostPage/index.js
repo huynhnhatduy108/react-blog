@@ -185,7 +185,7 @@ function PostPage() {
             key: "categories",
             render: (categories) => (
                 <>
-                    {categories.map((category, index) => {
+                    {categories?.map((category, index) => {
                         let color = category.title.length > 5 ? "geekblue" : "green";
                         if (category === "loser") {
                             color = "volcano";
@@ -205,7 +205,7 @@ function PostPage() {
             dataIndex: "tags",
             render: (_, { tags }) => (
                 <>
-                    {tags.map((tag) => {
+                    {tags?.map((tag) => {
                         let color = tag.slug.length > 5 ? "geekblue" : "green";
 
                         if (tag === "loser") {

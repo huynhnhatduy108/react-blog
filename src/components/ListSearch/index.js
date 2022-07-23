@@ -19,12 +19,10 @@ function ListSearch(props) {
 
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
-    const handleReadMore = ()=>{
-        dispatch(readMorePostUserSeach({detail:1, limit:limit, page:page+1, is_pagination:1, keyword:keyword, category:category, tag:tag }))
-        var clientHeight = document.getElementById('listPostSearch').clientHeight;
-        console.log("window.pageYOffset", window.pageYOffset, clientHeight);
+    const handleReadMore =  ()=>{
+        dispatch(readMorePostUserSeach({detail:1, limit:limit, page:page + 1, is_pagination:1, keyword:keyword, category:category, tag:tag }))
+       
     }
-
 
     return (
         <div className="list__search" id="listPostSearch" ref={listSearchRef}>

@@ -1,8 +1,24 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import {  countCommentPostAdd, countCommentPostDelete } from "../../Post/store/slice";
 import { apiUserCommentToPost, apiDeleteComment, apiGetlistCommentByPost, apiAdminCommentReply, apiDeleteCommentByPostId } from "../apiService";
 import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess, adminCommentReplySuccess, adminCommentReplyError, adminCommentReply, deleteCommentByPostIdSuccess, deleteCommentByPostIdError, deleteCommentByPostId, getCommentSlice } from "./slice";
+
+function* handleGetListCommentByPost(action) {
+    try {
+        const response= yield call(
+            apiGetlistCommentByPost,
+            action.payload,
+        );
+        if (response.success) {
+            yield put(listCommentByPostSuccess(response.data));
+        } 
+    } catch (error) {
+        yield put(listCommentByPostError(error));
+    }
+}
+
 
 function* handleUserCommentToPost(action) {
     try {
@@ -12,6 +28,10 @@ function* handleUserCommentToPost(action) {
         );
         if (response.success) {
             yield put(userCommentToPostSuccess(response.data));
+            const data ={
+                post_id: action.payload.post_id
+            }
+            yield put(countCommentPostAdd(data))
         } 
     } catch (error) {
         yield put(userCommentToPostError(error));
@@ -27,6 +47,10 @@ function* handleAdminCommentReply(action) {
         if (response.success) {
             yield put(adminCommentReplySuccess(response.data));
             message.success("Admin comment success!")
+            const data ={
+                post_id: action.payload.post_id
+            }
+            yield put(countCommentPostAdd(data))
         } 
         else{
             yield put(adminCommentReplyError(response.error));
@@ -46,8 +70,11 @@ function* handleDeleteComment(action) {
         );
         if (response.success) {
             yield put(deleteCommentSuccess(action.payload));
-            // const commentStore = yield select(getCommentSlice);
-
+            const data = {
+                post_id:action.payload.post_id,
+                count_delete: response.data.data.count_delete
+            }
+            yield put(countCommentPostDelete(data));
             message.success("Delete comment success!")
         } 
         else{
@@ -68,34 +95,25 @@ function* handleDeleteCommentByPostId(action) {
         );
         if (response.success) {
             yield put(deleteCommentByPostIdSuccess(response.data));
-            
+            const data = {
+                post_id:action.payload,
+                count_delete: response.data.data.count_delete
+            }
+            console.log("data", data);
+            yield put(countCommentPostDelete(data));
         } 
     } catch (error) {
         yield put(deleteCommentByPostIdError(error));
     }
 }
 
-function* handleGetListCommentByPost(action) {
-    try {
-        const response= yield call(
-            apiGetlistCommentByPost,
-            action.payload,
-        );
-        if (response.success) {
-            yield put(listCommentByPostSuccess(response.data));
-        } 
-    } catch (error) {
-        yield put(listCommentByPostError(error));
-    }
-}
-
 
 
 export default function* CommentSaga() {
+    yield takeLatest(listCommentByPost.type, handleGetListCommentByPost);
     yield takeLatest(userCommentToPost.type, handleUserCommentToPost);
     yield takeLatest(adminCommentReply.type, handleAdminCommentReply);
     yield takeLatest(deleteComment.type, handleDeleteComment);
     yield takeLatest(deleteCommentByPostId.type, handleDeleteCommentByPostId);
-    yield takeLatest(listCommentByPost.type, handleGetListCommentByPost);
    
 }

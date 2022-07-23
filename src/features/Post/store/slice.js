@@ -261,11 +261,29 @@ const PostSlice = createSlice({
             state.errors = action.payload
         },
 
-        countCommentPost(state, action){
-            const temp = {...state.listPostPaging}
-            const index = temp.items.findIndex((item)=>item.post_id == action.payload.post_id)
-            temp.items[index].comment_count = action.payload.comment_count;
-            state.listPostPaging = temp
+        countCommentPostAdd(state, action){
+            const temp = {...state.listPostPaging};
+            const index = temp.items.findIndex((item)=>item.post_id == action.payload.post_id);
+            if(index > -1){
+                temp.items[index].comment_count = temp.items[index].comment_count+1;
+                state.listPostPaging = temp;
+            }
+            if (state.detailPost){
+                const detail = {...state.detailPost};
+                detail.comment_count = detail.comment_count+1;
+                state.detailPost = detail;
+            }
+        },
+
+        countCommentPostDelete(state, action){
+            console.log("store action", action);
+            const temp = {...state.listPostPaging};
+            const index = temp.items.findIndex((item)=>item.post_id == action.payload.post_id);
+            if(index > -1){
+                temp.items[index].comment_count =temp.items[index].comment_count-action.payload.count_delete;
+                state.listPostPaging = temp;
+            }
+
         },
 
 }});
@@ -317,7 +335,8 @@ export const deletePost = PostSlice.actions.deletePost;
 export const deletePostSuccess = PostSlice.actions.deletePostSuccess;
 export const deletePostError = PostSlice.actions.deletePostError;
 
-export const countCommentPost = PostSlice.actions.countCommentPost;
+export const countCommentPostAdd = PostSlice.actions.countCommentPostAdd;
+export const countCommentPostDelete = PostSlice.actions.countCommentPostDelete;
 
 // ************************** Store *******************************
 export const getPostSlice = (state) => state.post;

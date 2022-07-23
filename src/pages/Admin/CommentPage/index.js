@@ -22,7 +22,7 @@ import {
 
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { adminCommentReply, deleteComment, getCommentSlice, listCommentByPost } from "../../../features/Comment/store/slice";
+import { adminCommentReply, deleteComment, deleteCommentByPostId, getCommentSlice, listCommentByPost } from "../../../features/Comment/store/slice";
 import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
 import ImgUserDefault from './../../../assets/img/defaultuser.png';
 
@@ -87,11 +87,12 @@ function CommentPage() {
     };
 
     const handleDeleteAllComment = (post) => {
-        // dispatch(deleteTag(tag.id))
+        console.log("post_id", post.post_id);
+        // dispatch(deleteCommentByPostId(post.post_id))
     };
 
     const handleDeleteComment = (comment_id, comment_parent_id) => {
-        dispatch(deleteComment({comment_id, comment_parent_id}))
+        dispatch(deleteComment({comment_id, comment_parent_id, post_id:currentPost.post_id}))
     };
 
     const handleSendComment = (comment_id) => {

@@ -6,5 +6,6 @@ export const adminRoutes =[
     {label:"Category", path:"/admin/category"},
     {label:"User", path:"/admin/user"},
     {label:"Comment", path:"/admin/comment"},
+    {label:"Ads", path:"/admin/adspage"},
     // {label:"Login", path:"/admin/login"},
 ]

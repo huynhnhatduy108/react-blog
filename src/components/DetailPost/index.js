@@ -36,7 +36,7 @@ function DetailPost(props) {
                                         <span className="author__comments-post-span"><i className="fa-solid fa-comment"></i> {detailPost?.comment_count??0}</span>
                                     </div>
                                     <div className="author__views-post">
-                                        <span className="author__views-post-span"><i className="fa-solid fa-eye"></i> 11.12k</span>
+                                        <span className="author__views-post-span"><i className="fa-solid fa-eye"></i> {detailPost?.views}</span>
                                     </div>
                                 </div>
 

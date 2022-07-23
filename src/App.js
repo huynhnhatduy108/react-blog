@@ -17,6 +17,7 @@ import TagPage from "./pages/Admin/TagPage";
 import UserPage from "./pages/Admin/UserPage";
 import LoginPage from "./pages/Admin/LoginPage";
 import CommentPage from "./pages/Admin/CommentPage";
+import AdsPage from "./pages/Admin/AdsPage";
 
 // import HomePage from "./pages/User/HomePage";
 // const TOKEN = "CDD";
@@ -77,7 +78,8 @@ const App = () => {
                     <Route path="admin/user" element={<UserPage/>} />
                     <Route path="admin/login" element={<LoginPage/>} />
                     <Route path="admin/comment" element={<CommentPage/>} />
-
+                    <Route path="admin/adspage" element={<AdsPage/>} />
+                    
                 </Routes>
             </BrowserRouter>
         </div>

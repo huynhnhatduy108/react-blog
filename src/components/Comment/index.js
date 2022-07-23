@@ -75,7 +75,7 @@ function Comment(props) {
                                         {item.user_name?`${item.user_name} (Admin)`:"User"}
                                     </div>
                                     <div className="user__comment-time">
-                                        {moment(item.created_at).format("DD/MM/YYYY - HH:MM")}
+                                        {moment(item.created_at).format("DD/MM/YYYY - HH:mm")}
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@ function Comment(props) {
                                                 {sub.user_name?`${sub.user_name} (Admin)`:"User"}
                                             </div>
                                             <div className="user__comment-time">
-                                                {moment(sub.created_at).format("DD/MM/YYYY - HH:MM")}
+                                                {moment(sub.created_at).format("DD/MM/YYYY - HH:mm")}
                                             </div>
                                         </div>
                                     </div>

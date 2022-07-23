@@ -27,7 +27,8 @@
     justify-content: center;
 }
 
-.footer__social-item{
+.footer__social-item:hover{
+    color: #4f4d4d;
 
 }
 
@@ -49,10 +50,7 @@
 }
 
 .coppy__right-text{
-    /* position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%,-50%); */
+    text-align: center;
     font-size: 16px;
     font-weight: bold;
 

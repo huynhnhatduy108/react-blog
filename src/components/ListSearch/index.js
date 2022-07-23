@@ -21,13 +21,13 @@ function ListSearch(props) {
 
     const handleReadMore = ()=>{
         dispatch(readMorePostUserSeach({detail:1, limit:limit, page:page+1, is_pagination:1, keyword:keyword, category:category, tag:tag }))
-        // window.scrollTo(0, window.pageYOffset)
+        var clientHeight = document.getElementById('listPostSearch').clientHeight;
+        console.log("window.pageYOffset", window.pageYOffset, clientHeight);
     }
 
 
     return (
         <div className="list__search" id="listPostSearch" ref={listSearchRef}>
-            {/* <button onClick={()=>console.log(window.pageYOffset)}>check height</button> */}
             <div className="grid wide">
                 <div className="row no-gutters">
                     {items?.length && items.map((item, index)=>
@@ -84,6 +84,8 @@ function ListSearch(props) {
                         </div>
                     )}
                 </div>
+                {/* <button onClick={()=>console.log(window.pageYOffset)}>check height</button> */}
+
                 <div className="list__search-loadmore">
                     {page>= total_page?"":<button className="loadmore__button" onClick={handleReadMore}>Read more</button>}
                 </div>

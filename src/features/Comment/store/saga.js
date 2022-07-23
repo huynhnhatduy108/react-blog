@@ -2,7 +2,7 @@ import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import { apiUserCommentToPost, apiDeleteComment, apiGetlistCommentByPost, apiAdminCommentReply, apiDeleteCommentByPostId } from "../apiService";
-import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess, adminCommentReplySuccess, adminCommentReplyError, adminCommentReply, deleteCommentByPostIdSuccess, deleteCommentByPostIdError, deleteCommentByPostId } from "./slice";
+import { userCommentToPost, userCommentToPostError, userCommentToPostSuccess, deleteComment, deleteCommentError, deleteCommentSuccess, listCommentByPost, listCommentByPostError, listCommentByPostSuccess, adminCommentReplySuccess, adminCommentReplyError, adminCommentReply, deleteCommentByPostIdSuccess, deleteCommentByPostIdError, deleteCommentByPostId, getCommentSlice } from "./slice";
 
 function* handleUserCommentToPost(action) {
     try {
@@ -46,6 +46,8 @@ function* handleDeleteComment(action) {
         );
         if (response.success) {
             yield put(deleteCommentSuccess(action.payload));
+            // const commentStore = yield select(getCommentSlice);
+
             message.success("Delete comment success!")
         } 
         else{

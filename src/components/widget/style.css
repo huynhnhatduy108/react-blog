@@ -26,11 +26,9 @@
 .chart__currency-title-h3{
     font-size: 20px;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-.chart__currency-title-h3{
-
-}
 
 /* EMAIL SUBCRIBE */
 .subscribe__email{
@@ -55,7 +53,7 @@
 
 .subscribe__title-h3{
     /* font-style: italic; */
-
+    font-weight: bold;
     font-size: 20px;
     text-transform: uppercase;
 }
@@ -73,7 +71,7 @@
     border-radius: 10px;
     outline: none;
     padding-left: 10px;
-    margin: 35px 0 20px 0;
+    margin-top: 35px;
     border: 1px solid #c5c5c5;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 16px;
@@ -82,12 +80,14 @@
 }
 
 .subscribe__form-button{
-
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .form__button{
     width: 50%;
-    height: 45px;
+    height: 40px;
     background: black;
     color: white;
     font-size: 16px;
@@ -118,6 +118,7 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: row-reverse;
+    margin-bottom: 35px;
 }
 
 .advertisement__title-line{
@@ -129,12 +130,35 @@
 
 .advertisement__title-h3{
     /* font-style: italic; */
+    font-weight: bold;
     font-size: 20px;
     text-transform: uppercase;
 }
 
 .advertisement__img{
-    margin-top: 35px;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.advertisement__img-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 5;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 2px #787878;
+    cursor: pointer;
+
+}
+.advertisement__img-text:hover{
+    top: 51%;
+    left: 50%;
+   
+
 }
 
 .advertisement__img-thumnail{
@@ -142,6 +166,7 @@
     /* height: 500px; */
     border-radius: 10px;
     object-fit: cover;
+    display: block;
 }
 
 
@@ -167,6 +192,7 @@
 
 .tags__title-h3{
     /* font-style: italic; */
+    font-weight: bold;
     font-size: 20px;
     text-transform: uppercase;
 }
@@ -328,7 +354,7 @@
        flex: 1;
    }
    .form__input {
-        margin: 20px 0;
+        margin-top: 20px;
    }
    .subscribe__form-button{
         width: 30%;

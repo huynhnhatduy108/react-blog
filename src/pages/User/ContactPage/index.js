@@ -4,6 +4,7 @@ import "./style.css";
 import ImgContact from './../../../assets/img/undrawcontact.svg';
 import { validateEmail } from '../../../utils/helper';
 import axios from 'axios';
+import { notificationCustom } from '../../../components/Notification';
 
 function ContactPage() {
     const [name, setName] = useState("");
@@ -28,12 +29,17 @@ function ContactPage() {
             }
             axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",data)
                 .then((response) => {
+                    notificationCustom('Send contact successfull. Thank you!', true)
                     setName("");
                     setEmail("");
                     setSubject("");
                     setMess("")
                 })
-                .catch((err) => console.log("err", err));
+                .catch((err) =>{
+                    console.log("err", err);
+                    notificationCustom('Systems error. Sorry and try again later!', false)
+
+                });
         }
     }
 

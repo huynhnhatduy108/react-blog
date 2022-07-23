@@ -13,17 +13,33 @@
     transform: translate(-50%, -50%);
 }
 
-.nodata__icon{
-    font-size: 60px;
+.nodata__icon-medium{
+    font-size: 50px;
     color: #dcdcdc;
 }
 
-.nodata__text{
+.nodata__text-medium{
     font-size: 20px;
     z-index: 1;
     color: #dcdcdc;
     position: absolute;
     left: 50%;
     top: 90%;
+    transform: translate(-50% , -50%);
+}
+
+/* small */
+.nodata__icon-small{
+    font-size: 30px;
+    color: #dcdcdc;
+}
+
+.nodata__text-small{
+    font-size: 12px;
+    z-index: 1;
+    color: #dcdcdc;
+    position: absolute;
+    left: 50%;
+    top: 70%;
     transform: translate(-50% , -50%);
 }

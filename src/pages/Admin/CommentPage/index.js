@@ -271,6 +271,7 @@ function CommentPage() {
                                         </Col>
                                         <Col style={{flex:1, position:"relative"}}>
                                             <Input.TextArea style={{border:"none"}} disabled value={item.content} rows={4}/>
+                                            <div style={{position:"absolute", top:5, right: 10, zIndex:2, color:"rgba(0, 0, 0, 0.25)"}}>{moment(item.created_at).format("DD/MM/YYYY - HH:mm")}</div>
                                             <Button type="primary" style={{position:"absolute", bottom:10, right: 90, zIndex:2}} onClick={()=>handleClickReply(item.comment_id)} >Reply</Button>
                                             <Popconfirm
                                                 title="Are you sure to delete this comment?"
@@ -299,6 +300,7 @@ function CommentPage() {
                                                 </Col>
                                                 <Col style={{flex:1, position:"relative"}}>
                                                     <Input.TextArea style={{border:"none"}} disabled value={sub.content} rows={3}/>
+                                                    <div style={{position:"absolute", top:5, right: 10, zIndex:2, color:"rgba(0, 0, 0, 0.25)"}}>{moment(sub.created_at).format("DD/MM/YYYY - HH:mm")}</div>
                                                     <Popconfirm
                                                         title="Are you sure to delete this comment?"
                                                         onConfirm={() => handleDeleteComment(sub.comment_id, sub.comment_parent_id)}

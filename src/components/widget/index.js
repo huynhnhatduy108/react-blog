@@ -3,13 +3,22 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { scrollTo } from "../../utils/helper";
+import { scrollTo, validateEmail } from "../../utils/helper";
+import { notificationCustom } from "../Notification";
+import AAVEADS from "./../../assets/img/aave-coin-ads.png";
+import ETHADS from "./../../assets/img/ethereum_ads.jpeg";
+import SANDADS from "./../../assets/img/sand-ads.webp";
 
+const imgAds =[ {tile:"Đánh giá chi tiết về dự án Aave Protocol", img:AAVEADS , url:"https://dautu.io/aave-coin-la-gi.html" }, 
+                {tile:"Bằng chứng công việc của Ethereum đang dần “kết thúc”", img:ETHADS, url:"https://coinexpress.net/bang-chung-cong-viec-cua-ethereum-dang-dan-ket-thuc/" }, 
+                {tile:"Game sandbox là gì? Tại sao lại thu hút nhiều người chơi", img:SANDADS, url:"https://www.thegioididong.com/game-app/game-sandbox-la-gi-tai-sao-lai-thu-hut-nhieu-nguoi-choi-1361345" }]
 
 function Widget(props) {
     const {chart=false ,listTag, navigate}  = props;
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState("");
+    const [validate, setValidate] =  useState(false);
     const [chartCoin, setChartCoin] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (chart){
@@ -28,13 +37,27 @@ function Widget(props) {
         e.preventDefault();
         setEmail(e.target.value);
     };
+
     const handleRegisterEmail = () => {
-        const [date, time] = new Date().toLocaleString().split(",");
-        axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
-                { email: email, date: date, time: time }
-            )
-            .then((response) => {})
-            .catch((err) => console.log("err", err));
+        if (!email || !validateEmail(email)) {
+                setValidate(true);
+        }
+        else{
+            setValidate(false);
+            const [date, time] = new Date().toLocaleString().split(",");
+            axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
+                    { email: email, date: date, time: time }
+                )
+                .then((response) => {
+                    notificationCustom('Register email successfull. Thank you!', true)
+                    setEmail("");
+                })
+                .catch((err) => { 
+                    console.log("err", err);
+                    notificationCustom('Systems error. Sorry and try again later!', false);
+                }
+                );
+        } 
     };
 
     return (
@@ -87,7 +110,10 @@ function Widget(props) {
                             placeholder="Your e-mail here"
                             className="form__input"
                             onChange={handleChangeEmail}
+                            value={email}
                         />
+                        {(validate&&!email)?<div className='validate_contact'>Please input your email!</div>
+                        :(validate&&!validateEmail(email))?<div className='validate_contact'>Email wrong format!</div>:""}
                     </div>
                     <div className="subscribe__form-button">
                         <button
@@ -96,6 +122,7 @@ function Widget(props) {
                         >
                             Subscribe
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -108,13 +135,17 @@ function Widget(props) {
                     </h3>
                 </div>
                 <div className="advertisement__form">
-                    <div className="advertisement__img">
+                    {imgAds?.map((item, index)=>
+                     <div className="advertisement__img" key={index}>
+                        <div className="advertisement__img-text" onClick={()=>window.open(item.url, '_blank')}>{item.tile}</div>
                         <img
                             className="advertisement__img-thumnail"
-                            src="https://media-api.advertisingvietnam.com/oapi/v1/media?uuid=6fd7049e-608f-4b3f-a062-e132926e6e44&resolution=1440x756&type=image"
+                            src={item.img}
                         />
                     </div>
+                    )}
                 </div>
+                
             </div>
             <div className="gap-60"></div>
             <div className="tags">

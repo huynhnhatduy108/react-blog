@@ -1,0 +1,34 @@
+
+
+.notification__register-success{
+    border-radius: 5px !important;
+}
+
+.notification__register-success .ant-notification-notice-message{
+     margin: 0;
+}
+.notification__register-success .ant-notification-notice-description{
+    color: #00B349;
+}
+
+.notification__register-success .ant-notification-notice-close-icon{
+    color: #00B349;
+
+}
+
+.notification__register-error{
+    border-radius: 5px !important;
+}
+
+.notification__register-error .ant-notification-notice-message{
+     margin: 0;
+}
+.notification__register-error .ant-notification-notice-description{
+    color: #F00B00;
+}
+
+.notification__register-error .ant-notification-notice-close-icon{
+    color: #F00B00;
+
+}
+

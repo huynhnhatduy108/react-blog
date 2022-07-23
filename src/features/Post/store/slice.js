@@ -261,6 +261,13 @@ const PostSlice = createSlice({
             state.errors = action.payload
         },
 
+        countCommentPost(state, action){
+            const temp = {...state.listPostPaging}
+            const index = temp.items.findIndex((item)=>item.post_id == action.payload.post_id)
+            temp.items[index].comment_count = action.payload.comment_count;
+            state.listPostPaging = temp
+        },
+
 }});
 
 // ************************** Action *******************************
@@ -309,6 +316,8 @@ export const updatePostError = PostSlice.actions.updatePostError;
 export const deletePost = PostSlice.actions.deletePost;
 export const deletePostSuccess = PostSlice.actions.deletePostSuccess;
 export const deletePostError = PostSlice.actions.deletePostError;
+
+export const countCommentPost = PostSlice.actions.countCommentPost;
 
 // ************************** Store *******************************
 export const getPostSlice = (state) => state.post;

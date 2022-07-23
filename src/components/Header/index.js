@@ -102,7 +102,7 @@ function Header() {
                                     {isSearch ? (
                                     <div className="header__mobile-search-result">
                                         <div className="search__result-list">
-                                            {isFetching? <Loading/>:(items?.length ?
+                                            {isFetching? <Loading size={"small"}/>:(items?.length ?
                                                 items.map(
                                                     (item, index) => (
                                                         <div className="search__result-post" 
@@ -131,7 +131,7 @@ function Header() {
                                                             </div>
                                                         </div>
                                                     )
-                                                ):<NoData/>)}
+                                                ):<NoData size={"small"}/>)}
                                         </div>
                                     </div>
                                       ) : (
@@ -143,7 +143,7 @@ function Header() {
                         {isSearch ? (
                             <div className="header__search-result">
                                 <div className="search__result-list">
-                                    {isFetching? <Loading/>:(items?.length ?
+                                    {isFetching? <Loading size={"small"}/>:(items?.length ?
                                         items?.map((item, index) => (
                                             <div className="search__result-post" 
                                                 onClick={()=>handleRedirectToDetailPage(item?.slug)} 
@@ -168,7 +168,7 @@ function Header() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        )):<NoData/>)}
+                                        )):<NoData size={"small"}/>)}
                                 </div>
                             </div>
                         ) : (

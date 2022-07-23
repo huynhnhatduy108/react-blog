@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-// import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { Select } from "antd";
-import { GoogleLogin } from "react-google-login";
-import PostType1 from "./components/PostType1/index";
-import Header from "./components/Header";
-import IntroPost from "./components/IntroPost";
-import ListPost from "./components/ListPost";
-import SildeCategory from "./components/SildeCategory";
-import Footer from "./components/Footer";
 import "./styles/base.css";
 import "./styles/custom.css";
 import 'antd/dist/antd.css';
@@ -26,9 +17,6 @@ import TagPage from "./pages/Admin/TagPage";
 import UserPage from "./pages/Admin/UserPage";
 import LoginPage from "./pages/Admin/LoginPage";
 import CommentPage from "./pages/Admin/CommentPage";
-// import "./App.css";
-// import "antd/dist/antd.min.css";
-// const { Option } = Select;
 
 // import HomePage from "./pages/User/HomePage";
 // const TOKEN = "CDD";
@@ -69,11 +57,6 @@ import CommentPage from "./pages/Admin/CommentPage";
 // };
 
 const App = () => {
-    const [data, setData] = useState();
-
-    const responseGoogle = (response) => {
-        console.log("responseGoogle", response);
-    };
 
     return (
         <div className="app">
@@ -85,6 +68,7 @@ const App = () => {
                     <Route path="p/:slug" exact={false} element={<PostDetailPage/>} />
                     <Route path="contact" element={<ContactPage/>} />
                     <Route path='*' exact={true} element={<PageNotFound/>} />
+
                     {/* Admin */}
                     <Route path="admin" element={ <AdminPage />} />
                     <Route path="admin/post" element={ <PostPage />} />
@@ -96,20 +80,7 @@ const App = () => {
 
                 </Routes>
             </BrowserRouter>
-           
-            {/* <SearchPage/> */}
-            {/* <PostDetailPage/> */}
-            {/* <PageNotFound/> */}
-            {/* <ContactPage/> */}
         </div>
-        // <GoogleLogin
-        //         clientId="979874640409-2knnits3kfn765b5celkdb92vpb8qq9o.apps.googleusercontent.com"
-        //         buttonText="Login"
-        //         onSuccess={responseGoogle}
-        //         onFailure={responseGoogle}
-        //         // cookiePolicy={"single_host_origin"}
-        //       /> 
-        // <Provider>
         //   <Routes>
         //     <Route exact path="/" element={<HomePage/>}/>
         //  <Route exact path="/" render={() => <Redirect to={defaultPage(TOKEN)} />}/>

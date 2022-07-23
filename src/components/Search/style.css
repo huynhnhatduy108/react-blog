@@ -76,6 +76,7 @@
 
 .search__categories-option{
     cursor: pointer;
+    font-size: 16px;
     padding: 10px;
 }
 .search__categories-option:hover{
@@ -175,7 +176,7 @@
     font-size: 14px;
     color: #000000;
     height: 38px;
-    line-height: 38px;
+    line-height: 36px;
     border-radius: 10px;
     margin: 5px;
     background-color: white;

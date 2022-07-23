@@ -28,7 +28,7 @@ function DetailPost(props) {
                                         <span className="author__create-name">{detailPost?.author_name}</span>
                                         <span className="author__create-day">{moment(detailPost?.published_at).format('DD/MM/YYYY')}</span>
                                         <div className="author__create-line"></div>
-                                        <span className="author__create-time">{moment(detailPost?.published_at).format('HH:MM')}</span>
+                                        <span className="author__create-time">{moment(detailPost?.published_at).format('HH:mm')}</span>
                                     </div>
                                 </div>
                                 <div className="detail__author-right">

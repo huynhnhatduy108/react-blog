@@ -1,13 +1,14 @@
 import React from 'react';
 import "./style.css";
 
-function NoData() {
+function NoData(props) {
+  const {size ="medium"} = props;
   return (
     <div className='nodata'>
       <div className='nodata_container'>
-        <i className="fa-solid fa-database nodata__icon"></i>
+        <i className={`fa-solid fa-database nodata__icon-${size}`}></i>
       </div>
-      <div className="nodata__text">No Data</div>
+      <div className={`nodata__text-${size}`}>No Data</div>
     </div>
   )
 }

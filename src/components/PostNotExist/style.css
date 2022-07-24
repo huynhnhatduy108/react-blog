@@ -1,0 +1,22 @@
+
+.post__notfound-container{
+    text-align: center;
+    margin:50px 0;
+    color: #dcdcdc;
+}
+.post__notfound-opps{
+    font-size: 30px;
+    /* font-weight: bold; */
+    color: #dcdcdc;
+}
+
+.post__notfound-icon i{
+    font-size: 200px;
+    color: #dcdcdc;
+}
+
+.post__notfound-sorry{
+    /* font-weight: bold; */
+    color: #dcdcdc;
+
+}

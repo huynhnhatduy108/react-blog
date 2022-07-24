@@ -24,7 +24,7 @@ export const plainText = (html)=>{
     .replace(/(<(?:.|\n)*?>)/gm, ' ')
     .replace(/\s+/gm, ' ')
     .replace("&nbsp;",' ')
-    .replace("&nbsp;"," ")
+    .replace("&nbsp;",' ')
   }
   return ""
 }

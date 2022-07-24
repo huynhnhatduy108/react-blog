@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import Slider from "react-slick";
+import { scrollTo } from "../../utils/helper";
 
 const randomColor = () => {
     let hexCode = "#";
@@ -63,9 +64,9 @@ function SildeCategory(props) {
                     <h3 className="silde_category-title-h3">Categories</h3>
                 </div>
                 <Slider key={"id"} {...settings}>
-                    {listCategory.length &&
+                    {listCategory?.length &&
                         listCategory.map((item, index) => (
-                            <div key={item.id} className="category__item" onClick={()=>navigate(`/search?category=${item.id}`)}>
+                            <div key={item.id} className="category__item" onClick={()=>{navigate(`/search?category=${item.id}`); scrollTo()}}>
                                 <div className="category__container" style={categoryContainerStyle}>
                                     <h3 className="category__title">{item.title}</h3>
                                 </div>

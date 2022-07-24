@@ -10,6 +10,8 @@ import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { useNavigate, useParams  } from 'react-router-dom';
 import SildePost from "../../../components/SildePost";
 import { getCommentSlice } from "../../../features/Comment/store/slice";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
+import PostNotExist from "../../../components/PostNotExist";
 
 function PostPage() {
     const dispatch = useDispatch();
@@ -28,22 +30,24 @@ function PostPage() {
     const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
     useEffect(()=>{
-        if (!listTag.length){
-            dispatch(getListTag());
-        }
         if (slug){
             dispatch(getDetailPostBySlug(slug))
+            console.log("call api", slug);
         }
     },[slug])
 
     return (
         <div className="post__page">
             <Header/>
-            <div className="gap-50"></div>
-            <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>
-            <div className="gap-40"></div>
-                <SildePost navigate={navigate} listPostRelation={listPostRelation}/>
-            <div className="gap-50"></div>
+          {detailPost?
+            <div>
+                <div className="gap-50"></div>
+                <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>
+                <div className="gap-40"></div>
+                    <SildePost navigate={navigate} listPostRelation={listPostRelation}/>
+                <div className="gap-50"></div>
+            </div>:
+            <PostNotExist navigate={navigate}/>}
             <Footer/>
         </div>
     );

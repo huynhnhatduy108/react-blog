@@ -2,6 +2,7 @@ import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import { listCommentByPost } from "../../Comment/store/slice";
+import { getListTag, getTagSlice } from "../../Tag/store/slice";
 
 import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug, apiListPostRelation} from "../apiService/index";
 import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostRelation, getListPostRelationError, getListPostRelationSuccess, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
@@ -86,6 +87,7 @@ function* handleGetDatailPostBySlug(action) {
         );
         if (response.success) {
             yield put(getDetailPostBySlugSuccess(response.data));
+            const tagStore = yield select(getTagSlice);
             const {tags, categories, post_id} = response.data.data
             const tags_id = tags.map((item)=>item.tag_id)
             const categories_id = categories.map((item)=>item.category_id)
@@ -94,6 +96,10 @@ function* handleGetDatailPostBySlug(action) {
                 tags: tags_id,
                 categories:categories_id
             } 
+            const {listTag} = tagStore;
+            if (!listTag.length){
+                yield put(getListTag());
+            }
             yield put(listCommentByPost(post_id))
             yield put(getListPostRelation(data))
         } 

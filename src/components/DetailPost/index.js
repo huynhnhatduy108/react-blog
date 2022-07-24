@@ -7,7 +7,7 @@ import { scrollTo } from "../../utils/helper";
 
 function DetailPost(props) {
     const {widget, detailPost, navigate, listComment } = props;
-
+    
     return (
         <div className="detail__post">
             <div className="grid wide">

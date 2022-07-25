@@ -1,17 +1,28 @@
 import {PayloadAction} from "@reduxjs/toolkit";
+import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
-import { apiCheckToken, apiFacebookLogin, apiGoogleLogin, apiLogin, apiLogout, apiProfile } from "../apiService";
+import { removeLocalItem, setLocalItem } from "../../../utils/helper";
+import { apiCheckToken, apiFacebookLogin, apiGoogleLogin, apiLogin, apiLogout, apiProfile, apiRegister } from "../apiService";
 import { checkToken, checkTokenError, checkTokenSuccess, facebookLogin, facebookLoginError, facebookLoginSuccess, googleLogin, googleLoginError, googleLoginSuccess, logoutUser, logoutUserError, logoutUserSuccess, profileUser, profileUserError, profileUserSuccess, registerUser, registerUserError, registerUserSuccess, userLogin, userLoginError, userLoginSuccess } from "./slice";
 
 
 function* handleRegister(action) {
     try {
         const response= yield call(
+            apiRegister,
             action.payload,
         );
         if (response.success) {
             yield put(registerUserSuccess(response.data));
+            message.success(response.data.mess);
+            setTimeout(()=>{
+                window.location.replace("/admin/login");
+            },1000)
         } 
+        else{
+            yield put(registerUserError(response.data));
+            message.error(response.data.non_field_errors[0]);
+        }
     } catch (error) {
         yield put(registerUserError(error));
     }
@@ -24,8 +35,17 @@ function* handleLogin(action) {
             action.payload,
         );
         if (response.success) {
+            message.success(response.data.mess);
             yield put(userLoginSuccess(response.data));
+            setLocalItem("user",response.data.data);
+            setTimeout(()=>{
+                window.location.replace("/admin");
+            },1000)
         } 
+        else{
+            yield put(userLoginError(response));
+            message.error(response.data.mess);
+        }
     } catch (error) {
         yield put(userLoginError(error));
     }
@@ -54,6 +74,9 @@ function* handleGoogleLogin(action) {
         if (response.success) {
             yield put(googleLoginSuccess(response.data));
         } 
+        else{
+            yield put(googleLoginError(response));
+        }
     } catch (error) {
         yield put(googleLoginError(error));
     }
@@ -81,9 +104,17 @@ function* handleLogout(action) {
         );
         if (response.success) {
             yield put(logoutUserSuccess(response.data));
+            removeLocalItem("user");
+            setTimeout(()=>{
+                window.location.replace("/admin/login");
+            },1000)
         } 
+        else{
+            yield put(logoutUserError(response));
+
+        }
     } catch (error) {
-        yield put(checkTokenError(error));
+        yield put(logoutUserError(error));
     }
 }
 
@@ -102,7 +133,7 @@ function* handleGetProfile(action) {
 }
 
 
-export default function* CategorySaga() {
+export default function* AuthSaga() {
     yield takeLatest(registerUser.type, handleRegister);
     yield takeLatest(userLogin.type, handleLogin);
     yield takeLatest(facebookLogin.type, handleFacebookLogin);

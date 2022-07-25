@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./style.css";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 
-function AdminPage() {
+function DashboardPage() {
     
     return (
         <div>
@@ -14,4 +14,4 @@ function AdminPage() {
     );
 }
 
-export default AdminPage;
+export default DashboardPage;

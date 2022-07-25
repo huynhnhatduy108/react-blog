@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { adminRoutes } from "../../routes";
+import { adminPrivateRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
     Col,
@@ -23,6 +23,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDetailCategory, createCategory, deleteCategory, getCategorySlice, getDetailCategory, searchCategory, updateCategory } from "../../../features/Category/store/slice";
+import HeaderAdmin from "../../../components/HeaderAdmin";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -146,29 +147,10 @@ function CategoryPage() {
     return (
         <div>
             <div className="grid wide">
-              <div className="admin__header">
-                      <div className="admin__menu">
-                          {adminRoutes.map((item, index) => (
-                              <div key={index} className="admin__header-name">
-                                  <Link to={item.path}>{item.label}</Link>
-                              </div>
-                          ))}
-                      </div>
-                      <div className="admin__user">
-                          <div className="admin__user-thumbnail">
-                              <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
-                          </div>
-                          <div className="admin__user-name">
-                              nhatduy
-                          </div>
-                          <div className="admin__user-logout">
-                              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                          </div>
-                      </div>
-                  </div>
+                <HeaderAdmin/>
 
+                {/* List category */}
                 <div>
-                    {/* List category */}
                     <div className="admin__list-post">LIST CATEGORY</div>
                     <Form
                         form={formSeachCategory}

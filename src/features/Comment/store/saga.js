@@ -99,14 +99,12 @@ function* handleDeleteCommentByPostId(action) {
                 post_id:action.payload,
                 count_delete: response.data.data.count_delete
             }
-            console.log("data", data);
             yield put(countCommentPostDelete(data));
         } 
     } catch (error) {
         yield put(deleteCommentByPostIdError(error));
     }
 }
-
 
 
 export default function* CommentSaga() {

@@ -157,7 +157,7 @@ function Widget(props) {
                     {listTag?.length &&
                         listTag.map((item, index) => (
                             <div className="tags__item" key={item.id} onClick={()=>{navigate(`/search?tag=${item.id}`); scrollTo()}}>
-                                <div className="">{item.slug} ({`${item.post_count}`})</div>
+                                <div className="">{item.slug} ({`${item.post_count??0}`})</div>
                             </div>
                         ))}
                 </div>

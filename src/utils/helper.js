@@ -83,3 +83,27 @@ export const getQueryString = (init) => {
 export const scrollTo = (top= 0, left= 0, behavior= 'smooth')=>{
     window.scrollTo({top, left, behavior});
 }
+
+export const getLocalItem = (name)=>{
+  let data = localStorage.getItem(name);
+  try {
+    data = JSON.parse(data);
+  } catch (e) {
+    return null;
+  }
+  return data;
+}
+
+export const getUserLocal =() =>{
+    let user = getLocalItem('user')
+    if(user) return user
+    return null
+}
+
+export const removeLocalItem = (name) => {
+  localStorage.removeItem(name);
+};
+
+export const setLocalItem = (name, data) => {
+  localStorage.setItem(name, JSON.stringify(data));
+};

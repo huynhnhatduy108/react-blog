@@ -1,4 +1,5 @@
 import {all} from "redux-saga/effects";
+import AuthSaga from "../features/Auth/store/saga";
 import CategorySaga from "../features/Category/store/saga";
 import CommentSaga from "../features/Comment/store/saga";
 import PostSaga from "../features/Post/store/saga";
@@ -12,5 +13,6 @@ export default function* rootSaga() {
         PostSaga(),
         UserSaga(),
         CommentSaga(),
+        AuthSaga(),
     ]);
 }

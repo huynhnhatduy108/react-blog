@@ -207,7 +207,7 @@ function Search(props) {
                                     onClick={()=>handleSeletTag(item.id)}
                                 >
                                     <div className="">
-                                        {`${item.slug} (${item.post_count})`}
+                                        {`${item.slug} (${item.post_count??0})`}
                                     </div>
                                 </div>
                             ))}

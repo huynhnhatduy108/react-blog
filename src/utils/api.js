@@ -1,44 +1,51 @@
+import { message } from "antd";
 import axios, { AxiosRequestConfig } from "axios";
 import { API_BASE_URL, ON_FETCH_ERROR, ON_RESPONSE_ERROR } from "./constants";
+import { removeLocalItem } from "./helper";
 
 export const contentType = (type) => {
     return { "Content-Type": type };
-  };
+};
 
-function reloadToLogin() {
-    window.localStorage.clear();
-    window.location.replace('/')
-    window.location.reload()
+async function reloadToLogin() {
+    await window.localStorage.clear();
+    await window.location.replace("/admin/login");
 }
 
 export const METHOD = {
-    GET : "get",
-    POST : "post",
-    PUT : "put",
-    PATCH : "patch",
-    HEAD : "head",
-    DELETE : "delete"
-}
+    GET: "get",
+    POST: "post",
+    PUT: "put",
+    PATCH: "patch",
+    HEAD: "head",
+    DELETE: "delete",
+};
 
 export const EContentType = {
-    JSON : "application/json",
-    BINARY : "multipart/form-data",
-    TEXT : "plain/text",
-    URLENCODED : "application/x-www-form-urlencoded"
-}
+    JSON: "application/json",
+    BINARY: "multipart/form-data",
+    TEXT: "plain/text",
+    URLENCODED: "application/x-www-form-urlencoded",
+};
 
 const API = axios.create({
     baseURL: API_BASE_URL,
     headers: { Accept: EContentType.JSON, ...contentType(EContentType.JSON) },
-    withCredentials: true
+    withCredentials: true,
 });
 
-const access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4NjY0MTk4LCJpYXQiOjE2NTg1Nzc3OTgsImp0aSI6ImY0OWVmNWQyNWYyMTRmMzE5YzhiZmI0ODdhZGQ4NWU3IiwidXNlcl9pZCI6MX0.pw8rNYQ_aYB0D42EjkL_DLYS9C04vX8s46IUkfHP9Sk"
+const access_token =
+    "yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4ODE4MzYzLCJpYXQiOjE2NTg3MzE5NjMsImp0aSI6ImE4MzkxY2ZiNTZlMjRkMTJiNjU4M2YyMzBhMDQ3ZDk2IiwidXNlcl9pZCI6MX0.6Emc7jctVs2vUVoBK8SXHcmqIktW5UN99BI6e2zdUrE";
 
 function execApi(method, url, data, params, headers) {
-   
-    return API.request({method:method, url:url, data:data, params: params, headers:{Authorization:` Bear ${access_token}`,...headers}})
-        .then((response) => {    
+    return API.request({
+        method: method,
+        url: url,
+        data: data,
+        params: params,
+        headers: { Authorization: ` Bear ${access_token}`, ...headers },
+    })
+        .then((response) => {
             if ("access_token" in response.headers) {
                 // if (getLocalItem('access_token')) {
                 //     let access_token  = getLocalItem('access_token')
@@ -46,7 +53,12 @@ function execApi(method, url, data, params, headers) {
                 //     setLocalItem('access_token' , access_token)
                 // }
             }
-            const result= {data: null, success: false, headers:null, errors: []};
+            const result = {
+                data: null,
+                success: false,
+                headers: null,
+                errors: [],
+            };
 
             try {
                 result.success = Math.floor(response.status / 200) === 1;
@@ -54,9 +66,9 @@ function execApi(method, url, data, params, headers) {
                     result.data = response.data;
                     result.success = true;
                     result.errors = [];
-                    result.headers = response.headers
+                    result.headers = response.headers;
                 } else {
-                    result.errors = response.data.errors ??  ON_RESPONSE_ERROR;
+                    result.errors = response.data.errors ?? ON_RESPONSE_ERROR;
                 }
             } catch (e) {
                 result.errors = ON_RESPONSE_ERROR;
@@ -65,39 +77,31 @@ function execApi(method, url, data, params, headers) {
             return result;
         })
         .catch((error) => {
+            // console.log('api catch error', error);
             if (error.response && error.response.data) {
-                if(Math.floor(error.response.status / 500) === 1){
-                    console.log("SERVER_ERROR");
+                if (Math.floor(error.response.status / 500) === 1) {
+                    message.error("SERVER ERROR. PLEASE WAIT SOME MIMUTES");
                 }
-
-                const response = error.response.data;
-                response.success = false;
-                response.status_code = error.response.status;
-
-                //check error code 
-                if(response?.error_code && response?.status_code !== 403){
-                    let  { error_code } = response   
-                    setTimeout(reloadToLogin,3000 );
-                    console.log("BACKEND ERROR", error_code);
+                if (error.response.status === 403) {
+                    message.error("AUTHENTICATION PERMISSION DENINE");
                 }
-                else{
-                    console.log("AUTHENTICATION", response?.error_code);
-
-                }
-
-                return response;
+                if (error.response.status === 401) {
+                    removeLocalItem("user")
+                    message.error("TOKEN INVALID");
+                    setTimeout(reloadToLogin, 2000);
+                } 
+                return error.response;
             } else {
                 return {
                     success: false,
                     data: null,
                     errors: ON_FETCH_ERROR,
-                    status_code: 500
+                    status_code: 500,
                 };
             }
         });
 }
 
-export function api(method , url, data, params, headers){
+export function api(method, url, data, params, headers) {
     return execApi(method, url, data, params, headers);
 }
-

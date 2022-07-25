@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { adminRoutes } from "../../routes";
+import { adminPrivateRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
     Col,
@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminCommentReply, deleteComment, deleteCommentByPostId, getCommentSlice, listCommentByPost } from "../../../features/Comment/store/slice";
 import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
 import ImgUserDefault from './../../../assets/img/defaultuser.png';
+import HeaderAdmin from "../../../components/HeaderAdmin";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -87,8 +88,7 @@ function CommentPage() {
     };
 
     const handleDeleteAllComment = (post) => {
-        console.log("post_id", post.post_id);
-        // dispatch(deleteCommentByPostId(post.post_id))
+        dispatch(deleteCommentByPostId(post.post_id))
     };
 
     const handleDeleteComment = (comment_id, comment_parent_id) => {
@@ -173,29 +173,7 @@ function CommentPage() {
     return (
         <div>
             <div className="grid wide">
-                <div className="admin__header">
-                    <div className="admin__menu">
-                        {adminRoutes.map((item, index) => (
-                            <div key={index} className="admin__header-name">
-                                <Link to={item.path}>{item.label}</Link>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="admin__user">
-                        <div className="admin__user-thumbnail">
-                            <img
-                                className="admin__user-img"
-                                src={
-                                    "https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"
-                                }
-                            />
-                        </div>
-                        <div className="admin__user-name">nhatduy</div>
-                        <div className="admin__user-logout">
-                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                        </div>
-                    </div>
-                </div>
+                <HeaderAdmin/>
 
                 <div>
                     {/* List tag */}

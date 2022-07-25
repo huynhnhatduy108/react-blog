@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
-import { adminRoutes } from "../../routes";
+import { adminPrivateRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import {
@@ -44,6 +44,7 @@ import { FomatDate } from "../../../utils/helper";
 import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { getCategorySlice, getListCategory } from "../../../features/Category/store/slice";
 import Editor from "../../../components/Editor/EditorWithUseQuill";
+import HeaderAdmin from "../../../components/HeaderAdmin";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -257,30 +258,8 @@ function PostPage() {
     return (
         <div>
             <div className="grid wide">
-                <div className="admin__header">
-                    <div className="admin__menu">
-                        {adminRoutes.map((item, index) => (
-                            <div key={index} className="admin__header-name">
-                                <Link to={item.path}>{item.label}</Link>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="admin__user">
-                        <div className="admin__user-thumbnail">
-                            <img
-                                className="admin__user-img"
-                                src={
-                                    "https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"
-                                }
-                            />
-                        </div>
-                        <div className="admin__user-name">nhatduy</div>
-                        <div className="admin__user-logout">
-                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                        </div>
-                    </div>
-                </div>
-
+                <HeaderAdmin/>
+                
                 <div>
                     {/* List Post */}
                     <div className="admin__list-post">LIST POST</div>

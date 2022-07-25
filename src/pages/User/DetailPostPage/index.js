@@ -13,21 +13,18 @@ import { getCommentSlice } from "../../../features/Comment/store/slice";
 import { useOnceEffect } from "../../../hooks/useOneEffect";
 import PostNotExist from "../../../components/PostNotExist";
 
-function PostPage() {
+function PostDetailPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {slug} = useParams();
 
     const postStore = useSelector(getPostSlice);
     const tagStore = useSelector(getTagSlice);
-    const categoryStore = useSelector(getCategorySlice);
     const commentStore = useSelector(getCommentSlice);
 
     const {listPostUserSearch, detailPost, listPostRelation} = postStore;
-    const {listCategory} = categoryStore;
     const {listTag} = tagStore;
     const {listComment} = commentStore;
-    const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
     useEffect(()=>{
         if (slug){
@@ -53,4 +50,4 @@ function PostPage() {
     );
 }
 
-export default PostPage;
+export default PostDetailPage;

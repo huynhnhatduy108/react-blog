@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { adminRoutes } from "../../routes";
+import { adminPrivateRoutes } from "../../routes";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
     Col,
@@ -24,6 +24,7 @@ import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { clearDetailUser, createUser, deleteUser, getDetailUser, getListUser, getUserSlice, updateUser } from "../../../features/User/store/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { PASSWORD_HIDDEN, ROLE_USER } from "../../../utils/constants";
+import HeaderAdmin from "../../../components/HeaderAdmin";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -154,29 +155,10 @@ function UserPage() {
     return (
         <div>
             <div className="grid wide">
-              <div className="admin__header">
-                      <div className="admin__menu">
-                          {adminRoutes.map((item, index) => (
-                              <div key={index} className="admin__header-name">
-                                  <Link to={item.path}>{item.label}</Link>
-                              </div>
-                          ))}
-                      </div>
-                      <div className="admin__user">
-                          <div className="admin__user-thumbnail">
-                              <img className="admin__user-img" src={"https://gtjai.com.vn/wp-content/uploads/2021/07/avt.png"}/>
-                          </div>
-                          <div className="admin__user-name">
-                              nhatduy
-                          </div>
-                          <div className="admin__user-logout">
-                              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                          </div>
-                      </div>
-                  </div>
-
+                <HeaderAdmin/>
+                
+                {/* List Post */}
                 <div>
-                    {/* List Post */}
                     <div className="admin__list-post">LIST USER</div>
                     <Form
                         form={formSeachUser}

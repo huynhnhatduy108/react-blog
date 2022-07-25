@@ -8,7 +8,7 @@ function PostNotExist(props) {
             <div className="post__notfound-container">
                 <h3 className="post__notfound-opps">Oops! Post do not exists</h3>
                 <h1 className="post__notfound-icon">
-                    <i class="fa-solid fa-paste"></i>
+                    <i className="fa-solid fa-paste"></i>
                 </h1>
                 <h3 className="post__notfound-sorry">
                     we are sorry, but post you requested was not found

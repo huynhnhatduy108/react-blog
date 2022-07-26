@@ -5,7 +5,7 @@
 
 .post3__img-img{
     width: 100%;
-    height: 240px;
+    height: 220px;
     border-radius: 10px;
     object-fit: cover;
 }
@@ -78,21 +78,23 @@
 /* small mobile */
 @media (max-width: 499px) {
     .post3__img-img{
-        height: 200px;
+        height: 180px;
     }
 }
    
 
 /* mobile */
 @media (min-width: 500px) and (max-width: 739px) {
- 
+    .post3__img-img{
+        height: 240px;
+    }
     
 }
 
 /* tablet */
 @media (min-width: 740px) and (max-width: 1023px) {
     .post3__img-img{
-        height: 190px;
+        height: 180px;
     }
     .post3__content-title{
         /* height: 60px; */

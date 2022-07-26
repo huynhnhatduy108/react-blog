@@ -12,6 +12,7 @@ import SildePost from "../../../components/SildePost";
 import { getCommentSlice } from "../../../features/Comment/store/slice";
 import { useOnceEffect } from "../../../hooks/useOneEffect";
 import PostNotExist from "../../../components/PostNotExist";
+import Loading from "../../../components/Loading";
 
 function PostDetailPage() {
     const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function PostDetailPage() {
     const tagStore = useSelector(getTagSlice);
     const commentStore = useSelector(getCommentSlice);
 
-    const {listPostUserSearch, detailPost, listPostRelation} = postStore;
+    const {listPostUserSearch, detailPost, listPostRelation, isFetching} = postStore;
     const {listTag} = tagStore;
     const {listComment} = commentStore;
 
@@ -36,7 +37,10 @@ function PostDetailPage() {
     return (
         <div className="post__page">
             <Header/>
-          {detailPost?
+          {isFetching?
+          <div style={{height:"70vh", position:"relative"}}>
+              <div style={{top:"50%", left:"50%", transform:"translate(-50% , -50%);",position:"absolute"}}><Loading/></div>
+          </div>:detailPost?
             <div>
                 <div className="gap-50"></div>
                 <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>

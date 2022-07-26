@@ -1,6 +1,6 @@
 
 
-export const API_BASE_URL = "http://127.0.0.1:6001/api";
+export const API_BASE_URL = "https://blog-api-djangdo.herokuapp.com/api";
 
 
 export const ON_RESPONSE_ERROR = [

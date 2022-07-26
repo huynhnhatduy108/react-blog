@@ -60,6 +60,9 @@ function* handleFacebookLogin(action) {
         if (response.success) {
             yield put(facebookLoginSuccess(response.data));
         } 
+        else{
+            yield put(facebookLoginError(response));
+        }
     } catch (error) {
         yield put(facebookLoginError(error));
     }
@@ -91,8 +94,11 @@ function* handleCheckToken(action) {
         if (response.success) {
             yield put(checkTokenSuccess(response.data));
         } 
+        else{
+            yield put(checkTokenError(response));
+        }
     } catch (error) {
-        yield put(profileUserError(error));
+        yield put(checkTokenError(error));
     }
 }
 
@@ -127,8 +133,11 @@ function* handleGetProfile(action) {
         if (response.success) {
             yield put(profileUserSuccess(response.data));
         } 
+        else{
+            yield put(profileUserError(response));
+        }
     } catch (error) {
-        yield put(logoutUserError(error));
+        yield put(profileUserError(error));
     }
 }
 

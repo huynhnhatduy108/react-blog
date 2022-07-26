@@ -35,7 +35,7 @@ function SearchPage() {
     <div>
         <Search listCategory={listCategory} listTag={listTag}/>
         <div className='gap-50'></div>
-        {isFetching? <Loading/>:items?.length? <ListSearch navigate={navigate} listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:<NoData/>}
+        {items?.length? <ListSearch navigate={navigate} listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:isFetching?<Loading/>:<NoData/>}
         <div className='gap-50'></div>
         <Footer/>
     </div>

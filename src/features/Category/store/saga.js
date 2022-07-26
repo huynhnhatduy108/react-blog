@@ -13,6 +13,10 @@ function* handleGetListCategory(action) {
         if (response.success) {
             yield put(getListCategorySuccess(response.data));
         } 
+        else{
+            yield put(getListCategoryError(response));
+
+        }
     } catch (error) {
         yield put(getListCategoryError(error));
     }
@@ -27,6 +31,10 @@ function* handleSearchCategory(action) {
         if (response.success) {
             yield put(searchCategorySuccess(response.data));
         } 
+        else{
+            yield put(searchCategoryError(response));
+
+        }
     } catch (error) {
         yield put(searchCategoryError(error));
     }
@@ -41,6 +49,10 @@ function* handleGetDatailCategory(action) {
         if (response.success) {
             yield put(getDetailCategorySuccess(response.data));
         } 
+        else{
+            yield put(getDetailCategoryError(response));
+
+        }
     } catch (error) {
         yield put(getDetailCategoryError(error));
     }
@@ -60,6 +72,11 @@ function* handleCreateCategory(action) {
             yield put(searchCategory({limit, page}));
             message.success("Create catgory success!")
         } 
+        else{
+            yield put(createCategoryError(response));
+            message.error("Create catgory error!")
+
+        }
     } catch (error) {
         yield put(createCategoryError(error));
         message.error("Create catgory error!")
@@ -82,6 +99,11 @@ function* handleUpdateCategory(action) {
             message.success("Update catgory success!")
 
         } 
+        else{
+            yield put(updateCategoryError(response));
+            message.error("Update catgory error!")
+
+        }
     } catch (error) {
         yield put(updateCategoryError(error));
         message.error("Update catgory error!")
@@ -104,6 +126,11 @@ function* handleDeleteCategory(action) {
             message.success("Delete category success!");
 
         } 
+        else{
+            yield put(deleteCategoryError(response));
+            message.error("Delete category error!");
+
+        }
     } catch (error) {
         yield put(deleteCategoryError(error));
         message.error("Delete category error!");

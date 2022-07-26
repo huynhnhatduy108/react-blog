@@ -50,7 +50,7 @@ function CommentPage() {
     const { items, limit, page, total_page, total_record } = listPostPaging;
 
     useEffect(() => {
-        dispatch(getListPost({ limit: limit, page: page }));
+        dispatch(getListPost({ limit: limit, page: page ,detail: 0}));
     }, []);
 
     useEffect(()=>{
@@ -67,7 +67,7 @@ function CommentPage() {
         const { title_post } = values;
         dispatch(
             getListPost({
-                detail: 1,
+                detail: 0,
                 limit: limit,
                 page: 1,
                 keyword: title_post,
@@ -263,11 +263,6 @@ function CommentPage() {
                                             </Popconfirm>
                                         </Col>
                                     </Input.Group>
-                                    {/* <div className="admin__reply" style={{marginBottom:10,position:"relative"}}>
-                                        <TextArea prefix={"fvfvf"} disabled rows={4} value={"Comment nè"}></TextArea>
-                                        <Button type="primary" style={{position:"absolute", bottom:10, right: 90}} onClick={()=>{}}>Reply</Button>
-                                        <Button danger type="primary" style={{position:"absolute", bottom:10, right: 10}}>Delete</Button>
-                                    </div> */}
                                     <div className="list__sub-comment" style={{marginLeft:10}}>
                                         {item?.sub_comment.map((sub, index)=>
                                             <Input.Group key={sub.comment_id} className="admin__reply" style={{display:"flex",alignItems:"center", marginBottom:10, border:"1px solid #d9d9d9",  backgroundColor:"#f5f5f5"}}>

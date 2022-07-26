@@ -26,9 +26,11 @@ function IntroPost(props) {
                                 </div>
                             </div>
                             <div className="post__content">
-                                <div className="post__content-line"></div>
-                                <div className="post__content-categary cursor">
-                                    {dataPost[0]?.categories[0]?.title}
+                                <div className="post__content-line-categary">
+                                    <div className="post__content-line"></div>
+                                    <div className="post__content-categary cursor">
+                                        {dataPost[0]?.categories[0]?.title}
+                                    </div>
                                 </div>
                                 <div>
                                     <div className="post__content-title">
@@ -77,12 +79,15 @@ function IntroPost(props) {
                                                 {moment(dataPost[1]?.published_at).format('MMMM')}
                                             </p>
                                         </div>
-                                    </div>
+                                    </div>  
                                     <div className="post__content">
-                                        <div className="post__content-line"></div>
-                                        <div className="post__content-categary cursor display_mobile">
-                                            {dataPost[1]?.categories[0]?.title}
+                                        <div className="post__content-line-categary">
+                                            <div className="post__content-line"></div>
+                                            <div className="post__content-categary cursor display_mobile">
+                                                {dataPost[1]?.categories[0]?.title}
+                                            </div>
                                         </div>
+
                                         <div className="post2__content-title">
                                             <h3 className="post2__content-title-h3">
                                                 {dataPost[1]?.title}
@@ -128,10 +133,13 @@ function IntroPost(props) {
                                         </div>
                                     </div>
                                     <div className="post__content">
-                                        <div className="post__content-line"></div>
-                                        <div className="post__content-categary cursor display_mobile">
-                                            {dataPost[1]?.categories[0]?.title}
+                                        <div className="post__content-line-categary">
+                                            <div className="post__content-line"></div>
+                                            <div className="post__content-categary cursor display_mobile">
+                                                {dataPost[1]?.categories[0]?.title}
+                                            </div>
                                         </div>
+
                                         <div className="post2__content-title">
                                             <h3 className="post2__content-title-h3">
                                                 {dataPost[2]?.title}

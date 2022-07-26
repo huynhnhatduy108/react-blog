@@ -1,6 +1,7 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import { message } from "antd";
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import { getListCategory } from "../../Category/store/slice";
 import { listCommentByPost } from "../../Comment/store/slice";
 import { getListTag, getTagSlice } from "../../Tag/store/slice";
 
@@ -12,7 +13,15 @@ function* handleGetListPost(action) {
         const response= yield call(apiListPost,action.payload);
         if (response.success) {
             yield put(getListPostSuccess(response.data));
+            if (action.payload.detail==1){
+                yield put(getListCategory());
+                yield put(getListTag());
+            }
         } 
+        else{
+            yield put(getListPostError(response));
+
+        }
     } catch (error) {
         yield put(getListPostError(error));
     }
@@ -25,6 +34,10 @@ function* handleReadMoreListPost(action) {
         if (response.success) {
             yield put(readMoreListPostSuccess(response.data));
         } 
+        else{
+            yield put(readMoreListPostError(response));
+
+        }
     } catch (error) {
         yield put(readMoreListPostError(error));
     }
@@ -37,6 +50,10 @@ function* handleGetListPostUserSearch(action) {
         if (response.success) {
             yield put(getListPostUserSeachSuccess(response.data));
         } 
+        else{
+            yield put(getListPostUserSeachError(response));
+
+        }
     } catch (error) {
         yield put(getListPostUserSeachError(error));
     }
@@ -48,6 +65,10 @@ function* handleReadMorePostUserSearch(action) {
         if (response.success) {
             yield put(readMorePostUserSeachSuccess(response.data));
         } 
+        else{
+            yield put(readMorePostUserSeachError(response));
+
+        }
     } catch (error) {
         yield put(readMorePostUserSeachError(error));
     }
@@ -59,13 +80,17 @@ function* handleGetListPostRelation(action) {
         if (response.success) {
             yield put(getListPostRelationSuccess(response.data));
         } 
+        else{
+            yield put(getListPostRelationError(response));
+
+        }
     } catch (error) {
         yield put(getListPostRelationError(error));
     }
 }
 
 
-function* handleGetDatailPostById(action) {
+function* handleGetDetailPostById(action) {
     try {
         const response= yield call(
             apiDetailPostById,
@@ -74,12 +99,16 @@ function* handleGetDatailPostById(action) {
         if (response.success) {
             yield put(getDetailPostByIdSuccess(response.data));
         } 
+        else{
+            yield put(getDetailPostByIdError(response));
+
+        }
     } catch (error) {
         yield put(getDetailPostByIdError(error));
     }
 }
 
-function* handleGetDatailPostBySlug(action) {
+function* handleGetDetailPostBySlug(action) {
     try {
         const response= yield call(
             apiDetailPostBySlug,
@@ -103,6 +132,10 @@ function* handleGetDatailPostBySlug(action) {
             yield put(listCommentByPost(post_id))
             yield put(getListPostRelation(data))
         } 
+        else{
+            yield put(getDetailPostBySlugError(response));
+
+        }
     } catch (error) {
         yield put(getDetailPostBySlugError(error));
     }
@@ -122,6 +155,10 @@ function* handleCreatePost(action) {
             yield put(getListPost({limit, page, detail:1}));
             message.success("Create post success!")
         } 
+        else{
+            yield put(createPostError(response));
+            message.error("Create post error!")
+        }
     } catch (error) {
         yield put(createPostError(error));
         message.error("Create post error!")
@@ -142,6 +179,10 @@ function* handleUpdatePost(action) {
             yield put(getListPost({limit, page, detail:1}));
             message.success("Update post success!")
         } 
+        else{
+            yield put(updatePostError(response));
+            message.error("Update post error!")
+        }
     } catch (error) {
         yield put(updatePostError(error));
         message.error("Update post error!")
@@ -162,6 +203,10 @@ function* handleDeletePost(action) {
             yield put(getListPost({limit, page, detail:1}));
             message.success("Delete post success!")
         } 
+        else{
+            yield put(deletePostError(response));
+            message.error("Delete post error!")
+        }
     } catch (error) {
         yield put(deletePostError(error));
         message.error("Delete post error!")
@@ -176,8 +221,8 @@ export default function* PostSaga() {
     yield takeLatest(readMorePostUserSeach.type, handleReadMorePostUserSearch);
     yield takeLatest(getListPostRelation.type, handleGetListPostRelation);
 
-    yield takeLatest(getDetailPostById.type, handleGetDatailPostById);
-    yield takeLatest(getDetailPostBySlug.type, handleGetDatailPostBySlug);
+    yield takeLatest(getDetailPostById.type, handleGetDetailPostById);
+    yield takeLatest(getDetailPostBySlug.type, handleGetDetailPostBySlug);
     yield takeLatest(createPost.type, handleCreatePost);
     yield takeLatest(updatePost.type, handleUpdatePost);
     yield takeLatest(deletePost.type, handleDeletePost);

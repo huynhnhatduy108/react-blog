@@ -7,8 +7,8 @@ import SildeCategory from  "./../../../components/SildeCategory";
 import Footer from "./../../../components/Footer";
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategorySlice, getListCategory } from '../../../features/Category/store/slice';
-import { getListTag, getTagSlice } from '../../../features/Tag/store/slice';
-import { getListPost, getListPostUserSeach, getPostSlice } from '../../../features/Post/store/slice';
+import { getTagSlice } from '../../../features/Tag/store/slice';
+import { getListPost, getPostSlice } from '../../../features/Post/store/slice';
 
 const HomePage=()=> {
   const dispatch = useDispatch();
@@ -23,8 +23,6 @@ const HomePage=()=> {
 
   useEffect(()=>{
     dispatch(getListPost({detail:1, limit:9, page:1, is_pagination:1}));
-    dispatch(getListCategory());
-    dispatch(getListTag());
   },[])
 
   return (

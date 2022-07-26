@@ -6,6 +6,7 @@ import { useQuery } from "../../hooks/useQuery";
 import { useDispatch } from "react-redux";
 import { readMorePostUserSeach } from "../../features/Post/store/slice";
 import { useRef } from "react";
+import Loading from "../Loading";
 
 function ListSearch(props) {
     const {listPostUserSearch, listCategory, listTag, navigate} = props;
@@ -21,7 +22,6 @@ function ListSearch(props) {
 
     const handleReadMore =  ()=>{
         dispatch(readMorePostUserSeach({detail:1, limit:limit, page:page + 1, is_pagination:1, keyword:keyword, category:category, tag:tag }))
-       
     }
 
     return (
@@ -47,10 +47,13 @@ function ListSearch(props) {
                                 </div>
                             </div>
                             <div className="post__content">
-                                <div className="post__content-line"></div>
-                                <div className="post__content-categary cursor">
-                                    {item.categories[0]?.title}
+                                <div className="post__content-line-categary">
+                                    <div className="post__content-line"></div>
+                                    <div className="post__content-categary cursor">
+                                        {item.categories[0]?.title}
+                                    </div>
                                 </div>
+
                                 <div>
                                     <div className="post3__content-title">
                                         <h3 className="post3__content-title-h3 font-25">
@@ -82,8 +85,7 @@ function ListSearch(props) {
                         </div>
                     )}
                 </div>
-                {/* <button onClick={()=>console.log(window.pageYOffset)}>check height</button> */}
-
+                {(isFetching && items?.length)?<Loading/>:""}
                 <div className="list__search-loadmore">
                     {page>= total_page?"":<button className="loadmore__button" onClick={handleReadMore}>Read more</button>}
                 </div>

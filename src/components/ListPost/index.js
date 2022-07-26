@@ -41,9 +41,11 @@ function ListPost(props) {
                                             </div>
                                         </div>
                                         <div className="post__content">
-                                            <div className="post__content-line"></div>
-                                            <div className="post__content-categary cursor">
-                                                {item.categories[0]?.title}
+                                            <div className="post__content-line-categary">
+                                                <div className="post__content-line"></div>
+                                                <div className="post__content-categary cursor">
+                                                    {item.categories[0]?.title}
+                                                </div>
                                             </div>
                                             <div>
                                                 <div className="post3__content-title">

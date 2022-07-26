@@ -18,7 +18,7 @@ function Comment(props) {
         
     }, [listComment])
 
-    const handleSendComment = (comment_id)=>{
+    const handleSendComment = async (comment_id)=>{
         if (!(comment_id?contentReply:contentComment)) return
         const data = {
             post_id:post_id,
@@ -26,7 +26,9 @@ function Comment(props) {
             content:comment_id?contentReply:contentComment
         }
         // console.log("data", data);
-        dispatch(userCommentToPost(data))
+        await dispatch(userCommentToPost(data));
+        setContentComment("");
+        setContentReply("");
     }
 
     const handleClickReply = (comment_id) =>{

@@ -14,6 +14,10 @@ function* handleGetListUser(action) {
         if (response.success) {
             yield put(getListUserSuccess(response.data));
         } 
+        else{
+            yield put(getListUserFailure(response));
+
+        }
     } catch (error) {
         yield put(getListUserFailure(error));
     }
@@ -28,6 +32,10 @@ function* handleGetDatailUser(action) {
         if (response.success) {
             yield put(getDetailUserSuccess(response.data));
         } 
+        else{
+            yield put(getDetailUserFailure(response));
+
+        }
     } catch (error) {
         yield put(getDetailUserFailure(error));
     }
@@ -47,6 +55,11 @@ function* handleCreateUser(action) {
             yield put(getListUser({limit, page}));
             message.success("Create user success!");
         } 
+        else{
+            yield put(createUserFailure(response));
+            message.error("Create user success!");
+
+        }
     } catch (error) {
         yield put(createUserFailure(error));
         message.error("Create user success!");
@@ -67,6 +80,10 @@ function* handleUpdateUser(action) {
             yield put(getListUser({limit, page}));
             message.success("Update user success!");
         } 
+        else{
+            yield put(updateUserFailure(response));
+
+        }
     } catch (error) {
         yield put(updateUserFailure(error));
         message.error("Update user error!");
@@ -88,6 +105,11 @@ function* handleDeleteUser(action) {
             yield put(getListUser({limit, page}));
             message.success("Delete user success!");
         } 
+        else{
+            yield put(deleteUserFailure(response));
+            message.error("Delete user error!");
+
+        }
     } catch (error) {
         yield put(deleteUserFailure(error));
         message.error("Delete user error!");
@@ -104,6 +126,10 @@ function* handleUpdateAvatarUser(action) {
         if (response.success) {
             yield put(updateAvatarUserSuccess(response.data));
         } 
+        else{
+            yield put(updateAvatarUserFailure(response));
+
+        }
     } catch (error) {
         yield put(updateAvatarUserFailure(error));
     }

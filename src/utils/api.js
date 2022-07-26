@@ -1,7 +1,7 @@
 import { message } from "antd";
 import axios, { AxiosRequestConfig } from "axios";
 import { API_BASE_URL, ON_FETCH_ERROR, ON_RESPONSE_ERROR } from "./constants";
-import { removeLocalItem } from "./helper";
+import { getUserLocal, removeLocalItem } from "./helper";
 
 export const contentType = (type) => {
     return { "Content-Type": type };
@@ -34,8 +34,7 @@ const API = axios.create({
     withCredentials: true,
 });
 
-const access_token =
-    "yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4ODE4MzYzLCJpYXQiOjE2NTg3MzE5NjMsImp0aSI6ImE4MzkxY2ZiNTZlMjRkMTJiNjU4M2YyMzBhMDQ3ZDk2IiwidXNlcl9pZCI6MX0.6Emc7jctVs2vUVoBK8SXHcmqIktW5UN99BI6e2zdUrE";
+const userLocal = getUserLocal();
 
 function execApi(method, url, data, params, headers) {
     return API.request({
@@ -43,7 +42,7 @@ function execApi(method, url, data, params, headers) {
         url: url,
         data: data,
         params: params,
-        headers: { Authorization: ` Bear ${access_token}`, ...headers },
+        headers: { Authorization: ` Bear ${userLocal?.access_token}`, ...headers },
     })
         .then((response) => {
             if ("access_token" in response.headers) {
@@ -84,6 +83,10 @@ function execApi(method, url, data, params, headers) {
                 }
                 if (error.response.status === 403) {
                     message.error("AUTHENTICATION PERMISSION DENINE");
+                    if (error.response.data.error_code ==="INVALID_TOKEN_OR_EXPIRE"){
+                        removeLocalItem("user");
+                        setTimeout(reloadToLogin, 2000);
+                    }
                 }
                 if (error.response.status === 401) {
                     removeLocalItem("user")

@@ -162,37 +162,6 @@ function Search(props) {
                                 />
                                 <i onClick={hanldeSearchPost} className="search__mobile-icon fa-solid fa-magnifying-glass"></i>
                             </div>
-                            {/* {isSearch ? (
-                                <div className="search__result">
-                                    <div className="search__result-list">
-                                        {listSearch.length &&
-                                            listSearch.map((item, index) => (
-                                                <div className="search__result-post">
-                                                    <div className="result__post-img">
-                                                        <img
-                                                            className=""
-                                                            src={item.url}
-                                                        />
-                                                    </div>
-                                                    <div className="result__post-content">
-                                                        <div className="result__post-content-title">
-                                                            <h3 className="">
-                                                                {item.title}
-                                                            </h3>
-                                                        </div>
-                                                        <div className="result__post-content-text">
-                                                            <p className="">
-                                                                {item.content}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                </div>
-                            ) : (
-                                ""
-                            )} */}
                         </div>
                         <div className="search__icon">
                             <i onClick={hanldeSearchPost} className="search__icon-icon fa-solid fa-magnifying-glass"></i>

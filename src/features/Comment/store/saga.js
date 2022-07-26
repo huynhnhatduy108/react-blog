@@ -14,6 +14,10 @@ function* handleGetListCommentByPost(action) {
         if (response.success) {
             yield put(listCommentByPostSuccess(response.data));
         } 
+        else{
+            yield put(listCommentByPostError(response));
+
+        }
     } catch (error) {
         yield put(listCommentByPostError(error));
     }
@@ -33,6 +37,10 @@ function* handleUserCommentToPost(action) {
             }
             yield put(countCommentPostAdd(data))
         } 
+        else{
+            yield put(userCommentToPostError(response));
+
+        }
     } catch (error) {
         yield put(userCommentToPostError(error));
     }
@@ -101,6 +109,10 @@ function* handleDeleteCommentByPostId(action) {
             }
             yield put(countCommentPostDelete(data));
         } 
+        else{
+            yield put(deleteCommentByPostIdError(response));
+
+        }
     } catch (error) {
         yield put(deleteCommentByPostIdError(error));
     }

@@ -131,6 +131,12 @@
     height: auto;
 }
 
+.detail__content iframe {
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
 .detail__content p {
     font-size: 16px;
 }

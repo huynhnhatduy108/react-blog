@@ -46,10 +46,49 @@ function SildePost(props) {
                 <div className="silde__post-line">
                     <h3 className="silde__post-title-h3">POST RELATION</h3>
                 </div>
-                <Slider {...settings}>
+                {listPostRelation?.length>4?<Slider {...settings}>
                     {listPostRelation?.length &&
                         listPostRelation.map((item, index) => (
                             <div className="silde__post-container" key={item.post_id} onClick={()=>{navigate(`/p/${item.slug}`); scrollTo()}}>
+                                <div className="post">
+                                <div className="post__img">
+                                    <img
+                                        className="post4__img-img"
+                                        src={item.thumbnail}
+                                        alt={item.title}
+                                    />
+                                    <div className="post__img-publish">
+                                        <p className="img__publish-day">
+                                            {moment(item.published_at).format('DD')}
+                                        </p>
+                                        <p className="img__publish-month">
+                                            {moment(item.published_at).format('MMMM')}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="post__content">
+                                        <div className="post__content-line"></div>
+                                        <div>
+                                        <div className="post3__content-title">
+                                            <h3 className="post3__content-title-h3 font-25">
+                                                {item.title}
+                                            </h3>
+                                        </div>
+                                        <div className="post3__content-text">
+                                            <p className="post3__content-text-p margin-0 text-justify">
+                                                {plainText(item.content)}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        ))}
+                </Slider>:
+                    <div className="silde__post-container2 row no-gutters">
+                    {listPostRelation?.length &&
+                        listPostRelation.map((item, index) => (
+                            <div className="silde__post-container col l-3 m-6 c-12" key={item.post_id} onClick={()=>{navigate(`/p/${item.slug}`); scrollTo()}}>
                                 <div className="post">
                                 <div className="post__img">
                                     <img
@@ -84,7 +123,8 @@ function SildePost(props) {
                             </div>
                             </div>
                         ))}
-                </Slider>
+                    </div>
+                }
             </div>
         </div>
     );

@@ -14,6 +14,10 @@ function* handleGetListTag(action) {
         if (response.success) {
             yield put(getListTagSuccess(response.data));
         } 
+        else{
+            yield put(getListTagError(response));
+
+        }
     } catch (error) {
         yield put(getListTagError(error));
     }
@@ -28,6 +32,10 @@ function* handleSearchTag(action) {
         if (response.success) {
             yield put(searchTagSuccess(response.data));
         } 
+        else{
+            yield put(searchTagError(response));
+
+        }
     } catch (error) {
         yield put(searchTagError(error));
     }
@@ -42,6 +50,10 @@ function* handleGetDatailTag(action) {
         if (response.success) {
             yield put(getDetailTagSuccess(response.data));
         } 
+        else{
+            yield put(getDetailTagError(response));
+
+        }
     } catch (error) {
         yield put(getDetailTagError(error));
     }
@@ -61,6 +73,11 @@ function* handleCreateTag(action) {
             yield put(searchTag({limit, page}));
             message.success("Create tag success!");
         } 
+        else{
+            yield put(createTagError(response));
+            message.error("Create tag success!");
+
+        }
     } catch (error) {
         yield put(createTagError(error));
         message.error("Create tag success!");
@@ -81,6 +98,11 @@ function* handleUpdateTag(action) {
             yield put(searchTag({limit, page}));
             message.success("Update tag success!")
         } 
+        else{
+            yield put(updateTagError(response));
+            message.error("Update tag error!");
+
+        }
     } catch (error) {
         yield put(updateTagError(error));
         message.error("Update tag error!");
@@ -102,6 +124,11 @@ function* handleDeleteTag(action) {
             message.success("Delete tag success!")
 
         } 
+        else{
+            yield put(deleteTagError(response));
+            message.error("Delete tag error!");
+
+        }
     } catch (error) {
         yield put(deleteTagError(error));
         message.error("Delete tag error!");

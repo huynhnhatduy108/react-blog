@@ -13,7 +13,7 @@ function ContactPage() {
     const [mess, setMess] = useState("");
     const [validate, setValidate] = useState(false);
 
-    const handleSumit = () =>{
+    const handleSumit = async () =>{
         if (!name || !email || !mess || !validateEmail(email)){
             setValidate(true);
         }else{
@@ -27,7 +27,7 @@ function ContactPage() {
                 date: date, 
                 time: time
             }
-            axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",data)
+            await axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",data)
                 .then((response) => {
                     notificationCustom('Send contact successfull. Thank you!', true)
                     setName("");
@@ -74,11 +74,11 @@ function ContactPage() {
                                 <input placeholder='Subject' value={subject} onChange={(event)=>setSubject(event.target.value)}/>
                             </div>
                             <div className='contact__input-mess'>
-                                <textarea placeholder='Write your message' value={mess} onChange={(event)=>setMess(event.target.value)} value={mess}>{mess}</textarea>
+                                <textarea placeholder='Write your message' value={mess} onChange={(event)=>setMess(event.target.value)}>{mess}</textarea>
                                 {(validate&&!mess)?<div className='validate_contact'>Please input message!</div>:""}
                             </div>
                             <div className='contact__button'>
-                                <button className='' onClick={handleSumit}>SEND MESSGAE</button>
+                                <button className='' onClick={handleSumit}>SEND MESSAGE</button>
                             </div>
                         </div>
                     </div>

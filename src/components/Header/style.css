@@ -185,11 +185,12 @@
     .header__search-mobile{
         display: block;
         position: absolute;
-        width: 320px;
+        width: 340px;
         border: 1px solid #dcdcdc;
         right: -1px;
         top: 60px;
         min-height: 35px;
+        
         /* max-height: 525px; */
         border-radius: 10px;
         /* overflow-y: scroll; */
@@ -199,6 +200,7 @@
         max-height: 485px;
         overflow-y: scroll;
     }
+    
 }
 
 @media (min-width: 500px) and (max-width: 739px) {
@@ -217,6 +219,9 @@
         max-height: 485px;
         overflow-y: scroll;
     }
+    /* .search-mobile-container{
+        border: none;
+    } */
 
 }
 

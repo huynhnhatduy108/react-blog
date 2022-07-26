@@ -219,6 +219,9 @@
     .post2__img-img{
         height: 180px;
     }
+    .post__content-categary{
+        margin: 5px 0;
+    }
 }
 
 /* mobile */

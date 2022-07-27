@@ -134,7 +134,7 @@
 .detail__content iframe {
     max-width: 100%;
     display: block;
-    height: auto;
+    height: 400px;
 }
 
 .detail__content p {

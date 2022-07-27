@@ -17,7 +17,7 @@ function SearchPage() {
   const tagStore = useSelector(getTagSlice);
   const categoryStore = useSelector(getCategorySlice);
 
-  const {listPostUserSearch} = postStore;
+  const {listPostUserSearch, isFetching:totalFetching  } = postStore;
   const {listCategory} = categoryStore;
   const {listTag} = tagStore;
   const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
@@ -35,7 +35,7 @@ function SearchPage() {
     <div>
         <Search listCategory={listCategory} listTag={listTag}/>
         <div className='gap-50'></div>
-        {items?.length? <ListSearch navigate={navigate} listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:isFetching?<Loading/>:<NoData/>}
+        {totalFetching?<Loading/>:items?.length? <ListSearch navigate={navigate} listCategory={listCategory} listTag={listTag} listPostUserSearch={listPostUserSearch}/>:isFetching?<Loading/>:<NoData/>}
         <div className='gap-50'></div>
         <Footer/>
     </div>

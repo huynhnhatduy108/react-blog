@@ -85,7 +85,7 @@ function Header() {
                                 ""
                             ) : (
                                 <div className="header__search-mobile ">
-                                    <div className="search-mobile-container">
+                                    <div className={`search-mobile-container ${keyword.length?"border":""}`}>
                                         <input
                                             className="search__mobile-input"
                                             onChange={(event) =>

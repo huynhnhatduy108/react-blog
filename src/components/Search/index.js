@@ -94,6 +94,12 @@ function Search(props) {
     
     return (
         <div className="search">
+            <div className="search__back-home">
+                <button onClick={()=>navigate(`/`)} className="back__home-button">
+                    <i className="back__home-icon fa-solid fa-angles-left"></i>BACK
+                    HOME
+                </button>
+            </div>
             <div className="search__background">
                 <div className="grid wide search__container">
                     {/* <div className=""> */}
@@ -185,12 +191,7 @@ function Search(props) {
                     {/* </div> */}
                 </div>
             </div>
-            <div className="search__back-home">
-                <button onClick={()=>navigate(`/`)} className="back__home-button">
-                    <i className="back__home-icon fa-solid fa-angles-left"></i>BACK
-                    HOME
-                </button>
-            </div>
+            
         </div>
     );
 }

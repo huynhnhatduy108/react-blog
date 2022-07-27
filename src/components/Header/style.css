@@ -2,7 +2,7 @@
 .header{
     width: 100%;
     background-color:white;
-    border:1px solid #dcdcdc;
+    border-bottom:1px solid #dcdcdc;
 }
 
 .header__container{
@@ -144,7 +144,11 @@
         margin: 0 auto;
         height: 38px;
         border-radius: 10px;
+    }
+    
+    .border{
         border-bottom: 1px solid #dcdcdc;
+
     }
 
     .header__mobile-search-line{

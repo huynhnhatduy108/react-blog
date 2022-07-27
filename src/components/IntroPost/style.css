@@ -208,6 +208,9 @@
     .intro__post{
         padding: 30px 0 0 0;
     }
+    .post__img-publish{
+        padding: 10px 0;
+    }
 }
 
 
@@ -268,6 +271,9 @@
     }
     .post2__content-title-h3{
         font-size: 20px;
+    }
+    .post__img-publish{
+        padding: 10px 0;
     }
 }
 

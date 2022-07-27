@@ -45,18 +45,23 @@ function Widget(props) {
         else{
             setValidate(false);
             const [date, time] = new Date().toLocaleString().split(",");
-            axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
-                    { email: email, date: date, time: time }
-                )
-                .then((response) => {
-                    notificationCustom('Register email successfull. Thank you!', true)
-                    setEmail("");
-                })
-                .catch((err) => { 
-                    console.log("err", err);
-                    notificationCustom('Systems error. Sorry and try again later!', false);
-                }
-                );
+            setTimeout(()=>{
+                notificationCustom('Send contact successfull. Thank you!', true)
+                setEmail("");
+            },300)
+
+            // axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",
+            //         { email: email, date: date, time: time }
+            //     )
+            //     .then((response) => {
+            //         notificationCustom('Register email successfull. Thank you!', true)
+            //         setEmail("");
+            //     })
+            //     .catch((err) => { 
+            //         console.log("err", err);
+            //         notificationCustom('Systems error. Sorry and try again later!', false);
+            //     }
+            //     );
         } 
     };
 

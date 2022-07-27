@@ -132,14 +132,17 @@ const PostSlice = createSlice({
         // list post user search
         getListPostUserSeach(state, action) {
             state.listPostUserSearch.isFetching = true
+            state.isFetching = true
             state.errors = []
         },
         getListPostUserSeachSuccess(state, action) {
+            state.isFetching = false
             state.listPostUserSearch.isFetching = false
             state.listPostUserSearch ={...state.listPostUserSearch,...action.payload.data} 
             state.errors = []
         },
         getListPostUserSeachError(state, action) {
+            state.isFetching = false
             state.listPostUserSearch.isFetching = false
             state.listPostUserSearch ={...state.listPostUserSearch} 
             state.errors = action.payload

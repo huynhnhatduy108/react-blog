@@ -27,19 +27,26 @@ function ContactPage() {
                 date: date, 
                 time: time
             }
-            await axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",data)
-                .then((response) => {
-                    notificationCustom('Send contact successfull. Thank you!', true)
-                    setName("");
-                    setEmail("");
-                    setSubject("");
-                    setMess("")
-                })
-                .catch((err) =>{
-                    console.log("err", err);
-                    notificationCustom('Systems error. Sorry and try again later!', false)
+            setTimeout(()=>{
+                notificationCustom('Send contact successfull. Thank you!', true)
+                setName("");
+                setEmail("");
+                setSubject("");
+                setMess("")
+            },300)
+            // await axios.post("https://sheet.best/api/sheets/75dc1251-3452-47a6-82f4-02e31a34b613",data)
+            //     .then((response) => {
+            //         notificationCustom('Send contact successfull. Thank you!', true)
+            //         setName("");
+            //         setEmail("");
+            //         setSubject("");
+            //         setMess("")
+            //     })
+            //     .catch((err) =>{
+            //         console.log("err", err);
+            //         notificationCustom('Systems error. Sorry and try again later!', false)
 
-                });
+            //     });
         }
     }
 

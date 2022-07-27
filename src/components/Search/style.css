@@ -5,7 +5,7 @@
     /* background-color: rgb(0, 191, 224); */
     /* background: linear-gradient(0deg, rgba(0,123,152,1) 0%, rgba(11,142,143,1) 0%, rgba(0,101,152,1) 100%, rgba(0,238,247,1) 100%); */
     /* background-image: url("https://png.pngtree.com/background/20210712/original/pngtree-modern-double-color-futuristic-neon-background-picture-image_1181573.jpg"); */
-    position: relative;
+    /* position: relative; */
     background-color: #f8f8f8;
     z-index: 16;
 }
@@ -14,10 +14,11 @@
 }
 
 .search__container{
-    position: absolute;
+
+    /* position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
 }
 
 .search__question-title{
@@ -30,7 +31,7 @@
     font-weight: 800;
     text-align: center;
     margin-top: 0;
-    margin-bottom: 40px;
+    margin: 40px 0px;
 }
 
 .search__form{
@@ -162,6 +163,7 @@
 }
 
 .search__tags{
+    padding-bottom: 40px;
     margin-top: 20px;
     display: flex;
     align-items: center;
@@ -261,13 +263,11 @@
 }
 
 .search__back-home{
-    position: absolute;
-    top: 20px;
-    left: 20px;
 }
 
 .back__home-button{
     padding: 10px 15px;
+    margin: 20px;
     border-radius: 10px;
     outline: none;
     border: 1px solid #dcdcdc;

@@ -9,6 +9,7 @@ import { getPostSlice } from '../../../features/Post/store/slice';
 import { getListTag, getTagSlice } from '../../../features/Tag/store/slice';
 import { getCategorySlice, getListCategory } from '../../../features/Category/store/slice';
 import { useNavigate } from 'react-router';
+import { useOnceEffect } from '../../../hooks/useOneEffect';
 
 function SearchPage() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function SearchPage() {
   const {listTag} = tagStore;
   const {items, limit, page, total_page, total_record, isFetching } = listPostUserSearch;
 
-  useEffect(()=>{
+  useOnceEffect(()=>{
     if (!listCategory.length){
       dispatch(getListCategory());
     }

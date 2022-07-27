@@ -23,27 +23,26 @@ function PostDetailPage() {
     const tagStore = useSelector(getTagSlice);
     const commentStore = useSelector(getCommentSlice);
 
-    const {listPostUserSearch, detailPost, listPostRelation, isFetching} = postStore;
+    const {listPostUserSearch, detailPost, listPostRelation, isFetching ,isFetchPost, list, listCoinChart} = postStore;
     const {listTag} = tagStore;
     const {listComment} = commentStore;
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if (slug){
             dispatch(getDetailPostBySlug(slug))
-            console.log("call api", slug);
         }
     },[slug])
 
     return (
         <div className="post__page">
             <Header/>
-          {isFetching?
+          {isFetchPost?
           <div style={{height:"70vh", position:"relative"}}>
-              <div style={{top:"50%", left:"50%", transform:"translate(-50% , -50%);",position:"absolute"}}><Loading/></div>
+              <div style={{top:"50%", left:"50%", transform:"translate(-50% ,-50%)",position:"absolute"}}><Loading/></div>
           </div>:detailPost?
             <div>
                 <div className="gap-50"></div>
-                <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget chart={true} navigate={navigate} listTag={listTag} />}/>
+                <DetailPost listComment={listComment} detailPost={detailPost} navigate={navigate} listTag={listTag} widget={<Widget listCoinChart={listCoinChart} chart={true} navigate={navigate} listTag={listTag} />}/>
                 <div className="gap-40"></div>
                     <SildePost navigate={navigate} listPostRelation={listPostRelation}/>
                 <div className="gap-50"></div>

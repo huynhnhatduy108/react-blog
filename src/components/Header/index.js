@@ -9,6 +9,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { plainText } from "../../utils/helper";
 import NoData from "../NoData";
 import Loading from "../Loading";
+import { useOnceEffect } from "../../hooks/useOneEffect";
 
 function Header() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function Header() {
 
     const keyWordDebounce = useDebounce(keyword,500);
 
-    useEffect(() => {
+    useOnceEffect(() => {
         if (keyWordDebounce) {
             dispatch(getListPostUserSeach({detail:1, keyword:keyWordDebounce, limit:10, page:1, is_pagination:1}))
         }

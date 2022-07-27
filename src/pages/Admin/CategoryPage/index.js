@@ -24,6 +24,7 @@ import { uploadFileCloudinary } from "../../../services/uploadFile";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDetailCategory, createCategory, deleteCategory, getCategorySlice, getDetailCategory, searchCategory, updateCategory } from "../../../features/Category/store/slice";
 import HeaderAdmin from "../../../components/HeaderAdmin";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -37,11 +38,11 @@ function CategoryPage() {
     const { isFetching, listTag, listCategorySearch, detailCategory, errors } = categoryStore;
     const {items, limit, page, total_page, total_record} = listCategorySearch;
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         dispatch(searchCategory({limit:5, page:1}));
     },[])
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if(detailCategory){
             setImageUrl(detailCategory.thumbnail)
             formCategory.setFieldsValue(detailCategory)

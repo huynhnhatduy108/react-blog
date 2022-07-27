@@ -12,6 +12,7 @@ import ImageCompress from 'quill-image-compress';
 import "quill-emoji/dist/quill-emoji.css";
 import "./style.css";
 import quillEmoji from 'quill-emoji';
+import { useOnceEffect } from "../../hooks/useOneEffect";
 const { EmojiBlot, ShortNameEmoji, ToolbarEmoji, TextAreaEmoji } = quillEmoji;
 
 const theme = "snow";
@@ -186,7 +187,7 @@ const Editor = (props, ref) => {
         }
     }));
 
-    useEffect(() => {
+    useOnceEffect(() => {
         if (quill) {            
             if (value){
               const delta = quill.clipboard.convert(value);

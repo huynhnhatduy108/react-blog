@@ -8,30 +8,18 @@ import { notificationCustom } from "../Notification";
 import AAVEADS from "./../../assets/img/aave-coin-ads.png";
 import ETHADS from "./../../assets/img/ethereum_ads.jpeg";
 import SANDADS from "./../../assets/img/sand-ads.webp";
+import { useOnceEffect } from "../../hooks/useOneEffect";
 
 const imgAds =[ {tile:"Đánh giá chi tiết về dự án Aave Protocol", img:AAVEADS , url:"https://dautu.io/aave-coin-la-gi.html" }, 
                 {tile:"Bằng chứng công việc của Ethereum đang dần “kết thúc”", img:ETHADS, url:"https://coinexpress.net/bang-chung-cong-viec-cua-ethereum-dang-dan-ket-thuc/" }, 
                 {tile:"Game sandbox là gì? Tại sao lại thu hút nhiều người chơi", img:SANDADS, url:"https://www.thegioididong.com/game-app/game-sandbox-la-gi-tai-sao-lai-thu-hut-nhieu-nguoi-choi-1361345" }]
 
 function Widget(props) {
-    const {chart=false ,listTag, navigate}  = props;
+    const {chart=false ,listTag, navigate, listCoinChart}  = props;
     const [email, setEmail] = useState("");
     const [validate, setValidate] =  useState(false);
     const [chartCoin, setChartCoin] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        if (chart){
-            axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false")
-            .then((response) => {
-                setChartCoin(response.data);
-            })
-            .catch((err) => {
-                console.log("err", err);
-            });
-        }
-    }, []);
-
 
     const handleChangeEmail = (e) => {
         e.preventDefault();
@@ -81,8 +69,7 @@ function Widget(props) {
                         <div className="currency__table-percent24h">24h%</div>
                     </div>
                     <div className="chart__currency-table-td">
-                    {chartCoin.length &&
-                        chartCoin.map((item, index) => (
+                        { listCoinChart.map((item, index) => (
                             <div className="chart__coin-title" key={index}>
                                 <div className="chart__currency-name">
                                     <img  className="chart__currency-img" src={item.image} />

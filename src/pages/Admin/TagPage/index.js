@@ -23,6 +23,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { clearDetailTag, createTag, deleteTag, getDetailTag, getTagSlice, searchTag, updateTag } from "../../../features/Tag/store/slice";
 import HeaderAdmin from "../../../components/HeaderAdmin";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -36,11 +37,11 @@ function TagPage() {
     const { isFetching, listTag, listTagSearch, detailTag, errors } = tagStore;
     const {items, limit, page, total_page, total_record} = listTagSearch;
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         dispatch(searchTag({limit:5, page:1}));
     },[])
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if(detailTag){
             formTag.setFieldsValue(detailTag)
         }

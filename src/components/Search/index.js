@@ -5,6 +5,7 @@ import { getQueryString } from "../../utils/helper";
 import { useQuery } from "../../hooks/useQuery";
 import { useDispatch } from "react-redux";
 import { getListPostUserSeach } from "../../features/Post/store/slice";
+import { useOnceEffect } from "../../hooks/useOneEffect";
 
 
 function Search(props) {
@@ -24,12 +25,11 @@ function Search(props) {
     const [keywordSearch, setkeywordSearch] = useState("");
     const [isExpand, setIsExpand] = useState(false);
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if(keyword || category || tag){
             dispatch(getListPostUserSeach({detail:1, keyword:keyword, limit:9, page:1, is_pagination:1, category:category, tag:tag}))
             keyword && setkeywordSearch(keyword);
             if (category){
-                console.log("category", category);
                 const index = listCategory?.findIndex((item)=>item.id==category)
                 setCurrenCategoryID(category);
                 setCurrenCategory(listCategory[index]?.title)

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategorySlice, getListCategory } from '../../../features/Category/store/slice';
 import { getTagSlice } from '../../../features/Tag/store/slice';
 import { getListPost, getPostSlice } from '../../../features/Post/store/slice';
+import { useOnceEffect } from '../../../hooks/useOneEffect';
 
 const HomePage=()=> {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const HomePage=()=> {
   const {listPostUserSearch, listPostPaging} = postStore;
   const {items, limit, page, total_page, total_record, isFetching } = listPostPaging;
 
-  useEffect(()=>{
+  useOnceEffect(()=>{
     dispatch(getListPost({detail:1, limit:9, page:1, is_pagination:1}));
   },[])
 

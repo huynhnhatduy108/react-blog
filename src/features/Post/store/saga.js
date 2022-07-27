@@ -5,8 +5,8 @@ import { getListCategory } from "../../Category/store/slice";
 import { listCommentByPost } from "../../Comment/store/slice";
 import { getListTag, getTagSlice } from "../../Tag/store/slice";
 
-import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug, apiListPostRelation} from "../apiService/index";
-import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListPost, getListPostError, getListPostRelation, getListPostRelationError, getListPostRelationSuccess, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
+import { apiCreatePost, apiDeletePost, apiDetailPostById, apiListPost, apiUpdatePost,  apiDetailPostBySlug, apiListPostRelation, apiListCoinChart} from "../apiService/index";
+import { createPost, createPostError, createPostSuccess, deletePost, deletePostError, deletePostSuccess, getDetailPostById, getDetailPostByIdError, getDetailPostByIdSuccess, getDetailPostBySlug, getDetailPostBySlugError, getDetailPostBySlugSuccess, getListCoinChart, getListCoinChartError, getListCoinChartSuccess, getListPost, getListPostError, getListPostRelation, getListPostRelationError, getListPostRelationSuccess, getListPostSuccess, getListPostUserSeach, getListPostUserSeachError, getListPostUserSeachSuccess, getPostSlice, readMoreListPost, readMoreListPostError, readMoreListPostSuccess, readMorePostUserSeach, readMorePostUserSeachError, readMorePostUserSeachSuccess, updatePost, updatePostError, updatePostSuccess } from "./slice";
 
 function* handleGetListPost(action) {
     try {
@@ -117,7 +117,9 @@ function* handleGetDetailPostBySlug(action) {
         if (response.success) {
             yield put(getDetailPostBySlugSuccess(response.data));
             const tagStore = yield select(getTagSlice);
+            const postStore = yield select(getPostSlice);
             const {tags, categories, post_id} = response.data.data
+            const {listCoinChart} = postStore;
             const tags_id = tags.map((item)=>item.tag_id)
             const categories_id = categories.map((item)=>item.category_id)
             const data ={
@@ -126,11 +128,11 @@ function* handleGetDetailPostBySlug(action) {
                 categories:categories_id
             } 
             const {listTag} = tagStore;
-            if (!listTag.length){
-                yield put(getListTag());
-            }
-            yield put(listCommentByPost(post_id))
-            yield put(getListPostRelation(data))
+            !listTag.length && (yield put(getListTag()))
+            !listCoinChart.length && (yield put(getListCoinChart()))
+            yield put(listCommentByPost(post_id));
+            yield put(getListPostRelation(data));
+            
         } 
         else{
             yield put(getDetailPostBySlugError(response));
@@ -214,6 +216,24 @@ function* handleDeletePost(action) {
     }
 }
 
+function* handleGetListCoinChart(action) {
+    try {
+        const response= yield call(
+            apiListCoinChart,
+            action.payload,
+        );
+        if (response.status ==200) {
+            yield put(getListCoinChartSuccess(response.data));
+        } 
+        else{
+            yield put(getListCoinChartError(response));
+
+        }
+    } catch (error) {
+        yield put(getListCoinChartError(error));
+    }
+}
+
 export default function* PostSaga() {
     yield takeLatest(getListPost.type, handleGetListPost);
     yield takeLatest(readMoreListPost.type, handleReadMoreListPost);
@@ -223,6 +243,8 @@ export default function* PostSaga() {
 
     yield takeLatest(getDetailPostById.type, handleGetDetailPostById);
     yield takeLatest(getDetailPostBySlug.type, handleGetDetailPostBySlug);
+    yield takeLatest(getListCoinChart.type, handleGetListCoinChart);
+
     yield takeLatest(createPost.type, handleCreatePost);
     yield takeLatest(updatePost.type, handleUpdatePost);
     yield takeLatest(deletePost.type, handleDeletePost);

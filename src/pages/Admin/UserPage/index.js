@@ -25,6 +25,7 @@ import { clearDetailUser, createUser, deleteUser, getDetailUser, getListUser, ge
 import { useDispatch, useSelector } from "react-redux";
 import { PASSWORD_HIDDEN, ROLE_USER } from "../../../utils/constants";
 import HeaderAdmin from "../../../components/HeaderAdmin";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
 const { TextArea } = Input;
 const { Option } = Select;
 const dateFormat = "YYYY/MM/DD";
@@ -38,11 +39,11 @@ function UserPage() {
     const { isFetching, listUser, detailUser, errors } = userStore;
     const {items, limit, page, total_page, total_record} = listUser;
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         dispatch(getListUser({limit:5, page:1}));
     },[])
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if(detailUser){
             setImageUrl(detailUser.avatar_url)
             formUser.setFieldsValue({...detailUser,password:PASSWORD_HIDDEN, comfirm_password:PASSWORD_HIDDEN})

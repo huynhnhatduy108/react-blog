@@ -22,7 +22,9 @@ const initialState = {
 
     },
     listPostRelation:[],
+    listCoinChart:[],
     detailPost: null,
+    isFetchPost: false,
     errors: null,
 }
 
@@ -201,17 +203,17 @@ const PostSlice = createSlice({
 
         // detail by slug
         getDetailPostBySlug(state, action) {
-            state.isFetching = true
+            state.isFetchPost = true
             state.errors = []
         },
         getDetailPostBySlugSuccess(state, action) {
-            state.isFetching = false
+            state.isFetchPost = false
             state.data = action.payload.data
             state.detailPost = action.payload.data
             state.errors = []
         },
         getDetailPostBySlugError(state, action) {
-            state.isFetching = false
+            state.isFetchPost = false
             state.data =null
             state.errors = action.payload
         },
@@ -288,6 +290,15 @@ const PostSlice = createSlice({
             }
 
         },
+        getListCoinChart(state, action) {
+
+        },
+        getListCoinChartSuccess(state, action) {
+            state.listCoinChart = action.payload
+        },
+        getListCoinChartError(state, action) {
+            state.errors = action.payload
+        },
 
 }});
 
@@ -337,6 +348,10 @@ export const updatePostError = PostSlice.actions.updatePostError;
 export const deletePost = PostSlice.actions.deletePost;
 export const deletePostSuccess = PostSlice.actions.deletePostSuccess;
 export const deletePostError = PostSlice.actions.deletePostError;
+
+export const getListCoinChart = PostSlice.actions.getListCoinChart;
+export const getListCoinChartSuccess = PostSlice.actions.getListCoinChartSuccess;
+export const getListCoinChartError = PostSlice.actions.getListCoinChartError;
 
 export const countCommentPostAdd = PostSlice.actions.countCommentPostAdd;
 export const countCommentPostDelete = PostSlice.actions.countCommentPostDelete;

@@ -26,6 +26,7 @@ import { adminCommentReply, deleteComment, deleteCommentByPostId, getCommentSlic
 import { getListPost, getPostSlice } from "../../../features/Post/store/slice";
 import ImgUserDefault from './../../../assets/img/defaultuser.png';
 import HeaderAdmin from "../../../components/HeaderAdmin";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -49,11 +50,11 @@ function CommentPage() {
     const { isFetching, listPostPaging, detailPost, errors } = postStore;
     const { items, limit, page, total_page, total_record } = listPostPaging;
 
-    useEffect(() => {
+    useOnceEffect(() => {
         dispatch(getListPost({ limit: limit, page: page ,detail: 0}));
     }, []);
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         const temp = listComment.map(item=> {return{...item,isAnswer: false}})
         setComments(temp);
     },[listComment])

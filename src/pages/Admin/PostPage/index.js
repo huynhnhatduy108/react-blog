@@ -45,6 +45,7 @@ import { getListTag, getTagSlice } from "../../../features/Tag/store/slice";
 import { getCategorySlice, getListCategory } from "../../../features/Category/store/slice";
 import Editor from "../../../components/Editor/EditorWithUseQuill";
 import HeaderAdmin from "../../../components/HeaderAdmin";
+import { useOnceEffect } from "../../../hooks/useOneEffect";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -68,13 +69,13 @@ function PostPage() {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
 
-    useEffect(() => {
+    useOnceEffect(() => {
         dispatch(getListPost({detail:1, limit:limit, page:page}));
         dispatch(getListTag());
         dispatch(getListCategory());
     }, []);
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         if(detailPost){
             setImageUrl(detailPost.thumbnail)
             formPost.setFieldsValue({

@@ -4,6 +4,7 @@ import { userCommentToPost } from "../../features/Comment/store/slice";
 import "./style.css";
 import ImgUserDefault from './../../assets/img/defaultuser.png';
 import moment from "moment";
+import { useOnceEffect } from "../../hooks/useOneEffect";
 
 function Comment(props) {
     const {post_id,listComment } = props;
@@ -12,7 +13,7 @@ function Comment(props) {
     const [contentComment, setContentComment] = useState("");
     const [contentReply, setContentReply] = useState("");
 
-    useEffect(()=>{
+    useOnceEffect(()=>{
         const term = listComment.map(item=> {return{...item,isAnswer: false}})
         setComments(term);
         

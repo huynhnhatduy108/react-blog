@@ -1,4 +1,6 @@
 import {message} from "antd";
+import { storage } from "./FireBaseConfig";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const beforeUpload = (file) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/webp";
@@ -34,6 +36,26 @@ export const uploadFileCloudinary = async (file, preset) =>{
 
 }
 
-export const uploadFileFireBase = async (file, preset) =>{
+export const uploadFileFireBase = (file, folder ="images", callback) =>{
+    if(beforeUpload(file)){
+        const storageRef =  ref(storage, `${folder}/${file.name}`);
+        const uploadTask =  uploadBytesResumable(storageRef, file);
 
+        uploadTask.on("state_changed",
+            (snapshot) => {
+                // const progress =Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                // setProgresspercent(progress);
+            },
+            (error) => {
+                message.error(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    callback&& callback(downloadURL)
+                });
+            }
+            );
+        // callback && callback(url);
+
+    }
 }

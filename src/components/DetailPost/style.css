@@ -132,9 +132,9 @@
 }
 
 .detail__content iframe {
-    max-width: 100%;
+    width: 100%;
     display: block;
-    height: 400px;
+    height: 410px;
 }
 
 .detail__content p {
@@ -191,19 +191,26 @@
         display: none;
 
     }
+    .detail__content iframe {
+        height: 190px;
+    }
     
 }
    
 
 /* mobile */
 @media (min-width: 500px) and (max-width: 739px) {
- 
+    .detail__content iframe {
+        height: 250px;
+    }
     
 }
 
 /* tablet */
 @media (min-width: 740px) and (max-width: 1023px) {
-
+    .detail__content iframe {
+        height: 340px;
+    }
 }
 
 /* PC */

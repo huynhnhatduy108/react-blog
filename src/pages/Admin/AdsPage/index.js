@@ -1,9 +1,13 @@
-import React from 'react'
+import { Upload } from "antd";
+import React, { useState } from "react";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { uploadFileFireBase } from "../../../services/uploadFile";
 
-function index() {
-  return (
-    <div>index</div>
-  )
+function AdsPage() {
+
+    return (
+        <div>AdsPage</div>
+    );
 }
 
-export default index
+export default AdsPage;

@@ -27,7 +27,6 @@ const RedirectAdminPage = (props) =>{
 
 
 const App = () => {
-
     return (
         <div className="app">
             <BrowserRouter >

@@ -51,9 +51,10 @@ export const formatPath = (path, ...params) => {
       ));
   
     return path;
-  }
+}
 
 export const trueTypeOf = (obj) => Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+
 
 export const getQueryString = (init) => {
   const params = new URLSearchParams();
@@ -80,10 +81,12 @@ export const getQueryString = (init) => {
   return params.toString()
 }
 
+// Scroll 
 export const scrollTo = (top= 0, left= 0, behavior= 'smooth')=>{
     window.scrollTo({top, left, behavior});
 }
 
+// local stroge
 export const getLocalItem = (name)=>{
   let data = localStorage.getItem(name);
   try {
@@ -93,6 +96,7 @@ export const getLocalItem = (name)=>{
   }
   return data;
 }
+
 
 export const getUserLocal =() =>{
     let user = getLocalItem('user')

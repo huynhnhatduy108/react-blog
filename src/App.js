@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { adminPrivateRoutes, adminPublicRoutes, userRoutes } from "./pages/routes";
 import { getUserLocal } from "./utils/helper";
+import BackToTop from "./components/BackToTop";
 
 const userLocal = getUserLocal();
 
@@ -52,6 +53,7 @@ const App = () => {
                                 element={<PrivateRoute>{route.element}</PrivateRoute>} />)}        
                 </Routes>
             </BrowserRouter>
+            <BackToTop/>
         </div>
     );
 };

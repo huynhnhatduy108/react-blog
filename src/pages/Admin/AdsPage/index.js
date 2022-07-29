@@ -1,12 +1,14 @@
-import { Upload } from "antd";
 import React, { useState } from "react";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { uploadFileFireBase } from "../../../services/uploadFile";
+import HeaderAdmin from "../../../components/HeaderAdmin";
 
 function AdsPage() {
-
     return (
-        <div>AdsPage</div>
+        <div>
+            <div className="grid wide">
+                <HeaderAdmin/>
+                <div>AdsPage</div>
+            </div>
+        </div>
     );
 }
 

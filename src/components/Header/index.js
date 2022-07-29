@@ -27,7 +27,6 @@ function Header() {
         if (keyWordDebounce) {
             dispatch(getListPostUserSeach({detail:1, keyword:keyWordDebounce, limit:10, page:1, is_pagination:1}))
         }
-       
     }, [keyWordDebounce])
 
     const handleOnClickIcon = () => {
@@ -54,6 +53,12 @@ function Header() {
         setIsOpen(false);
     }
 
+    const handleKeyDown = (e) =>{
+        if (e.key == 'Enter') {
+            navigate(`/search?keyword=${keyword}`)
+          }
+    }
+
     return (
         <div className="header">
             <OutsideClickHandler onOutsideClick={handleClickout}>
@@ -70,6 +75,7 @@ function Header() {
                                 onChange={(event) => handleSearchPost(event)}
                                 placeholder="keyword search"
                                 value={keyword}
+                                onKeyDown={handleKeyDown}
                             />
                             <i  onClick={()=>navigate(`/search?keyword=${keyword}`)} 
                                 className="header__search-icon fa-solid fa-magnifying-glass"></i>

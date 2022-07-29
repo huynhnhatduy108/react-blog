@@ -110,7 +110,6 @@ function PostPage() {
 
     const handleSearchPost = (values) => {
         const {title_or_content, tag, category} = values;
-        console.log("values", values);
         dispatch(getListPost({detail:1,limit:limit, page:1, keyword:title_or_content, tag, category}));
     };
 
@@ -288,6 +287,7 @@ function PostPage() {
                                                     // mode="multiple"
                                                     style={{ width: "100%" }}
                                                     placeholder="Choose category"
+                                                    allowClear
                                                 >
                                                     {listCategory.map((category,index)=><Option key={category.id} value={category.id}>
                                                         {category.title}
@@ -308,6 +308,7 @@ function PostPage() {
                                                 <Select
                                                     // mode="multiple"
                                                     style={{ width: "100%" }}
+                                                    allowClear
                                                     placeholder="Choose tags"
                                                 >
                                                    {listTag.map((tag,index)=><Option key={tag.id} value={tag.id}>

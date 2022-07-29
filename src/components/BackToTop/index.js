@@ -25,7 +25,7 @@ function BackToTop() {
     return (
         <div className="backtotop" style={{display: visible?"block":"none"}} onClick={scrollToTop}>
             <div className="backtotop__container" >
-                <i class="fa-solid fa-angles-up backtotop-icon"></i>
+                <i className="fa-solid fa-angles-up backtotop-icon"></i>
             </div>
         </div>
     );

@@ -58,10 +58,8 @@ function Search(props) {
                 tag: currenTagID
             }
             const queryParams = getQueryString(params); 
-            console.log('queryParams', queryParams)
             navigate(`/search?${queryParams}`)
-
-          }
+        }
     }
 
     const hanldeSearchPost =()=>{

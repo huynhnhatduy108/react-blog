@@ -1,6 +1,6 @@
 
 
-export const API_BASE_URL = "https://django-blog-ngzb.onrender.com/api";
+export const API_BASE_URL = "http://api.cryptourcurrency.site/api";
 
 
 export const ON_RESPONSE_ERROR = [

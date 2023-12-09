@@ -1,6 +1,6 @@
 
 
-export const API_BASE_URL = "http://api.cryptourcurrency.site/api";
+export const API_BASE_URL = "https://api.cryptourcurrency.site/api";
 
 
 export const ON_RESPONSE_ERROR = [
